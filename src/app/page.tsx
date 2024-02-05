@@ -1,5 +1,5 @@
 import { TypographyH1 } from "@/components/ui/typography";
-import { PostCard } from "@/entities/postCard";
+import { PostCard } from "@/entities/post-card";
 
 export default function Home() {
   return (

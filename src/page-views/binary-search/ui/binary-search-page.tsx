@@ -1,5 +1,5 @@
 import { TypographyH1 } from "@/components/ui/typography";
-import { BinarySearchVisualize } from "@/widgets/header/binary-search-visualize";
+import { BinarySearchVisualize } from "@/widgets/binary-search-visualize";
 
 
 
