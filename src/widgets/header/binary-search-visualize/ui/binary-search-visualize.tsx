@@ -12,10 +12,12 @@ import { useSnapshots } from "../hooks/use-snapshots";
 // Helpers
 import { binarySearch } from "../model/binary-search";
 import { createStepSnapshot } from "../model/create-step-snapshot";
+import { getArrowClassName } from "../model/get-arrow-classname";
+import { languagesMapSettings } from "../model/languages-map-settings";
+import { cn, delay } from "@/shared/lib/utils";
 
 // Types
 import { GenValuePayload, StepSnapshot } from "../model/types";
-import { cn, delay } from "@/shared/lib/utils";
 
 // Components
 import { VisualizeControls } from "@/features/visualizer-player-controls";
@@ -25,7 +27,6 @@ import { TargetInput } from "@/components/ui/target-input";
 import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewer } from "@/components/ui/code-viewer";
-import { languagesMapSettings } from "../model/languages-map-settings";
 
 export const BinarySearchVisualize = () => {
   const startedRef = useRef<boolean>(false);
@@ -109,7 +110,7 @@ export const BinarySearchVisualize = () => {
   return (
     <div>
       <div>
-        <div className="flex justify-between items-end my-8">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-end my-8 gap-4">
           <VisualizeControls
             onPlay={handlePlay}
             onReset={reset}
@@ -122,8 +123,8 @@ export const BinarySearchVisualize = () => {
             speed={delayRef.current}
             onChangeSpeed={onChangeSpeed}
           />
-          <div className="flex items-end gap-2">
-            <TargetInput value={target} onChange={updateTarget} />
+          <div className="flex items-end gap-2 ">
+            <TargetInput value={target} onChange={updateTarget} disabled={!editMode} />
 
             <Button
               className={cn(
@@ -158,7 +159,7 @@ export const BinarySearchVisualize = () => {
               />
             ))}
             <Button
-              className="ml-2 bg-green-500 hover:bg-green-600"
+              className="ml-2 bg-green-500 hover:bg-green-600 "
               variant="destructive"
               size="icon"
               title="Add new value"
@@ -184,10 +185,8 @@ export const BinarySearchVisualize = () => {
                   className={
                     isComparing
                       ? cn(
-                          currentSnapshot.compareIndexes[1] === index
-                            ? `after:content-['<-']`
-                            : `after:content-['->']`,
-                          "after:absolute after:left-1/2 after:-translate-x-1/2 after:z-1 after:-bottom-6 after:text-black"
+                        getArrowClassName(currentSnapshot.compareIndexes, index),
+                          "after:absolute after:left-1/2 after:-translate-x-1/2 after:z-1 after:-bottom-6 after:text-black dark:after:text-white"
                         )
                       : undefined
                   }

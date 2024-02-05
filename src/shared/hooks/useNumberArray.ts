@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 
-const MAX_ARRAY_LENGTH = 20;
+const MAX_ARRAY_LENGTH = 50;
 const MIN_ARRAY_LENGTH = 1;
 
 export const useNumberArray = (defaultArray: number[]) => {

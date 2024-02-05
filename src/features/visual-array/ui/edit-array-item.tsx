@@ -20,7 +20,7 @@ const EditArrayItem = ({
   value,
   index,
   onRemove,
-  max = 999,
+  max = 9999999,
   min = -99,
   onChange,
 }: EditArrayItemProps) => {
@@ -67,7 +67,7 @@ const EditArrayItem = ({
       </Button>
       <div
         className={cn(
-          "w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100 ",
+          "min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100 ",
           className
         )}
       >
@@ -80,7 +80,8 @@ const EditArrayItem = ({
         </Button>
         <Input
           value={value}
-          className="text-lg p-0 text-center h-full"
+          className={"min-w-12 text-sm p-0 text-center h-full"}
+          style={{ width: 12 * String(value)?.length }}
           onChange={handleInputChange}
         />
         <Button
