@@ -1,9 +1,9 @@
+import { expect, describe, it } from 'vitest'
 
 import { getArrowClassName } from "@/widgets/binary-search-visualize/model/get-arrow-classname";
 
 
 
-import { expect, describe, it } from 'vitest'
 
 
 describe('getArrowClassName', () => {
