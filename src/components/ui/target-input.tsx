@@ -11,12 +11,12 @@ type TargetInput = {
 export function TargetInput({ value, onChange, disabled }: TargetInput) {
   return (
     <div className="grid w-24 gap-1.5">
-      <Label className="font-bold" htmlFor="target">
+      <Label className="font-bold" id="target">
         Target
       </Label>
       <Input
         type="number"
-        id="target"
+        aria-labelledby="target"
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}

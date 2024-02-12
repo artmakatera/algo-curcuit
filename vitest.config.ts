@@ -1,11 +1,12 @@
 import path from 'path'
 import { defineConfig, configDefaults } from 'vitest/config'
 import react from '@vitejs/plugin-react'
- 
+
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
+    setupFiles: './test/vitest.setup.ts',
+    environment: 'happy-dom',
     exclude: [...configDefaults.exclude, 'src/**/types.ts'],
     coverage: {
       include: ['src/**/*'],
@@ -17,5 +18,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     },
   },
- 
+
 })

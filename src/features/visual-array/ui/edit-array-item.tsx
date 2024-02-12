@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/shared/lib/utils";
 
 
-type EditArrayItemProps = {
+export type EditArrayItemProps = {
   className?: string;
   value: number;
   index: number;
@@ -74,6 +74,7 @@ const EditArrayItem = ({
         <Button
           className="absolute top-0 left-0 w-full h-[1px] text-[9px] py-[5px] rounded-none border-bottom-none"
           variant="outline"
+          data-testid="increment"
           onClick={onAdd}
         >
           <span className="triangle -mt-[1px]"></span>
@@ -83,11 +84,13 @@ const EditArrayItem = ({
           className={"min-w-12 text-sm p-0 text-center h-full"}
           style={{ width: 12 * String(value)?.length }}
           onChange={handleInputChange}
+          aria-label="edit array item"
         />
         <Button
           className="absolute bottom-0 left-0 w-full h-[1px] text-[9px] py-[5px] rounded-none border-bottom-none"
           variant="outline"
           onClick={onSubtract}
+          data-testid="decrement"
         >
           <span className="triangle rotate-180"></span>
         </Button>

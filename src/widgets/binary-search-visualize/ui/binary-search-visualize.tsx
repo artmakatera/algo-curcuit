@@ -28,20 +28,22 @@ import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewer } from "@/components/ui/code-viewer";
 
-export const BinarySearchVisualize = () => {
-  const startedRef = useRef<boolean>(false);
-  const delayRef = useRef<string>("750");
+export const BinarySearchVisualize = ({
+  defaultArray,
+  defaultSpeed = "750",
+}: {
+  defaultArray: number[];
+  defaultSpeed?: string;
+}) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [target, setTarget] = useState<number>(12);
-  const [codeLang] = useState(LANGUAGES.javascript)
+  const [codeLang] = useState(LANGUAGES.javascript);
 
   const { array, updateNumber, addNumber, removeNumber } =
-    useNumberArray(DEFAULT_SORTED_ARRAY);
+    useNumberArray(defaultArray);
 
   const {
-    stepsSnapshot,
     setStepSnapshots,
-    setSnapshotIndex,
     currentSnapshot,
     highlight,
     hasPrevSnapshot,
@@ -49,7 +51,11 @@ export const BinarySearchVisualize = () => {
     resetSnapshotIndex: reset,
     handlePreviousStep,
     handleNextStep,
-  } = useSnapshots();
+    visualize,
+    isPlaying,
+    onChangeSpeed,
+    delayRef,
+  } = useSnapshots({ defaultDelay: defaultSpeed });
 
   useEffect(() => {
     const binarySearchCall = async (array: number[], target: number) => {
@@ -70,34 +76,15 @@ export const BinarySearchVisualize = () => {
     binarySearchCall(array, target);
   }, [array, setStepSnapshots, target]);
 
-  const visualize = useCallback(async () => {
+
+
+  const handlePlay = useCallback(async () => {
     setEditMode(false);
-    reset();
-
-    for (let i = 0; i < stepsSnapshot.length; i++) {
-      if (startedRef.current === false) {
-        break;
-      }
-      setSnapshotIndex(i);
-      await delay(+delayRef.current);
-    }
-
-    startedRef.current = false;
-  }, [stepsSnapshot, reset, setSnapshotIndex]);
-
-  const handlePlay = useCallback(() => {
-    if (startedRef.current === true) {
-      startedRef.current = false;
-      return;
-    }
-
-    startedRef.current = true;
     visualize();
+    
   }, [visualize]);
 
-  const onChangeSpeed = useCallback((value: string) => {
-    delayRef.current = value;
-  }, []);
+ 
 
   const updateTarget = useCallback(
     (value: string) => {
@@ -116,7 +103,7 @@ export const BinarySearchVisualize = () => {
             onReset={reset}
             onPreviousStep={handlePreviousStep}
             onNextStep={handleNextStep}
-            isPlaying={currentSnapshot.checkIndex > -1}
+            isPlaying={isPlaying}
             isResetDisabled={currentSnapshot.checkIndex !== -1}
             isPreviousStepDisabled={!hasPrevSnapshot}
             isNextStepDisabled={!hasNextSnapshot}
@@ -124,7 +111,11 @@ export const BinarySearchVisualize = () => {
             onChangeSpeed={onChangeSpeed}
           />
           <div className="flex items-end gap-2 ">
-            <TargetInput value={target} onChange={updateTarget} disabled={!editMode} />
+            <TargetInput
+              value={target}
+              onChange={updateTarget}
+              disabled={!editMode}
+            />
 
             <Button
               className={cn(
@@ -133,13 +124,13 @@ export const BinarySearchVisualize = () => {
               )}
               variant="destructive"
               size="icon"
-              title="Add new value"
+              title="Edit"
               onClick={setEditMode.bind(null, (prev) => !prev)}
             >
               {editMode ? (
-                <Cross1Icon className="h-4 w-4" />
+                <Cross1Icon data-testid="close-edit-icon" className="h-4 w-4" />
               ) : (
-                <Pencil1Icon className="h-4 w-4" />
+                <Pencil1Icon data-testid="open-edit-icon" className="h-4 w-4" />
               )}
             </Button>
           </div>
@@ -185,7 +176,10 @@ export const BinarySearchVisualize = () => {
                   className={
                     isComparing
                       ? cn(
-                        getArrowClassName(currentSnapshot.compareIndexes, index),
+                          getArrowClassName(
+                            currentSnapshot.compareIndexes,
+                            index
+                          ),
                           "after:absolute after:left-1/2 after:-translate-x-1/2 after:z-1 after:-bottom-6 after:text-black dark:after:text-white"
                         )
                       : undefined
@@ -195,9 +189,9 @@ export const BinarySearchVisualize = () => {
             })}
           </VisualArrayWrapper>
         )}
-          <TypographyH3
+        <TypographyH3
           className={cn(
-            "text-center font-bold text-disabled mb-2",
+            "text-center font-bold text-disabled",
             currentSnapshot.type !== STEPS.notFound && "invisible"
           )}
         >
@@ -206,7 +200,10 @@ export const BinarySearchVisualize = () => {
       </div>
       <div>
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
-        <CodeViewer text={languagesMapSettings[codeLang]?.code} highlight={highlight} />
+        <CodeViewer
+          text={languagesMapSettings[codeLang]?.code}
+          highlight={highlight}
+        />
       </div>
     </div>
   );

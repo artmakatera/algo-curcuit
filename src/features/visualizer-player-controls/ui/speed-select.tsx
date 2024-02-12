@@ -1,4 +1,10 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const SPEED_OPTIONS = [
   { value: "1500", label: "1x" },
@@ -11,12 +17,12 @@ const SPEED_OPTIONS = [
 type SpeedSelectProps = {
   value?: string;
   onChange: (value: string) => void;
-}
+};
 
-const SpeedSelect = ({ value = "1500", onChange}: SpeedSelectProps) => {
+const SpeedSelect = ({ value = "1500", onChange }: SpeedSelectProps) => {
   return (
     <Select onValueChange={onChange} defaultValue={value}>
-      <SelectTrigger className="w-[80px]" >
+      <SelectTrigger data-testid="speed-select" className="w-[80px]">
         <SelectValue placeholder="Speed" />
       </SelectTrigger>
       <SelectContent>
@@ -25,7 +31,6 @@ const SpeedSelect = ({ value = "1500", onChange}: SpeedSelectProps) => {
             {option.label}
           </SelectItem>
         ))}
-       
       </SelectContent>
     </Select>
   );

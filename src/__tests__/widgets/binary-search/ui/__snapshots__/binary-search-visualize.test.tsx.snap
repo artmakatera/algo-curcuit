@@ -1,0 +1,1164 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BinarySearchVisualize > should change delay 1`] = `
+<body>
+  <div />
+  <div />
+  <div />
+  <div>
+    <div>
+      <div>
+        <div
+          class="flex flex-col sm:flex-row justify-between sm:items-end my-8 gap-4"
+        >
+          <div
+            class="flex gap-2"
+          >
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 w-9"
+              disabled=""
+              title="Previous step"
+            >
+              <svg
+                class="h-4 w-4 rotate-180"
+                fill="none"
+                height="15"
+                viewBox="0 0 15 15"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M3.04995 2.74995C3.04995 2.44619 2.80371 2.19995 2.49995 2.19995C2.19619 2.19995 1.94995 2.44619 1.94995 2.74995V12.25C1.94995 12.5537 2.19619 12.8 2.49995 12.8C2.80371 12.8 3.04995 12.5537 3.04995 12.25V2.74995ZM5.73333 2.30776C5.57835 2.22596 5.39185 2.23127 5.24177 2.32176C5.0917 2.41225 4.99995 2.57471 4.99995 2.74995V12.25C4.99995 12.4252 5.0917 12.5877 5.24177 12.6781C5.39185 12.7686 5.57835 12.7739 5.73333 12.6921L14.7333 7.94214C14.8973 7.85559 15 7.68539 15 7.49995C15 7.31452 14.8973 7.14431 14.7333 7.05776L5.73333 2.30776ZM5.99995 11.4207V3.5792L13.4287 7.49995L5.99995 11.4207Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 w-9"
+              title="Start"
+            >
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                height="15"
+                viewBox="0 0 15 15"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M3.24182 2.32181C3.3919 2.23132 3.5784 2.22601 3.73338 2.30781L12.7334 7.05781C12.8974 7.14436 13 7.31457 13 7.5C13 7.68543 12.8974 7.85564 12.7334 7.94219L3.73338 12.6922C3.5784 12.774 3.3919 12.7687 3.24182 12.6782C3.09175 12.5877 3 12.4252 3 12.25V2.75C3 2.57476 3.09175 2.4123 3.24182 2.32181ZM4 3.57925V11.4207L11.4288 7.5L4 3.57925Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 w-9"
+              title="Next step"
+            >
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                height="15"
+                viewBox="0 0 15 15"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M3.04995 2.74995C3.04995 2.44619 2.80371 2.19995 2.49995 2.19995C2.19619 2.19995 1.94995 2.44619 1.94995 2.74995V12.25C1.94995 12.5537 2.19619 12.8 2.49995 12.8C2.80371 12.8 3.04995 12.5537 3.04995 12.25V2.74995ZM5.73333 2.30776C5.57835 2.22596 5.39185 2.23127 5.24177 2.32176C5.0917 2.41225 4.99995 2.57471 4.99995 2.74995V12.25C4.99995 12.4252 5.0917 12.5877 5.24177 12.6781C5.39185 12.7686 5.57835 12.7739 5.73333 12.6921L14.7333 7.94214C14.8973 7.85559 15 7.68539 15 7.49995C15 7.31452 14.8973 7.14431 14.7333 7.05776L5.73333 2.30776ZM5.99995 11.4207V3.5792L13.4287 7.49995L5.99995 11.4207Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 h-9 w-9"
+              title="Reset"
+            >
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                height="15"
+                viewBox="0 0 15 15"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M2 3C2 2.44772 2.44772 2 3 2H12C12.5523 2 13 2.44772 13 3V12C13 12.5523 12.5523 13 12 13H3C2.44772 13 2 12.5523 2 12V3ZM12 3H3V12H12V3Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button
+              aria-autocomplete="none"
+              aria-controls="radix-:ri:"
+              aria-expanded="false"
+              class="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 w-[80px]"
+              data-state="closed"
+              data-testid="speed-select"
+              dir="ltr"
+              role="combobox"
+              type="button"
+            >
+              <span
+                style="pointer-events: none;"
+              >
+                3x
+              </span>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-chevron-down h-4 w-4 opacity-50"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="flex items-end gap-2 "
+          >
+            <div
+              class="grid w-24 gap-1.5"
+            >
+              <label
+                class="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold"
+                id="target"
+              >
+                Target
+              </label>
+              <input
+                aria-labelledby="target"
+                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-none font-bold"
+                disabled=""
+                type="number"
+                value="12"
+              />
+            </div>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-destructive-foreground shadow-sm h-9 w-9 ml-2 mb-0.5 bg-orange-500 hover:bg-orange-600"
+              title="Add new value"
+            >
+              <svg
+                class="h-4 w-4"
+                fill="none"
+                height="15"
+                viewBox="0 0 15 15"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M11.8536 1.14645C11.6583 0.951184 11.3417 0.951184 11.1465 1.14645L3.71455 8.57836C3.62459 8.66832 3.55263 8.77461 3.50251 8.89155L2.04044 12.303C1.9599 12.491 2.00189 12.709 2.14646 12.8536C2.29103 12.9981 2.50905 13.0401 2.69697 12.9596L6.10847 11.4975C6.2254 11.4474 6.3317 11.3754 6.42166 11.2855L13.8536 3.85355C14.0488 3.65829 14.0488 3.34171 13.8536 3.14645L11.8536 1.14645ZM4.42166 9.28547L11.5 2.20711L12.7929 3.5L5.71455 10.5784L4.21924 11.2192L3.78081 10.7808L4.42166 9.28547Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div
+          class="flex items-center mt-12 flex-wrap gap-y-8"
+        >
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              1
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              2
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              3
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              4
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              5
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              6
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              7
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              8
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              9
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              10
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              11
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              12
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              20
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              30
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              40
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              50
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              60
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              70
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              80
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              90
+            </span>
+          </div>
+          <div
+            class="min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100"
+            data-testid="visual-array-item"
+          >
+            <span
+              class="text-sm p-2"
+            >
+              100
+            </span>
+          </div>
+        </div>
+        <h3
+          class="scroll-m-20 text-2xl tracking-tight text-center font-bold text-disabled invisible"
+        >
+          Not Found :(
+        </h3>
+      </div>
+      <div>
+        <h3
+          class="scroll-m-20 text-2xl tracking-tight mb-3 font-bold"
+        >
+          Code:
+        </h3>
+        <div
+          class="shadow-md"
+        >
+          <span
+            style="font-family: inherit; background: rgb(40, 42, 54); color: rgb(248, 248, 242); border-radius: 3px; display: flex; line-height: 1.4285714285714286; overflow-x: auto; white-space: pre;"
+          >
+            <code
+              style="font-family: inherit; line-height: 1.6666666666666667; padding: 8px; width: 500px; border-radius: 25px; white-space: pre;"
+            >
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                1
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                const
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token function-variable"
+                style="color: rgb(80, 250, 123);"
+              >
+                binarySearch
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token operator"
+              >
+                =
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                (
+              </span>
+              <span
+                class="token token parameter"
+              >
+                arr
+              </span>
+              <span
+                class="token token parameter punctuation"
+              >
+                ,
+              </span>
+              <span
+                class="token token parameter"
+              >
+                 target
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                )
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token arrow operator"
+              >
+                =&gt;
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                {
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                2
+              </span>
+              <span>
+                  
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                let
+              </span>
+              <span>
+                 start 
+              </span>
+              <span
+                class="token token operator"
+              >
+                =
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(189, 147, 249);"
+              >
+                0
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                3
+              </span>
+              <span>
+                  
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                let
+              </span>
+              <span>
+                 end 
+              </span>
+              <span
+                class="token token operator"
+              >
+                =
+              </span>
+              <span>
+                 arr
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                .
+              </span>
+              <span
+                class="token token property-access"
+              >
+                length
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token operator"
+              >
+                -
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(189, 147, 249);"
+              >
+                1
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                4
+              </span>
+              
+
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                5
+              </span>
+              <span>
+                  
+              </span>
+              <span
+                class="token token control-flow"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                while
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                (
+              </span>
+              <span>
+                start 
+              </span>
+              <span
+                class="token token operator"
+              >
+                &lt;=
+              </span>
+              <span>
+                 end
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                )
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                {
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                6
+              </span>
+              <span>
+                    
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                let
+              </span>
+              <span>
+                 middleIndex 
+              </span>
+              <span
+                class="token token operator"
+              >
+                =
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token known-class-name"
+                style="color: rgb(248, 248, 242);"
+              >
+                Math
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                .
+              </span>
+              <span
+                class="token token method property-access"
+                style="color: rgb(80, 250, 123);"
+              >
+                floor
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                (
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                (
+              </span>
+              <span>
+                start 
+              </span>
+              <span
+                class="token token operator"
+              >
+                +
+              </span>
+              <span>
+                 end
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                )
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token operator"
+              >
+                /
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(189, 147, 249);"
+              >
+                2
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                )
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                7
+              </span>
+              
+
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                8
+              </span>
+              <span>
+                    
+              </span>
+              <span
+                class="token token control-flow"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                if
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                (
+              </span>
+              <span>
+                arr
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                [
+              </span>
+              <span>
+                middleIndex
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ]
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token operator"
+              >
+                ===
+              </span>
+              <span>
+                 target
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                )
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                {
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                9
+              </span>
+              <span>
+                      
+              </span>
+              <span
+                class="token token control-flow"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                return
+              </span>
+              <span>
+                 middleIndex
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                10
+              </span>
+              <span>
+                    
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                }
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                11
+              </span>
+              
+
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                12
+              </span>
+              <span>
+                    
+              </span>
+              <span
+                class="token token control-flow"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                if
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                (
+              </span>
+              <span>
+                arr
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                [
+              </span>
+              <span>
+                middleIndex
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ]
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token operator"
+              >
+                &lt;
+              </span>
+              <span>
+                 target
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                )
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                {
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                13
+              </span>
+              <span>
+                      start 
+              </span>
+              <span
+                class="token token operator"
+              >
+                =
+              </span>
+              <span>
+                 middleIndex 
+              </span>
+              <span
+                class="token token operator"
+              >
+                +
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(189, 147, 249);"
+              >
+                1
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                14
+              </span>
+              <span>
+                    
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                }
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token control-flow"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                else
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                {
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                15
+              </span>
+              <span>
+                      end 
+              </span>
+              <span
+                class="token token operator"
+              >
+                =
+              </span>
+              <span>
+                 middleIndex 
+              </span>
+              <span
+                class="token token operator"
+              >
+                -
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(189, 147, 249);"
+              >
+                1
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                16
+              </span>
+              <span>
+                    
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                }
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                17
+              </span>
+              <span>
+                  
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                }
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                18
+              </span>
+              <span>
+                  
+              </span>
+              <span
+                class="token token control-flow"
+                style="color: rgb(255, 121, 198); font-weight: bolder;"
+              >
+                return
+              </span>
+              <span>
+                 
+              </span>
+              <span
+                class="token token operator"
+              >
+                -
+              </span>
+              <span
+                class="token token"
+                style="color: rgb(189, 147, 249);"
+              >
+                1
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                19
+              </span>
+              <span />
+              <span
+                class="token token punctuation"
+              >
+                }
+              </span>
+              <span
+                class="token token punctuation"
+              >
+                ;
+              </span>
+              <span>
+                
+
+              </span>
+              <span
+                class="linenumber react-syntax-highlighter-line-number"
+                style="display: inline-block; min-width: 3.25em; padding-right: 1em; text-align: right; user-select: none; color: rgb(98, 114, 164); font-family: inherit; font-style: italic;"
+              >
+                20
+              </span>
+            </code>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

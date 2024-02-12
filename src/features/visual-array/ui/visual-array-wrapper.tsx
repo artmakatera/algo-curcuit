@@ -7,7 +7,7 @@ type VisualArrayWrapperProps = {
 
 export const VisualArrayWrapper = ({ children }: VisualArrayWrapperProps) => {
   return (
-    <div className="flex items-center my-12 flex-wrap gap-y-8">
+    <div className="flex items-center mt-12 flex-wrap gap-y-8">
       {children}
     </div>
   );

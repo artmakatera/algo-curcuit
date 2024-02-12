@@ -49,7 +49,12 @@ export const VisualizeControls = ({
         </Button>
       )}
 
-      <Button variant="default" size="icon" title="Start" onClick={onPlay}>
+      <Button
+        variant="default"
+        size="icon"
+        title={isPlaying ? "Pause" : "Start"}
+        onClick={onPlay}
+      >
         {isPlaying ? (
           <PauseIcon className="h-4 w-4" />
         ) : (
@@ -82,4 +87,3 @@ export const VisualizeControls = ({
     </div>
   );
 };
-

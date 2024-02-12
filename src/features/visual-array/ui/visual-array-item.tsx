@@ -48,6 +48,7 @@ export const VisualArrayItem = ({
           isGoForward && "item-go-forward",
           className
         )}
+        data-testid="visual-array-item"
       >
         <span className="text-sm p-2">{value}</span>
         {isPivot && (
