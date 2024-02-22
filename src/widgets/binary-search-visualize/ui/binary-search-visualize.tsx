@@ -1,9 +1,9 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Cross1Icon, Pencil1Icon, PlusIcon } from "@radix-ui/react-icons";
 
 // Constants
-import { DEFAULT_SORTED_ARRAY, LANGUAGES, STEPS } from "../model/constants";
+import { LANGUAGES, STEPS } from "../model/constants";
 
 // Hooks
 import { useNumberArray } from "@/shared/hooks/useNumberArray";
@@ -11,10 +11,10 @@ import { useSnapshots } from "../hooks/use-snapshots";
 
 // Helpers
 import { binarySearch } from "../model/binary-search";
-import { createStepSnapshot } from "../model/create-step-snapshot";
+import { createBinarySearchStepSnapshot } from "../model";
 import { getArrowClassName } from "../model/get-arrow-classname";
-import { languagesMapSettings } from "../model/languages-map-settings";
-import { cn, delay } from "@/shared/lib/utils";
+import { languagesBSMapSettings } from "../model/binary-search/languages-map-settings";
+import { cn } from "@/shared/lib/utils";
 
 // Types
 import { GenValuePayload, StepSnapshot } from "../model/types";
@@ -28,13 +28,21 @@ import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewer } from "@/components/ui/code-viewer";
 
+type BinarySearchVisualizeProps = {
+  defaultArray: number[];
+  defaultSpeed?: string;
+  createStepSnapshot?: (payload: GenValuePayload) => StepSnapshot;
+  languagesMapSettings?: typeof languagesBSMapSettings;
+  binarySearchFind?: typeof binarySearch;
+};
+
 export const BinarySearchVisualize = ({
   defaultArray,
   defaultSpeed = "750",
-}: {
-  defaultArray: number[];
-  defaultSpeed?: string;
-}) => {
+  createStepSnapshot = createBinarySearchStepSnapshot,
+  languagesMapSettings = languagesBSMapSettings,
+  binarySearchFind = binarySearch,
+}: BinarySearchVisualizeProps) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [target, setTarget] = useState<number>(12);
   const [codeLang] = useState(LANGUAGES.javascript);
@@ -60,7 +68,7 @@ export const BinarySearchVisualize = ({
   useEffect(() => {
     const binarySearchCall = async (array: number[], target: number) => {
       setStepSnapshots([]);
-      let generator = binarySearch(array, target);
+      let generator = binarySearchFind(array, target);
 
       let next = generator.next();
       while (!next.done) {
@@ -74,17 +82,12 @@ export const BinarySearchVisualize = ({
     };
 
     binarySearchCall(array, target);
-  }, [array, setStepSnapshots, target]);
-
-
+  }, [array, setStepSnapshots, target, createStepSnapshot, binarySearchFind]);
 
   const handlePlay = useCallback(async () => {
     setEditMode(false);
     visualize();
-    
   }, [visualize]);
-
- 
 
   const updateTarget = useCallback(
     (value: string) => {

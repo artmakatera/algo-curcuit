@@ -1,4 +1,4 @@
-import { STEPS, LANGUAGES } from "../constants";
+import { STEPS, LANGUAGES } from "../../constants";
 
 export const code = `const binarySearch =(arr, target) => {
   let start = 0;
@@ -22,7 +22,7 @@ export const code = `const binarySearch =(arr, target) => {
 `;
 
 
-export const highlightLines = {
+export const highlightLines: {[key in STEPS]?: number[]} = {
   [STEPS.start]: [2, 3],
   [STEPS.middleIndex]: [5, 17, 6],
   [STEPS.ifStart]: [5, 17, 12, 13, 14],

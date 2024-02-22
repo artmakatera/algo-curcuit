@@ -1,8 +1,8 @@
-import { STEPS} from "./constants"
+import { STEPS } from "./constants"
 
 
 export type GenValuePayload = {
-  type: STEPS;
+  type: Partial<STEPS>;
   start?: number;
   end?: number;
   middleIndex?: number;
@@ -14,7 +14,7 @@ export type GenValue = Generator<GenValuePayload, void, number>;
 
 
 export type StepSnapshot = {
-  type: STEPS,
+  type: Partial<STEPS>,
   result?: number,
   compareIndexes: number[],
   checkIndex: number,

@@ -1,15 +1,15 @@
 
 import { LANGUAGES, STEPS } from "@/widgets/binary-search-visualize/model/constants";
-import { createBinarySearchStepSnapshot as createStepSnapshot } from "@/widgets/binary-search-visualize/model";
+import { createRotatedBSStepSnapshot as createStepSnapshot } from "@/widgets/binary-search-visualize/model";
 
 
 
 import { expect, describe, it } from 'vitest'
+import test from "node:test";
 
 
-describe('createStepSnapshot', () => {
-
-  it('should return a StepSnapshot', () => {
+describe('createRotatedBSStepSnapshot', () => {
+  test('should return a StepSnapshot', () => {
     const payload = {
       type: STEPS.ifStart,
       start: 0,
@@ -25,9 +25,9 @@ describe('createStepSnapshot', () => {
       checkIndex: 0,
       highlightLines: [5, 17, 12, 13, 14]
     })
-  });
-
-  it('should return a StepSnapshot with default language', () => {
+  }
+  );
+  test('should return a StepSnapshot with default language', () => {
     const payload = {
       type: STEPS.ifStart,
       start: 0,
@@ -43,7 +43,8 @@ describe('createStepSnapshot', () => {
       checkIndex: 0,
       highlightLines: [5, 17, 12, 13, 14]
     })
-  });
+  }
+  );
 
-})
-
+  
+});

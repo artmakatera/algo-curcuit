@@ -3,12 +3,13 @@ import { describe, it, expect } from "vitest";
 
 // Constants
 import { STEPS } from "@/widgets/binary-search-visualize/model/constants";
+
 // Functions
 import { binarySearch } from "@/widgets/binary-search-visualize/model/binary-search";
 
 
 
-const binarySearchCaller = (binarySearchGen: typeof binarySearch, arr: number[], target: number) => {
+export const binarySearchCaller = (binarySearchGen: typeof binarySearch, arr: number[], target: number) => {
   let generator = binarySearchGen(arr, target);
   let result = generator.next()
   while (!result.done) {

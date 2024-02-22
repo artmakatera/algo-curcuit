@@ -1,4 +1,4 @@
-import { STEPS } from "./constants";
+import { STEPS } from "../constants";
 
 
 export function* binarySearch(arr: number[], target: number) {
