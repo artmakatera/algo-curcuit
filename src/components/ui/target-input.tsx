@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/shared/lib/utils";
 
 type TargetInput = {
-  value: number;
+  value: number | "";
   onChange: (v: string) => void;
   disabled?: boolean;
 };

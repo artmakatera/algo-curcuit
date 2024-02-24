@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { Cross1Icon, Pencil1Icon, PlusIcon } from "@radix-ui/react-icons";
+import { CheckIcon, Pencil1Icon, PlusIcon } from "@radix-ui/react-icons";
 
 // Constants
 import { LANGUAGES, STEPS } from "../model/constants";
@@ -44,7 +44,7 @@ export const BinarySearchVisualize = ({
   binarySearchFind = binarySearch,
 }: BinarySearchVisualizeProps) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [target, setTarget] = useState<number>(12);
+  const [target, setTarget] = useState<number | null>(12);
   const [codeLang] = useState(LANGUAGES.javascript);
 
   const { array, updateNumber, addNumber, removeNumber } =
@@ -81,7 +81,7 @@ export const BinarySearchVisualize = ({
       }
     };
 
-    binarySearchCall(array, target);
+    binarySearchCall(array, target || 0);
   }, [array, setStepSnapshots, target, createStepSnapshot, binarySearchFind]);
 
   const handlePlay = useCallback(async () => {
@@ -92,7 +92,7 @@ export const BinarySearchVisualize = ({
   const updateTarget = useCallback(
     (value: string) => {
       reset();
-      setTarget(+value);
+      setTarget(value === "" ? null : +value);
     },
     [reset]
   );
@@ -115,7 +115,7 @@ export const BinarySearchVisualize = ({
           />
           <div className="flex items-end gap-2 ">
             <TargetInput
-              value={target}
+              value={target || ""}
               onChange={updateTarget}
               disabled={!editMode}
             />
@@ -123,15 +123,18 @@ export const BinarySearchVisualize = ({
             <Button
               className={cn(
                 "ml-2 mb-0.5",
-                editMode ? null : "bg-orange-500 hover:bg-orange-600"
+                editMode
+                  ? "bg-green-500 hover:bg-green-600"
+                  : "bg-orange-500 hover:bg-orange-600"
               )}
               variant="destructive"
               size="icon"
               title="Edit"
               onClick={setEditMode.bind(null, (prev) => !prev)}
+              disabled={target === null || isPlaying}
             >
               {editMode ? (
-                <Cross1Icon data-testid="close-edit-icon" className="h-4 w-4" />
+                <CheckIcon data-testid="close-edit-icon" className="h-4 w-4" />
               ) : (
                 <Pencil1Icon data-testid="open-edit-icon" className="h-4 w-4" />
               )}
