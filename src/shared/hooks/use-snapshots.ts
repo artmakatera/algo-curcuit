@@ -16,11 +16,11 @@ export const useSnapshots = <S extends BaseSnapshot>(options?: { defaultDelay?: 
   const [snapshotIndex, setSnapshotIndex] = useState<number>(0);
 
 
-  const currentSnapshot = stepsSnapshot[snapshotIndex];
+  const currentSnapshot = stepsSnapshot[snapshotIndex] || {} as S;
 
 
 
-  const highlight = currentSnapshot.highlightLines.join(", ");
+  const highlight = currentSnapshot?.highlightLines?.join(", ") || "";
 
   const hasPrevSnapshot = snapshotIndex > 0;
   const hasNextSnapshot = !!stepsSnapshot[snapshotIndex + 1];

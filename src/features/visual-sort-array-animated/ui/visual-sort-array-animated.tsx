@@ -120,9 +120,7 @@ export const VisualSortArrayAnimated = ({
               value={value}
               index={index}
               isComparing={compareIndexes.some((i) => i === index)}
-              indexToSwap={
-                isSwapping ? swapIndexes.find((i) => i !== index) || -1 : -1
-              }
+              isSwapping={isSwapping}
               isSorted={getIsSorted(index, sortedIndex)}
               currentSortItem={index === indexToUpdate}
               isGoBack={swapIndexes[1] === index}

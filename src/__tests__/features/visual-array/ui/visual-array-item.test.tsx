@@ -23,4 +23,40 @@ describe("VisualArrayItem", () => {
     render(<VisualArrayItem value={1} index={1} isPivot />);
     expect(screen.getByText("Pivot")).toBeDefined();
   });
+
+  test("should render with isSorted", () => {
+    render(<VisualArrayItem value={1} index={1} isSorted />);
+    expect(screen.getByTestId("visual-array-item")).toHaveClass("bg-green-500");
+  });
+
+  test("should render with currentSortItem", () => {
+    render(<VisualArrayItem value={1} index={1} currentSortItem />);
+    expect(screen.getByTestId("visual-array-item")).toHaveClass(
+      "translate-y-[-100%]"
+    );
+  });
+
+  test("should render with isGoBack", () => {
+    render(<VisualArrayItem value={1} index={1} isGoBack />);
+    expect(screen.getByTestId("visual-array-item")).toHaveClass("item-go-back");
+  });
+
+  test("should render with isGoForward", () => {
+    render(<VisualArrayItem value={1} index={1} isGoForward />);
+    expect(screen.getByTestId("visual-array-item")).toHaveClass(
+      "item-go-forward"
+    );
+  });
+
+  test("should render with isChecking", () => {
+    render(<VisualArrayItem value={1} index={1} isChecking />);
+    expect(screen.getByTestId("visual-array-item")).toHaveClass(
+      "bg-yellow-500"
+    );
+  });
+
+  test("should render with isSwapping", () => {
+    render(<VisualArrayItem value={1} index={1} isSwapping />);
+    expect(screen.getByTestId("visual-array-item")).toHaveClass("bg-red-500");
+  });
 });

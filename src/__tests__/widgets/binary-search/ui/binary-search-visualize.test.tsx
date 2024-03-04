@@ -4,13 +4,19 @@ import userEvent from "@testing-library/user-event";
 import {
   BinarySearchVisualize,
   DEFAULT_SORTED_ARRAY,
+  GenValuePayload,
+  StepSnapshot,
+  createBinarySearchStepSnapshot,
 } from "@/widgets/binary-search-visualize";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 describe("BinarySearchVisualize", () => {
   test("It should update target", () => {
     const { unmount } = render(
-      <BinarySearchVisualize defaultArray={DEFAULT_SORTED_ARRAY} />
+      <BinarySearchVisualize
+        defaultArray={DEFAULT_SORTED_ARRAY}
+        createStepSnapshot={createBinarySearchStepSnapshot}
+      />
     );
     const input = screen.getByLabelText("Target", { selector: "input" });
 
@@ -29,6 +35,7 @@ describe("BinarySearchVisualize", () => {
       <BinarySearchVisualize
         defaultArray={DEFAULT_SORTED_ARRAY}
         defaultSpeed="250"
+        createStepSnapshot={createBinarySearchStepSnapshot}
       />
     );
     const playButton = screen.getByTitle("Start");
@@ -45,7 +52,7 @@ describe("BinarySearchVisualize", () => {
       expect(items[1]).not.toHaveClass("after:content-['←']");
       expect(items[1]).not.toHaveClass("after:content-['→']");
     });
-     expect(playButton.getAttribute("title")).toBe("Pause");
+    expect(playButton.getAttribute("title")).toBe("Pause");
 
     await waitFor(
       () =>
@@ -56,14 +63,17 @@ describe("BinarySearchVisualize", () => {
         timeout: 4000,
       }
     );
-      await waitFor(() => expect(playButton.getAttribute("title")).toBe("Start"));
+    await waitFor(() => expect(playButton.getAttribute("title")).toBe("Start"));
 
     unmount();
   });
 
   test("It should stop visualize on Click stop", async () => {
     const { unmount } = render(
-      <BinarySearchVisualize defaultArray={DEFAULT_SORTED_ARRAY} />
+      <BinarySearchVisualize
+        defaultArray={DEFAULT_SORTED_ARRAY}
+        createStepSnapshot={createBinarySearchStepSnapshot}
+      />
     );
     const playButton = screen.getByTitle("Start");
 
@@ -88,9 +98,11 @@ describe("BinarySearchVisualize", () => {
   });
 
   test("It should toggle edit mode", () => {
-
     const { unmount } = render(
-      <BinarySearchVisualize defaultArray={DEFAULT_SORTED_ARRAY} />
+      <BinarySearchVisualize
+        defaultArray={DEFAULT_SORTED_ARRAY}
+        createStepSnapshot={createBinarySearchStepSnapshot}
+      />
     );
     const editButton = screen.getByTitle("Edit");
 
@@ -100,8 +112,6 @@ describe("BinarySearchVisualize", () => {
     fireEvent.click(editButton);
 
     expect(screen.getByTestId("close-edit-icon")).toBeInTheDocument();
-
-    
 
     unmount();
   });

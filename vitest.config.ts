@@ -10,7 +10,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, 'src/**/types.ts'],
     coverage: {
       include: ['src/**/*'],
-      exclude: [...(configDefaults.coverage.exclude || []), 'src/**/types.ts', 'src/**/type.ts'],
+      exclude: [...(configDefaults.coverage.exclude || []), 'src/**/types.ts', 'src/**/type.ts', 'src/**/types/**'],
     }
   },
   resolve: {
