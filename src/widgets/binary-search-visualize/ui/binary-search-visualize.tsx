@@ -7,11 +7,11 @@ import { LANGUAGES, STEPS } from "../model/constants";
 
 // Hooks
 import { useNumberArray } from "@/shared/hooks/useNumberArray";
-import { useSnapshots } from "../hooks/use-snapshots";
+import { useSnapshots } from "@/shared/hooks/use-snapshots";
 
 // Helpers
 import { binarySearch } from "../model/binary-search";
-import { createBinarySearchStepSnapshot } from "../model";
+import { defaultSnapshots } from "../model";
 import { getArrowClassName } from "../model/get-arrow-classname";
 import { languagesBSMapSettings } from "../model/binary-search/languages-map-settings";
 import { cn } from "@/shared/lib/utils";
@@ -27,22 +27,23 @@ import { TargetInput } from "@/components/ui/target-input";
 import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewer } from "@/components/ui/code-viewer";
+import { EditButton } from "@/features/edit-button";
 
-type BinarySearchVisualizeProps = {
+type BinarySearchVisualizeProps<S extends StepSnapshot> = {
   defaultArray: number[];
   defaultSpeed?: string;
-  createStepSnapshot?: (payload: GenValuePayload) => StepSnapshot;
+  createStepSnapshot: (payload: GenValuePayload) => S;
   languagesMapSettings?: typeof languagesBSMapSettings;
   binarySearchFind?: typeof binarySearch;
 };
 
-export const BinarySearchVisualize = ({
+export const BinarySearchVisualize = <S extends StepSnapshot>({
   defaultArray,
   defaultSpeed = "750",
-  createStepSnapshot = createBinarySearchStepSnapshot,
+  createStepSnapshot,
   languagesMapSettings = languagesBSMapSettings,
   binarySearchFind = binarySearch,
-}: BinarySearchVisualizeProps) => {
+}: BinarySearchVisualizeProps<S>) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [target, setTarget] = useState<number | null>(12);
   const [codeLang] = useState(LANGUAGES.javascript);
@@ -63,7 +64,10 @@ export const BinarySearchVisualize = ({
     isPlaying,
     onChangeSpeed,
     delayRef,
-  } = useSnapshots({ defaultDelay: defaultSpeed });
+  } = useSnapshots<S>({
+    defaultDelay: defaultSpeed,
+    defaultSnapshots: defaultSnapshots as S[],
+  });
 
   useEffect(() => {
     const binarySearchCall = async (array: number[], target: number) => {
@@ -73,7 +77,7 @@ export const BinarySearchVisualize = ({
       let next = generator.next();
       while (!next.done) {
         const { value } = next;
-        setStepSnapshots((prev: StepSnapshot[]) => [
+        setStepSnapshots((prev: S[]) => [
           ...prev,
           createStepSnapshot(value as GenValuePayload),
         ]);
@@ -120,25 +124,11 @@ export const BinarySearchVisualize = ({
               disabled={!editMode}
             />
 
-            <Button
-              className={cn(
-                "ml-2 mb-0.5",
-                editMode
-                  ? "bg-green-500 hover:bg-green-600"
-                  : "bg-orange-500 hover:bg-orange-600"
-              )}
-              variant="destructive"
-              size="icon"
-              title="Edit"
-              onClick={setEditMode.bind(null, (prev) => !prev)}
+            <EditButton
+              editMode={editMode}
+              onClick={() => setEditMode((prev) => !prev)}
               disabled={target === null || isPlaying}
-            >
-              {editMode ? (
-                <CheckIcon data-testid="close-edit-icon" className="h-4 w-4" />
-              ) : (
-                <Pencil1Icon data-testid="open-edit-icon" className="h-4 w-4" />
-              )}
-            </Button>
+            />
           </div>
         </div>
 

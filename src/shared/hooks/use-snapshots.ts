@@ -1,42 +1,38 @@
 import { useCallback, useRef, useState } from "react";
 
 // Types
-import { StepSnapshot } from "../model/types";
 import { delay } from "@/shared/lib/utils";
+import { BaseSnapshot } from "../types/snapshot";
 
 
 
-export const useSnapshots = (options?: { defaultDelay?: string, defaultSnapshots?: StepSnapshot[] }) => {
+export const useSnapshots = <S extends BaseSnapshot>(options?: { defaultDelay?: string, defaultSnapshots?: S[] }) => {
   const { defaultDelay = "750", defaultSnapshots = [] } = options || { defaultDelay: "750", defaultSnapshots: [] };
   const delayRef = useRef<string>(defaultDelay);
 
   const startedRef = useRef<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [stepsSnapshot, setStepSnapshots] = useState<StepSnapshot[]>(defaultSnapshots);
-  const [snapshotIndex, setSnapshotIndex] = useState<number>(-1);
+  const [stepsSnapshot, setStepSnapshots] = useState<S[]>(defaultSnapshots);
+  const [snapshotIndex, setSnapshotIndex] = useState<number>(0);
 
 
-  const currentSnapshot = stepsSnapshot[snapshotIndex] || {
-    compareIndexes: [-1, -1],
-    checkIndex: -1,
-    result: -1,
-    highlightLines: [],
-  };
+  const currentSnapshot = stepsSnapshot[snapshotIndex];
+
 
 
   const highlight = currentSnapshot.highlightLines.join(", ");
 
-  const hasPrevSnapshot = snapshotIndex > -1;
+  const hasPrevSnapshot = snapshotIndex > 0;
   const hasNextSnapshot = !!stepsSnapshot[snapshotIndex + 1];
 
   const resetSnapshotIndex = useCallback(() => {
-    setSnapshotIndex(-1);
+    setSnapshotIndex(0);
   }, []);
 
   const clearSnapshots = useCallback(() => {
-    setStepSnapshots([]);
+    setStepSnapshots(defaultSnapshots);
     resetSnapshotIndex();
-  }, [resetSnapshotIndex]);
+  }, [resetSnapshotIndex, defaultSnapshots]);
 
   const handlePreviousStep = useCallback(() => {
     setSnapshotIndex((prev: number) => prev - 1);

@@ -1,5 +1,5 @@
-'use client';
-import {useEffect, useRef } from "react";
+"use client";
+import { useEffect, useRef } from "react";
 import { CodeBlock, dracula } from "react-code-blocks";
 
 type CodeViewerProps = {
@@ -27,7 +27,7 @@ export const CodeViewer = ({
   }
 
   return (
-    <div className="shadow-md">
+    <div className="shadow-md max-w-5xl">
       <CodeBlock
         text={text}
         codeContainerStyle={{ width: "500px", borderRadius: "25px" }}

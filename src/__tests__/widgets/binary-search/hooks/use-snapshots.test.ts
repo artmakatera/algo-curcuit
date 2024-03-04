@@ -261,7 +261,7 @@ describe('useSnapshots', () => {
     ]
     const { result } = renderHook(() => {
 
-      const { visualize, startedRef, snapshotIndex, stepsSnapshot } = useSnapshots({ defaultSnapshots: snapshots, defaultDelay: "0" });
+      const { visualize, startedRef, snapshotIndex, stepsSnapshot } = useSnapshots({ defaultSnapshot: snapshots, defaultDelay: "0" });
 
       React.useEffect(() => {
 

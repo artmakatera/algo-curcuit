@@ -1,4 +1,4 @@
-import { LANGUAGES } from "../constants";
+import { LANGUAGES, STEPS } from "../constants";
 import { LanguagesMapKeys, languagesBSMapSettings } from "./languages-map-settings";
 import { GenValuePayload, StepSnapshot } from "../types";
 
@@ -13,3 +13,11 @@ export const createBinarySearchStepSnapshot = (payload: GenValuePayload, codeLan
     highlightLines: languagesBSMapSettings[codeLang]?.highlightLines[type] || [],
   };
 };
+
+export const defaultSnapshots = [{
+  type: STEPS.start,
+  compareIndexes: [-1, -1],
+  checkIndex: -1,
+  result: -1,
+  highlightLines: [] as number[],
+}]; 

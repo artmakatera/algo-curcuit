@@ -1,3 +1,4 @@
+import { BaseSnapshot } from "@/shared/types/snapshot";
 import { STEPS } from "./constants"
 
 
@@ -13,7 +14,7 @@ export type GenValue = Generator<GenValuePayload, void, number>;
 
 
 
-export type StepSnapshot = {
+export interface StepSnapshot extends BaseSnapshot {
   type: Partial<STEPS>,
   result?: number,
   compareIndexes: number[],
