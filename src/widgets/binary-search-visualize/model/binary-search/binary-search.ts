@@ -2,10 +2,11 @@ import { STEPS } from "../constants";
 
 
 export function* binarySearch(arr: number[], target: number) {
+  yield { type: STEPS.start };
   let start = 0;
   let end = arr.length - 1;
 
-  yield { type: STEPS.start, start, end };
+  yield { type: STEPS.started, start, end };
 
   while (start <= end) {
     let middleIndex = Math.floor((start + end) / 2);

@@ -22,8 +22,8 @@ export const code = `const binarySearch =(arr, target) => {
 `;
 
 
-export const highlightLines: {[key in STEPS]?: number[]} = {
-  [STEPS.start]: [2, 3],
+export const highlightLines: { [key in STEPS]?: number[] } = {
+  [STEPS.started]: [2, 3],
   [STEPS.middleIndex]: [5, 17, 6],
   [STEPS.ifStart]: [5, 17, 12, 13, 14],
   [STEPS.ifEnd]: [5, 17, 14, 15, 16],

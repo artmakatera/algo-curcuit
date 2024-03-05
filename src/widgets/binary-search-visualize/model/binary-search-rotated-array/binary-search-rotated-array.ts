@@ -2,10 +2,11 @@ import { STEPS } from '../constants';
 
 
 export function* binarySearchRotatedSortedArray(array: number[], target: number) {
+  yield { type: STEPS.start };
   let start = 0;
   let end = array.length - 1;
 
-  yield { type: STEPS.start, start, end };
+  yield { type: STEPS.started, start, end };
 
   while (start <= end) {
     let middleIndex = Math.floor((start + end) / 2);

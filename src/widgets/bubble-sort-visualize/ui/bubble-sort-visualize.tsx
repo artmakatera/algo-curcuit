@@ -35,7 +35,6 @@ const BubbleSortVisualize = <S extends StepSnapshot>({
     useNumberArray(arrToSort);
 
   const {
-    setStepSnapshots,
     currentSnapshot,
     highlight,
     hasPrevSnapshot,
@@ -57,28 +56,8 @@ const BubbleSortVisualize = <S extends StepSnapshot>({
     createStepSnapshot,
   });
 
-  useEffect(() => {
-    const bubbleSortCall = async (array: number[]) => {
-      setStepSnapshots([]);
-      console.log("array", array);
-      let generator = bubbleSort([...array]);
-
-      let next = generator.next();
-      while (!next.done) {
-        const { value } = next;
-        setStepSnapshots((prev: S[]) => [
-          ...prev,
-          createStepSnapshot(value as unknown as StepSnapshotPayload),
-        ]);
-        next = generator.next();
-      }
-    };
-
-    bubbleSortCall(array);
-  }, [array, setStepSnapshots, createStepSnapshot]);
-
   const handlePlay = useCallback(async () => {
-    // setEditMode(false);
+    setEditMode(false);
     visualize();
   }, [visualize]);
 
@@ -99,7 +78,10 @@ const BubbleSortVisualize = <S extends StepSnapshot>({
         />
         <EditButton
           editMode={editMode}
-          onClick={() => setEditMode((prev) => !prev)}
+          onClick={() => {
+            reset();
+            setEditMode((prev) => !prev);
+          }}
           disabled={isPlaying}
         />
       </div>

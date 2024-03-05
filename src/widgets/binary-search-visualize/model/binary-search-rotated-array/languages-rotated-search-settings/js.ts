@@ -36,7 +36,7 @@ export const code = `const binarySearchSortedArray = (array: number[], target: n
 
 
 export const highlightLines: { [key in STEPS]?: number[] } = {
-  [STEPS.start]: [2, 3],
+  [STEPS.started]: [2, 3],
   [STEPS.middleIndex]: [5, 29, 6],
   [STEPS.ifStart]: [5, 29, 12, 13, 14, 15, 16, 17, 18, 19, 20],
   [STEPS.ifEnd]: [5, 29, 20, 21, 22, 23, 24, 25, 26, 27, 28],

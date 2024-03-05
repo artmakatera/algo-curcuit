@@ -1,5 +1,6 @@
 export enum STEPS {
   start,
+  started,
   middleIndex,
   ifStart,
   ifEnd,

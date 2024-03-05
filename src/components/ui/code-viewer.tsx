@@ -27,7 +27,7 @@ export const CodeViewer = ({
   }
 
   return (
-    <div className="shadow-md max-w-5xl">
+    <div className="shadow-md max-w-5xl text-sm">
       <CodeBlock
         text={text}
         codeContainerStyle={{ width: "500px", borderRadius: "25px" }}
