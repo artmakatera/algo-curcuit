@@ -47,7 +47,8 @@ describe('binarySearch', () => {
     const arr = [1, 2, 3, 4, 5, 6, 7]
     const target = 5
     const generator = binarySearch(arr, target)
-    expect(generator.next()).toEqual({ value: { type: STEPS.start, start: 0, end: 6 }, done: false })
+    expect(generator.next()).toEqual({ value: { type: STEPS.start }, done: false })
+    expect(generator.next()).toEqual({ value: { type: STEPS.started, start: 0, end: 6 }, done: false })
     expect(generator.next()).toEqual({ value: { type: STEPS.middleIndex, middleIndex: 3, start: 0, end: 6 }, done: false })
     expect(generator.next()).toEqual({ value: { type: STEPS.ifStart, start: 0, end: 6, middleIndex: 3 }, done: false })
     expect(generator.next()).toEqual({ value: { type: STEPS.middleIndex, middleIndex: 5, start: 4, end: 6 }, done: false })
@@ -59,7 +60,9 @@ describe('binarySearch', () => {
     const arr = [1, 2, 3, 4, 5, 6, 7]
     const target = 8
     const generator = binarySearch(arr, target)
-    expect(generator.next()).toEqual({ value: { type: STEPS.start, start: 0, end: 6 }, done: false })
+    expect(generator.next()).toEqual({ value: { type: STEPS.start }, done: false })
+
+    expect(generator.next()).toEqual({ value: { type: STEPS.started, start: 0, end: 6 }, done: false })
     expect(generator.next()).toEqual({ value: { type: STEPS.middleIndex, middleIndex: 3, start: 0, end: 6 }, done: false })
     expect(generator.next()).toEqual({ value: { type: STEPS.ifStart, start: 0, end: 6, middleIndex: 3 }, done: false })
     expect(generator.next()).toEqual({ value: { type: STEPS.middleIndex, middleIndex: 5, start: 4, end: 6 }, done: false })
