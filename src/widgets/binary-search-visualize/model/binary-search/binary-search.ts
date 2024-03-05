@@ -26,6 +26,6 @@ export function* binarySearch(arr: number[], target: number) {
     }
   }
 
-  yield { type: STEPS.notFound, start: -1, end: -1 , middleIndex: -1}
+  yield { type: STEPS.notFound, start: -1, end: -1, middleIndex: -1 }
   return -1;
 }

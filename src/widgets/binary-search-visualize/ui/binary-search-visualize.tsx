@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 // Constants
@@ -52,7 +52,6 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
     useNumberArray(defaultArray);
 
   const {
-    setStepSnapshots,
     currentSnapshot,
     highlight,
     hasPrevSnapshot,
@@ -64,29 +63,15 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
     isPlaying,
     onChangeSpeed,
     delayRef,
-  } = useSnapshots<S>({
+  } = useSnapshots<S, GenValuePayload, [number[], number]>({
     defaultDelay: defaultSpeed,
     defaultSnapshots: defaultSnapshots as S[],
+    genCall: binarySearchFind as unknown as (
+      ...args: [number[], number]
+    ) => Generator<GenValuePayload, void, unknown>,
+    genCallArgs: [array, target || 0],
+    createStepSnapshot,
   });
-
-  useEffect(() => {
-    const binarySearchCall = async (array: number[], target: number) => {
-      setStepSnapshots([]);
-      let generator = binarySearchFind(array, target);
-
-      let next = generator.next();
-      while (!next.done) {
-        const { value } = next;
-        setStepSnapshots((prev: S[]) => [
-          ...prev,
-          createStepSnapshot(value as GenValuePayload),
-        ]);
-        next = generator.next();
-      }
-    };
-
-    binarySearchCall(array, target || 0);
-  }, [array, setStepSnapshots, target, createStepSnapshot, binarySearchFind]);
 
   const handlePlay = useCallback(async () => {
     setEditMode(false);

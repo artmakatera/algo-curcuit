@@ -1,13 +1,60 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Types
 import { delay } from "@/shared/lib/utils";
 import { BaseSnapshot } from "../types/snapshot";
 
+interface BaseUseGeneratorCallProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> {
+  genCall: (...args: P) => Generator<G, void, unknown>;
+  createStepSnapshot: (payload: G) => S;
+  genCallArgs: P;
+}
+
+interface UseGeneratorCallProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> extends BaseUseGeneratorCallProps<S, G, P> {
+  setStepSnapshots: React.Dispatch<React.SetStateAction<S[]>>;
+}
 
 
-export const useSnapshots = <S extends BaseSnapshot>(options?: { defaultDelay?: string, defaultSnapshots?: S[] }) => {
-  const { defaultDelay = "750", defaultSnapshots = [] } = options || { defaultDelay: "750", defaultSnapshots: [] };
+export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>({
+  setStepSnapshots,
+  genCall,
+  createStepSnapshot,
+  genCallArgs
+}: UseGeneratorCallProps<S, G, P>
+) => {
+  const args = JSON.stringify(genCallArgs);
+
+  useEffect(() => {
+    const getSnapshots = async (...genCallArgs: P) => {
+      setStepSnapshots([]);
+      let generator = genCall(...genCallArgs);
+
+      let next = generator.next();
+      while (!next.done) {
+        const { value } = next;
+        setStepSnapshots((prev: S[]) => [
+          ...prev,
+          createStepSnapshot(value as G),
+        ]);
+        next = generator.next();
+      }
+    };
+    getSnapshots(...JSON.parse(args) as P);
+
+
+  }, [setStepSnapshots, createStepSnapshot, genCall, args]);
+
+}
+
+
+interface UseSnapshotsProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> extends BaseUseGeneratorCallProps<S, G, P> {
+  defaultDelay?: string;
+  defaultSnapshots?: S[];
+}
+
+
+export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>(options: UseSnapshotsProps<S, G, P>) => {
+  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot } = options;
   const delayRef = useRef<string>(defaultDelay);
 
   const startedRef = useRef<boolean>(false);
@@ -77,6 +124,13 @@ export const useSnapshots = <S extends BaseSnapshot>(options?: { defaultDelay?: 
   const onChangeSpeed = useCallback((value: string) => {
     delayRef.current = value;
   }, []);
+  useGeneratorCall({
+    setStepSnapshots,
+    genCall: genCall,
+    createStepSnapshot: createStepSnapshot,
+    genCallArgs: genCallArgs
+
+  })
 
 
   return {

@@ -47,9 +47,14 @@ const BubbleSortVisualize = <S extends StepSnapshot>({
     isPlaying,
     onChangeSpeed,
     delayRef,
-  } = useSnapshots<S>({
+  } = useSnapshots<S, StepSnapshotPayload, [number[]]>({
     defaultDelay: defaultSpeed,
     defaultSnapshots: defaultSnapshots as S[],
+    genCall: bubbleSort as unknown as (
+      array: number[]
+    ) => Generator<StepSnapshotPayload, void, unknown>,
+    genCallArgs: [arrToSort],
+    createStepSnapshot,
   });
 
   useEffect(() => {
