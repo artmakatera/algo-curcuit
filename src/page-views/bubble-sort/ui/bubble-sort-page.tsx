@@ -1,7 +1,9 @@
 "use client";
-import BubbleSortVisualize from "@/widgets/bubble-sort-visualize/ui/bubble-sort-visualize";
+import {
+  BubbleSortVisualize,
+  createStepSnapshot,
+} from "@/widgets/bubble-sort-visualize";
 import { TypographyH1 } from "@/components/ui/typography";
-import { createStepSnapshot } from "@/widgets/bubble-sort-visualize/model/create-step-snapshot";
 
 export function BubbleSortPage() {
   return (

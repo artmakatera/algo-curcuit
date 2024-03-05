@@ -6,7 +6,6 @@ import { useNumberArray } from "@/shared/hooks/use-number-array";
 
 // Components
 import { VisualSortArrayAnimated } from "@/features/visual-sort-array-animated";
-import { StepSnapshot, StepSnapshotPayload } from "../model/types";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import bubbleSort from "../model/bubble-sort";
 import { defaultSnapshots } from "../model/create-step-snapshot";
@@ -14,8 +13,12 @@ import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { EditButton } from "@/features/edit-button";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewer } from "@/components/ui/code-viewer";
-import { languagesMapSettings } from "../model/languages-map-settings";
-import { LANGUAGES } from "../model/constants";
+import {
+  LANGUAGES,
+  StepSnapshot,
+  StepSnapshotPayload,
+  languagesMapSettings,
+} from "../model";
 
 const arrToSort = [99, 4, 122, 555, 2, 1, 3, 5, 6, 8];
 
@@ -24,7 +27,7 @@ type BubbleSortVisualizeProps<S extends StepSnapshot = StepSnapshot> = {
   createStepSnapshot: (payload: StepSnapshotPayload) => S;
 };
 
-const BubbleSortVisualize = <S extends StepSnapshot>({
+export const BubbleSortVisualize = <S extends StepSnapshot>({
   defaultSpeed = "750",
   createStepSnapshot,
 }: BubbleSortVisualizeProps<S>) => {
@@ -109,5 +112,3 @@ const BubbleSortVisualize = <S extends StepSnapshot>({
     </div>
   );
 };
-
-export default BubbleSortVisualize;
