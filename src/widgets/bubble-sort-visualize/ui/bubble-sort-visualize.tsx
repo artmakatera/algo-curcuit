@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 // Hooks
-import { useNumberArray } from "@/shared/hooks/useNumberArray";
+import { useNumberArray } from "@/shared/hooks/use-number-array";
 
 // Components
 import { VisualSortArrayAnimated } from "@/features/visual-sort-array-animated";

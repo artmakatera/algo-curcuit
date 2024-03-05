@@ -6,7 +6,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { LANGUAGES, STEPS } from "../model/constants";
 
 // Hooks
-import { useNumberArray } from "@/shared/hooks/useNumberArray";
+import { useNumberArray } from "@/shared/hooks/use-number-array";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 
 // Helpers

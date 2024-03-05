@@ -1,11 +1,8 @@
-import { expect, test } from "vitest";
+import { expect, test, describe } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import EditArrayItem, {
-  EditArrayItemProps,
-} from "@/features/visual-array/ui/edit-array-item";
-import { useNumberArray } from "@/shared/hooks/useNumberArray";
-import { describe, it } from "node:test";
+import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
+import { useNumberArray } from "@/shared/hooks/use-number-array";
 
 const TestComponent = ({
   arr,
