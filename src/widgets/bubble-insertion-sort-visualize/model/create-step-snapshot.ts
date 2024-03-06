@@ -4,11 +4,11 @@
 // import { LANGUAGES } from "./constants";
 // import { LanguagesMapKeys, languagesRotatedMapSettings } from "./languages-map-settings";
 import { LANGUAGES, STEPS } from "./constants";
-import { LanguagesMapKeys, languagesMapSettings } from "./languages-map-settings";
+import { languagesMapSettings as baseObject } from "./bubble-sort";
 import { StepSnapshot, StepSnapshotPayload } from "./types";
 
 
-export const createStepSnapshot = (payload: StepSnapshotPayload, codeLang: LanguagesMapKeys = LANGUAGES.javascript): StepSnapshot => {
+export const createStepSnapshot = (languagesMapSettings: typeof baseObject) => (payload: StepSnapshotPayload, codeLang: keyof typeof baseObject = LANGUAGES.javascript): StepSnapshot => {
   const { type, compareIndexes, swapIndexes,
     sortedIndex, array, } = payload;
   return {

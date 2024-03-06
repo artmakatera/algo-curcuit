@@ -1,7 +1,8 @@
-import { STEPS } from "./constants";
+import { StepSnapshotPayload } from "../types";
+import { STEPS } from "../constants";
 
 
-function* bubbleSort(arr: number[]) {
+export function* bubbleSort(arr: number[]): Generator<StepSnapshotPayload, number[], unknown> {
 
   let sortedIndex = arr.length;
   yield { type: STEPS.start, compareIndexes: [], swapIndexes: [], sortedIndex, array: [...arr] };

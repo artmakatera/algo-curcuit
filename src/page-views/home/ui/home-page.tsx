@@ -25,6 +25,11 @@ export const HomePage = () => {
           title="Bubble Sort"
           description="Bubble sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order."
         />
+        <PostCard
+          link="/insertion-sort"
+          title="Insertion Sort"
+          description="Insertion sort is a simple sorting algorithm that builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort."
+        />
       </div>
     </main>
   );

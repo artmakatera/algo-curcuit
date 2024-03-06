@@ -1,11 +1,8 @@
 import { describe, expect, test } from "vitest";
-import userEvent from "@testing-library/user-event";
 
 import {
   BinarySearchVisualize,
   DEFAULT_SORTED_ARRAY,
-  GenValuePayload,
-  StepSnapshot,
   createBinarySearchStepSnapshot,
 } from "@/widgets/binary-search-visualize";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";

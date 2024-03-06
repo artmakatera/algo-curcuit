@@ -1,4 +1,4 @@
-import { LANGUAGES, STEPS } from "../constants";
+import { LANGUAGES, STEPS } from "../../constants";
 
 
 

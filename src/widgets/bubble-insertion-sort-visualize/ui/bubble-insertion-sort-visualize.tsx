@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 // Hooks
 import { useNumberArray } from "@/shared/hooks/use-number-array";
@@ -7,8 +7,7 @@ import { useNumberArray } from "@/shared/hooks/use-number-array";
 // Components
 import { VisualSortArrayAnimated } from "@/features/visual-sort-array-animated";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
-import bubbleSort from "../model/bubble-sort";
-import { defaultSnapshots } from "../model/create-step-snapshot";
+import { defaultSnapshots } from "../model";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { EditButton } from "@/features/edit-button";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
@@ -17,25 +16,39 @@ import {
   LANGUAGES,
   StepSnapshot,
   StepSnapshotPayload,
-  languagesMapSettings,
+  languagesMapSettings as languagesMapSettingsBase,
 } from "../model";
 
 const arrToSort = [99, 4, 122, 555, 2, 1, 3, 5, 6, 8];
 
-type BubbleSortVisualizeProps<S extends StepSnapshot = StepSnapshot> = {
-  defaultSpeed?: string;
-  createStepSnapshot: (payload: StepSnapshotPayload) => S;
-};
+type BubbleInsertionSortVisualizeProps<S extends StepSnapshot = StepSnapshot> =
+  {
+    defaultSpeed?: string;
+    createStepSnapshotThunk: (
+      languagesMapSetting: typeof languagesMapSettingsBase
+    ) => (payload: StepSnapshotPayload) => S;
+    sort: (arr: number[]) => Generator<StepSnapshotPayload, number[], unknown>;
+    languagesMapSettings: typeof languagesMapSettingsBase;
+    getIsSorted?: (index: number, sortedIndex: number) => boolean;
+  };
 
-export const BubbleSortVisualize = <S extends StepSnapshot>({
+export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
   defaultSpeed = "750",
-  createStepSnapshot,
-}: BubbleSortVisualizeProps<S>) => {
+  createStepSnapshotThunk,
+  languagesMapSettings,
+  sort,
+  getIsSorted,
+}: BubbleInsertionSortVisualizeProps<S>) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [codeLang] = useState(LANGUAGES.javascript);
 
   const { array, addNumber, removeNumber, updateNumber } =
     useNumberArray(arrToSort);
+
+  const createStepSnapshot = useMemo(
+    () => createStepSnapshotThunk(languagesMapSettings),
+    [languagesMapSettings, createStepSnapshotThunk]
+  );
 
   const {
     currentSnapshot,
@@ -52,10 +65,10 @@ export const BubbleSortVisualize = <S extends StepSnapshot>({
   } = useSnapshots<S, StepSnapshotPayload, [number[]]>({
     defaultDelay: defaultSpeed,
     defaultSnapshots: defaultSnapshots as S[],
-    genCall: bubbleSort as unknown as (
-      array: number[]
+    genCall: sort as unknown as (
+      arr: number[]
     ) => Generator<StepSnapshotPayload, void, unknown>,
-    genCallArgs: [arrToSort],
+    genCallArgs: [array],
     createStepSnapshot,
   });
 
@@ -93,9 +106,7 @@ export const BubbleSortVisualize = <S extends StepSnapshot>({
         compareIndexes={currentSnapshot.compareIndexes}
         swapIndexes={currentSnapshot.swapIndexes}
         sortedIndex={currentSnapshot.sortedIndex}
-        getIsSorted={(index: number, sortedIndex: number) =>
-          index >= sortedIndex
-        }
+        getIsSorted={getIsSorted}
         editMode={editMode}
         onRemoveNumber={removeNumber}
         onAddNumber={addNumber}
