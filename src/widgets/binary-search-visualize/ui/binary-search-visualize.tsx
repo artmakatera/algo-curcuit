@@ -56,7 +56,7 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshotIndex: reset,
+    resetSnapshot: reset,
     handlePreviousStep,
     handleNextStep,
     visualize,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // Types
 import { delay } from "@/shared/lib/utils";
@@ -50,20 +50,30 @@ export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P ex
 interface UseSnapshotsProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> extends BaseUseGeneratorCallProps<S, G, P> {
   defaultDelay?: string;
   defaultSnapshots?: S[];
+  getGoBackSnapshot?: (snapshot: S) => S;
 }
 
 
 export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>(options: UseSnapshotsProps<S, G, P>) => {
-  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot } = options;
+  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot, getGoBackSnapshot } = options;
   const delayRef = useRef<string>(defaultDelay);
 
   const startedRef = useRef<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [stepsSnapshot, setStepSnapshots] = useState<S[]>(defaultSnapshots);
   const [snapshotIndex, setSnapshotIndex] = useState<number>(0);
+  const [isGoBack, setIsGoBack] = useState<boolean>(false);
 
 
-  const currentSnapshot = stepsSnapshot[snapshotIndex] || {} as S;
+  const currentSnapshot = useMemo(() => {
+    const currentSnapshot = stepsSnapshot[snapshotIndex] || {} as S;
+
+    if (isGoBack && typeof getGoBackSnapshot === "function") {
+      return getGoBackSnapshot(currentSnapshot as S);
+    }
+
+    return currentSnapshot;
+  }, [stepsSnapshot, snapshotIndex, isGoBack, getGoBackSnapshot]);
 
 
 
@@ -72,24 +82,28 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
   const hasPrevSnapshot = snapshotIndex > 0;
   const hasNextSnapshot = !!stepsSnapshot[snapshotIndex + 1];
 
-  const resetSnapshotIndex = useCallback(() => {
+  const resetSnapshot = useCallback(() => {
+    setIsGoBack(false);
     setSnapshotIndex(0);
   }, []);
 
   const clearSnapshots = useCallback(() => {
+    setIsGoBack(false);
     setStepSnapshots(defaultSnapshots);
-    resetSnapshotIndex();
-  }, [resetSnapshotIndex, defaultSnapshots]);
+    resetSnapshot();
+  }, [resetSnapshot, defaultSnapshots]);
 
   const handlePreviousStep = useCallback(() => {
+    setIsGoBack(true);
     setSnapshotIndex((prev: number) => prev - 1);
   }, []);
   const handleNextStep = useCallback(() => {
+    setIsGoBack(false);
     setSnapshotIndex((prev: number) => prev + 1);
   }, []);
 
   const visualize = useCallback(async () => {
-    resetSnapshotIndex();
+    resetSnapshot();
 
     for (let i = 0; i < stepsSnapshot.length; i++) {
       if (startedRef.current === false) {
@@ -100,7 +114,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     }
 
 
-  }, [stepsSnapshot, setSnapshotIndex, resetSnapshotIndex]);
+  }, [stepsSnapshot, setSnapshotIndex, resetSnapshot]);
 
   const setStarted = useCallback((value: boolean) => {
     startedRef.current = value;
@@ -124,6 +138,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
   const onChangeSpeed = useCallback((value: string) => {
     delayRef.current = value;
   }, []);
+
   useGeneratorCall({
     setStepSnapshots,
     genCall: genCall,
@@ -137,13 +152,12 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     startedRef,
     stepsSnapshot,
     setStepSnapshots,
-    snapshotIndex,
     setSnapshotIndex,
     currentSnapshot,
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshotIndex,
+    resetSnapshot,
     clearSnapshots,
     handlePreviousStep,
     handleNextStep,

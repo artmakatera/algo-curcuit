@@ -17,6 +17,7 @@ import {
   StepSnapshot,
   StepSnapshotPayload,
   languagesMapSettings as languagesMapSettingsBase,
+  getGoBackSnapshot,
 } from "../model";
 
 const arrToSort = [99, 4, 122, 555, 2, 1, 3, 5, 6, 8];
@@ -55,7 +56,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshotIndex: reset,
+    resetSnapshot: reset,
     handlePreviousStep,
     handleNextStep,
     visualize,
@@ -70,6 +71,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
     ) => Generator<StepSnapshotPayload, void, unknown>,
     genCallArgs: [array],
     createStepSnapshot,
+    getGoBackSnapshot,
   });
 
   const handlePlay = useCallback(async () => {
