@@ -11,5 +11,5 @@ export function getGoBackSnapshot<S extends StepSnapshot>(snapshot: S): S {
   swap(arr, snapshot.swapIndexes);
 
 
-  return { ...snapshot, swapIndexes: snapshot.swapIndexes.reverse(), array: arr }
+  return { ...snapshot, swapIndexes: snapshot.swapIndexes, array: arr }
 }
