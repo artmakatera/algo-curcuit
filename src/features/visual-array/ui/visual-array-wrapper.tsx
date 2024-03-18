@@ -21,17 +21,14 @@ export const VisualArrayWrapper = ({ children }: VisualArrayWrapperProps) => {
 function getItemFontSizeClass(children: React.ReactNode) {
   const maxPropLength = getMaxPropValueLength(children);
 
-  let fontSizeClassValue = "xs";
-
-  if (maxPropLength > 4) {
-    fontSizeClassValue = "[0.65rem]";
-  }
-
   if (maxPropLength > 6) {
-    fontSizeClassValue = "[0.55rem]";
+    return "text-[0.55rem] [&_input]:text-[0.55rem]";
+  }
+  if (maxPropLength > 4) {
+    return "text-[0.65rem] [&_input]:text-[0.65rem]";
   }
 
-  return `text-${fontSizeClassValue} [&_input]:text-${fontSizeClassValue}`;
+  return "text-xs [&_input]:text-xs";
 }
 
 function getMaxPropValueLength(children: React.ReactNode) {
@@ -41,7 +38,7 @@ function getMaxPropValueLength(children: React.ReactNode) {
 
   if (!Array.isArray(children)) {
     return isValidElement(children)
-      ? (children as { props: { value: unknown } })?.props?.value
+      ? (children as { props: { value: unknown } })?.props?.value || 0
       : 0;
   }
 
