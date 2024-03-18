@@ -31,18 +31,22 @@ function getItemFontSizeClass(children: React.ReactNode) {
   return "text-xs [&_input]:text-xs";
 }
 
-function getMaxPropValueLength(children: React.ReactNode) {
+function getMaxPropValueLength(children: React.ReactNode): number {
   if (!children) {
     return 0;
   }
 
   if (!Array.isArray(children)) {
     return isValidElement(children)
-      ? (children as { props: { value: unknown } })?.props?.value || 0
+      ? (children as { props: { value: number } })?.props?.value || 0
       : 0;
   }
 
   return children.reduce((acc, child) => {
+    if (Array.isArray(child)) {
+      return Math.max(acc, getMaxPropValueLength(child));
+    }
+
     if (isValidElement(child)) {
       return Math.max(
         acc,

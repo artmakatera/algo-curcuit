@@ -28,11 +28,9 @@ const EditArrayItem = ({
 
   const updateNumber = (value: number) => {
     if (max && value > max) {
-      onChange(index, max);
       return;
     }
     if (min && value < min) {
-      onChange(index, min);
       return;
     }
     onChange(index, value);
