@@ -3,7 +3,7 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/shared/lib/utils";
-
+import { useState } from "react";
 
 export type EditArrayItemProps = {
   className?: string;
@@ -24,6 +24,8 @@ const EditArrayItem = ({
   min = -99,
   onChange,
 }: EditArrayItemProps) => {
+  const [isEmptyInput, setIsEmptyInput] = useState(false);
+
   const updateNumber = (value: number) => {
     if (max && value > max) {
       onChange(index, max);
@@ -37,11 +39,19 @@ const EditArrayItem = ({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
+      setIsEmptyInput(true);
+      updateNumber(0);
+      return;
+    }
+
     const newValue = parseInt(e.target.value, 10);
 
     if (isNaN(newValue)) {
       return;
     }
+
+    setIsEmptyInput(false);
 
     updateNumber(newValue);
   };
@@ -80,8 +90,8 @@ const EditArrayItem = ({
           <span className="triangle -mt-[1px]"></span>
         </Button>
         <Input
-          value={value}
-          className={"min-w-12 text-sm p-0 text-center h-full"}
+          value={isEmptyInput ? "" : value}
+          className={"min-w-12  p-0 text-center h-full"}
           style={{ width: 12 * String(value)?.length }}
           onChange={handleInputChange}
           aria-label="edit array item"

@@ -14,8 +14,7 @@ export interface VisualArrayItemProps {
   isComparing?: boolean;
   isSorted?: boolean;
   currentSortItem?: boolean;
-  isGoBack?: boolean;
-  isGoForward?: boolean;
+
   isPivot?: boolean;
   isChecking?: boolean;
 }
@@ -29,8 +28,6 @@ export const VisualArrayItem = ({
   isChecking,
   isPivot,
   currentSortItem,
-  isGoBack,
-  isGoForward,
 }: VisualArrayItemProps) => {
   return (
     <>
@@ -44,13 +41,11 @@ export const VisualArrayItem = ({
 
           isPivot && "bg-yellow-500 text-white",
           currentSortItem && "translate-y-[-100%]",
-          isGoBack && "item-go-back",
-          isGoForward && "item-go-forward",
           className
         )}
         data-testid="visual-array-item"
       >
-        <span className="text-sm p-2">{value}</span>
+        <span className="py-2">{value}</span>
         {isPivot && (
           <p className="absolute left-0 -top-[28px] text-red-400">Pivot</p>
         )}

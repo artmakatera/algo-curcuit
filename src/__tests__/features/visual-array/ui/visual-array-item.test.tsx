@@ -36,18 +36,6 @@ describe("VisualArrayItem", () => {
     );
   });
 
-  test("should render with isGoBack", () => {
-    render(<VisualArrayItem value={1} index={1} isGoBack />);
-    expect(screen.getByTestId("visual-array-item")).toHaveClass("item-go-back");
-  });
-
-  test("should render with isGoForward", () => {
-    render(<VisualArrayItem value={1} index={1} isGoForward />);
-    expect(screen.getByTestId("visual-array-item")).toHaveClass(
-      "item-go-forward"
-    );
-  });
-
   test("should render with isChecking", () => {
     render(<VisualArrayItem value={1} index={1} isChecking />);
     expect(screen.getByTestId("visual-array-item")).toHaveClass(
