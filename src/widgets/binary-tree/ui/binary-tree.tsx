@@ -2,18 +2,11 @@
 import { NodeEdge, ArrowMarker, NodeItem } from "@/features/tree-view";
 import tree from "../model/binary-tree";
 import { useLayoutEffect, useRef, useState } from "react";
-import { json } from "stream/consumers";
 
 const radius = 20;
 
-const step = 40;
-const height = 4;
-const items = Math.pow(2, height);
-const width = Math.pow(2, height) * (step + radius);
-console.log({ items });
-
 const getDotLineByRadius = (r: number) => (r * Math.sqrt(2)) / 2;
-const dotLine = getDotLineByRadius(radius);
+
 export const BinaryTree = () => {
   const [treeView, setTreeView] = useState<any[]>([]);
   const ref = useRef<HTMLDivElement>(null);
@@ -23,70 +16,47 @@ export const BinaryTree = () => {
 
     const width = ref.current.clientWidth;
 
-    setTreeView(tree.getTreeView((width - radius) / 2));
+    setTreeView(tree.getTreeView());
   }, []);
+  console.log(tree.getWidth(), treeView);
+  const { minX, minY, maxX, maxY } = treeView.reduce(
+    (acc, node) => {
+      if (node.x < acc.minX) acc.minX = node.x;
+      if (node.x > acc.maxX) acc.maxX = node.x;
+      if (node.y < acc.minY) acc.minY = node.y;
+      if (node.y > acc.maxY) acc.maxY = node.y;
+
+      return acc;
+    },
+    { minX: Infinity, minY: Infinity, maxX: 0, maxY: 0 }
+  );
+
+  console.log({ minX, minY, maxX, maxY });
+
+  const viewBox = `${minX - radius} ${minY - radius} ${maxX + radius} ${
+    maxY + radius
+  }`;
+  console.log(viewBox);
 
   return (
     <div
       ref={ref}
-      className="flex min-h-screen flex-col gap-8 items-center pt-24"
+      className="max-w-7xl flex min-h-screen flex-col gap-8 items-center p-2 xl:p-24 lg-p-8 md:p-4  mx-auto"
     >
       <h1>Binary Search Tree</h1>
 
-      <svg width="100%" viewBox="0 0 1450 700" className="bg-white ">
+      <svg
+        width="100%"
+        viewBox="0 0 1226 700"
+        // viewBox={viewBox}
+        className="bg-white aspect-video"
+      >
         <ArrowMarker />
-        {treeView.map((node) => (
-          <NodeEdge key={node.value} node={node} />
-        ))}
-        {/* {Array.from({ length: items / 8 }, (i, k) => k).map((item) => {
-          return (
-            <NodeItem
-              key={item}
-              value={item}
-              x={
-                ((((width / items) * item + 40) * 4 - radius) * 4 - radius) *
-                  8 -
-                radius / 2
-              }
-              y={50}
-              r={radius}
-            />
-          );
-        })}
-        {Array.from({ length: items / 4 }, (i, k) => k).map((item) => {
-          return (
-            <NodeItem
-              key={item}
-              value={item}
-              x={((width / items) * item + 40) * 4 - radius / 2}
-              y={100}
-              r={radius}
-            />
-          );
-        })}
-        {Array.from({ length: items / 2 }, (i, k) => k).map((item) => {
-          return (
-            <NodeItem
-              key={item}
-              value={item}
-              x={((width / items) * item + 40) * 2 - radius / 2}
-              y={150}
-              r={radius}
-            />
-          );
-        })}
-        `
-        {Array.from({ length: items }, (i, k) => k).map((item) => {
-          return (
-            <NodeItem
-              key={item}
-              value={item}
-              x={(width / items) * item + 40}
-              y={200}
-              r={radius}
-            />
-          );
-        })} */}
+        <g>
+          {treeView.map((node) => (
+            <NodeEdge key={node.value} node={node} />
+          ))}
+        </g>
       </svg>
     </div>
   );

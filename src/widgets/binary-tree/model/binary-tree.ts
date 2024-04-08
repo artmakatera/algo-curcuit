@@ -188,17 +188,17 @@ class BinarySearchTree {
 
       let nextLevel = level - 1;
 
-      console.log({ height, level, nextLevel })
       const step = 40
-      const radius = 20
-      const width = Math.pow(2, height) * (step + radius)
-      console.log({ width, level })
+      // const radius = 20
+      // const width = Math.pow(2, height) * (step + radius)
+      // console.log({ width, level })
       const data = { value: current.value, isLeft: !!isLeft, x, y, parent, level }
       result.push(data);
 
 
 
 
+      const additionalY = nextLevel > 0 ? 30 * level : 1
 
 
       this.addTreeNode({
@@ -207,7 +207,7 @@ class BinarySearchTree {
         parent: data,
         level: nextLevel,
         height,
-        y: (y + 60),
+        y: (y + 60) + additionalY,
         x: x - step * Math.pow(2, nextLevel)
       });
       this.addTreeNode({
@@ -216,26 +216,41 @@ class BinarySearchTree {
         parent: data,
         level: nextLevel,
         height,
-        y: (y + 60),
+        y: (y + 60) + additionalY,
         x: x + step * Math.pow(2, nextLevel)
       });
+
+      nextLevel === -1 && console.log({ x: x - step * Math.pow(2, nextLevel) })
+      nextLevel === -1 && console.log({ x: x + step * Math.pow(2, nextLevel) })
     }
 
     return result
 
   }
 
-  getTreeView(x: number = 800) {
+  getTreeView() {
 
     const result: any[] = [];
     console.log(this.getHeight())
     const height = this.getHeight();
 
-    const xs = 0 + 40 * Math.pow(2, height)
+    // const xs = 0 + 40 * Math.pow(2, height)
+    const x = 1226 / 2
+    return this.addTreeNode({ current: this.root, result, x: x, level: height, height });
+  }
+  getWidth() {
+    const height = this.getHeight();
 
-    return this.addTreeNode({ current: this.root, result, x: xs, level: height, height });
+    const xs = 0 + 40 * Math.pow(2, height)
+    const step = 40
+    const radius = 20
+    const bottomCount = Math.pow(2, height);
+    return bottomCount * radius * 2 + (bottomCount - 1) * step
+
+
   }
 }
+
 
 
 //For you to test on your own
@@ -261,27 +276,25 @@ bst.insert(27);
 bst.insert(55);
 bst.insert(1);
 bst.insert(4);
-bst.insert(0);
-bst.insert(2);
+// bst.insert(0);
+// bst.insert(2);
 
 
-bst.insert(25);
-bst.insert(29);
-bst.insert(60);
+// bst.insert(25);
+// bst.insert(29);
+// bst.insert(60);
 
-bst.insert(50);
-bst.insert(61);
-bst.insert(59);
-bst.insert(51);
-bst.insert(49);
-bst.insert(28);
-bst.insert(30);
-bst.insert(21);
-bst.insert(26);
-bst.insert(8);
-bst.insert(9);
-
-// bst.insert(100);
+// bst.insert(50);
+// bst.insert(61);
+// bst.insert(59);
+// bst.insert(51);
+// bst.insert(49);
+// bst.insert(28);
+// bst.insert(30);
+// bst.insert(21);
+// bst.insert(26);
+// bst.insert(8);
+// bst.insert(9);
 
 
 

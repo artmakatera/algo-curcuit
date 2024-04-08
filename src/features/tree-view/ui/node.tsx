@@ -14,7 +14,7 @@ export const NodeItem = ({ value, x, y, r }: NodeItemProps) => {
         cy={y}
         r={r}
         stroke="black"
-        strokeWidth="1"
+        strokeWidth="0"
         fill="lightgreen"
       />
       <text x={x} y={y + 5} textAnchor="middle" fill="black" fontSize="20px">
