@@ -16,7 +16,7 @@ type PostCardProps = {
 
 export function PostCard({ title, description, link }: PostCardProps) {
   return (
-    <Card className="w-[350px]">
+    <Card className="max-w-[350px]">
       <Link href={link}>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
