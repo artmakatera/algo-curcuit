@@ -73,65 +73,6 @@ class BinarySearchTree {
 
   }
 
-  // remove(value: number, current: TreeNode | null = this.root, parent: TreeNode | null = null) {
-  //   //write your code here
-  //   if (!current) {
-  //     return false;
-  //   }
-
-  //   // search current
-  //   while (current.value !== value) {
-
-  //     if (value > current.value) {
-  //       if (current.right === null) return false
-  //       current = current.right;
-  //       parent = current
-  //     } else {
-  //       if (current.left === null) return false
-  //       current = current.left;
-  //     }
-  //     parent = current
-
-  //   }
-
-
-  //   if (current.left !== null && current.right !== null) {
-
-
-  //     current.value = this.getMin(current.right);
-  //     return this.remove(current.value, current.right, current)
-  //   }
-
-  //   // remove root node
-  //   if (parent === null) {
-  //     if (current.left === null && current.right === null) {
-  //       this.root = null;
-  //       return this;
-  //     }
-
-  //     if (current.left !== null) {
-  //       current.value = current.left.value;
-  //       current.left = current.left.left;
-  //       current.right = current.left?.right;
-
-  //     } else {
-  //       current.value = current.right?.value;
-  //       current.left = current.right?.left;
-  //       current.right = current.right?.right;
-  //     }
-
-  //     return this;
-
-  //   }
-
-  //   if (current === parent.left) {
-  //     parent.left = current.left ?? current.right;
-  //   } else if (current === parent.right) {
-  //     parent.right = current.left ?? current.right;
-  //   }
-
-  //   return this;
-  // }
 
   removeChild(parent: TreeNode, value: number) {
     if (parent.left?.value === value) {
@@ -146,12 +87,7 @@ class BinarySearchTree {
     return false;
   }
 
-  getMin(node: TreeNode) {
-    while (node.left !== null) {
-      node = node.left;
-    }
-    return node.value;
-  }
+
 
   getHeight(node: TreeNode | null = this.root): number {
     if (node === null) {
@@ -161,37 +97,12 @@ class BinarySearchTree {
     return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
   }
 
-  // addTreeNode({ current, result, isLeft, x = 400, y = 50, parent, level, height }: { current: TreeNode | null, result: any[], level: number, height: number, isLeft?: boolean, x?: number, y?: number, parent?: any, }) {
-  //   if (current) {
-  //     const data = { value: current.value, isLeft: !!isLeft, x, y, parent, level }
-  //     result.push(data);
-
-  //     let additional = height - level
-  //     this.addTreeNode({ current: current.left, result, x: x - 40 * additional, y: y + 60, isLeft: true, parent: data, level: level + 1, height });
-  //     this.addTreeNode({ current: current.right, result, x: x + 40 * additional, y: y + 60, parent: data, level: level + 1, height });
-  //   }
-
-  //   return result
-
-  // }
-
-  // getTreeView(x: number = 800) {
-
-  //   const result: any[] = [];
-  //   console.log(this.getHeight())
-  //   const height = this.getHeight();
-
-  //   return this.addTreeNode({ current: this.root, result, x: x, level: 0, height });
-  // }
   addTreeNode({ current, result, isLeft, x = 400, y = 50, parent, level, height }: { current: TreeNode | null, result: any[], level: number, height: number, isLeft?: boolean, x?: number, y?: number, parent?: any, }) {
     if (current) {
 
       let nextLevel = level - 1;
 
-      const step = 40
-      // const radius = 20
-      // const width = Math.pow(2, height) * (step + radius)
-      // console.log({ width, level })
+      const step = 40;
       const data = { value: current.value, isLeft: !!isLeft, x, y, parent, level }
       result.push(data);
 
@@ -231,24 +142,12 @@ class BinarySearchTree {
   getTreeView() {
 
     const result: any[] = [];
-    console.log(this.getHeight())
     const height = this.getHeight();
 
-    // const xs = 0 + 40 * Math.pow(2, height)
     const x = 1226 / 2
     return this.addTreeNode({ current: this.root, result, x: x, level: height, height });
   }
-  getWidth() {
-    const height = this.getHeight();
 
-    const xs = 0 + 40 * Math.pow(2, height)
-    const step = 40
-    const radius = 20
-    const bottomCount = Math.pow(2, height);
-    return bottomCount * radius * 2 + (bottomCount - 1) * step
-
-
-  }
 }
 
 

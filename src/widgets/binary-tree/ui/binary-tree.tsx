@@ -18,7 +18,6 @@ export const BinaryTree = () => {
 
     setTreeView(tree.getTreeView());
   }, []);
-  console.log(tree.getWidth(), treeView);
   const { minX, minY, maxX, maxY } = treeView.reduce(
     (acc, node) => {
       if (node.x < acc.minX) acc.minX = node.x;
