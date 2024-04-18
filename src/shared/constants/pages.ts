@@ -1,3 +1,4 @@
+import { link } from "fs";
 
 
 export const pages = [
@@ -20,5 +21,10 @@ export const pages = [
     link: "/insertion-sort",
     title: "Insertion Sort",
     description: "Insertion sort is a simple sorting algorithm that builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort."
+  },
+  {
+    link: "/binary-tree",
+    title: "Binary Tree",
+    description: "A binary tree is a tree data structure in which each node has at most two children, which are referred to as the left child and the right child."
   }
 ]

@@ -2,6 +2,7 @@
 import { NodeEdge, ArrowMarker, NodeItem } from "@/features/tree-view";
 import tree from "../model/binary-tree";
 import { useLayoutEffect, useRef, useState } from "react";
+import { TypographyH1 } from "@/components/ui/typography";
 
 const radius = 20;
 
@@ -42,7 +43,7 @@ export const BinaryTree = () => {
       ref={ref}
       className="max-w-7xl flex min-h-screen flex-col gap-8 items-center p-2 xl:p-24 lg-p-8 md:p-4  mx-auto"
     >
-      <h1>Binary Search Tree</h1>
+      <TypographyH1>Binary Search Tree</TypographyH1>
 
       <svg
         width="100%"

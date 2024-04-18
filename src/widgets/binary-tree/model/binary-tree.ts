@@ -1,3 +1,4 @@
+import { STEPS } from "./constants";
 
 class TreeNode {
   value: number;
@@ -89,6 +90,13 @@ class BinarySearchTree {
 
 
 
+
+
+
+}
+
+
+class BinaryTreeDraw extends BinarySearchTree {
   getHeight(node: TreeNode | null = this.root): number {
     if (node === null) {
       return -1;
@@ -131,8 +139,6 @@ class BinarySearchTree {
         x: x + step * Math.pow(2, nextLevel)
       });
 
-      nextLevel === -1 && console.log({ x: x - step * Math.pow(2, nextLevel) })
-      nextLevel === -1 && console.log({ x: x + step * Math.pow(2, nextLevel) })
     }
 
     return result
@@ -148,6 +154,53 @@ class BinarySearchTree {
     return this.addTreeNode({ current: this.root, result, x: x, level: height, height });
   }
 
+  *insertDraw(value: number) {
+    //return this once you are done 
+    //write your code here
+
+    if (this.root === null) {
+      this.root = new TreeNode(value)
+      return;
+    }
+
+    let node = this.root;
+    yield {
+      type: STEPS.start,
+      node: node
+
+    }
+
+    while (node) {
+      yield {
+        type: STEPS.checkNode,
+        node: node
+      }
+      if (value < node.value) {
+        if (node.left === null) {
+          node.left = new TreeNode(value);
+          yield {
+            type: STEPS.insertNode,
+            node: node.left,
+          }
+          return;
+        }
+        node = node.left
+      } else {
+        if (node.right === null) {
+          node.right = new TreeNode(value);
+          yield {
+            type: STEPS.insertNode,
+            node: node.right,
+          }
+          return;
+        }
+        node = node.right;
+      }
+    }
+
+    this.count++;
+
+  }
 }
 
 
@@ -162,7 +215,7 @@ class BinarySearchTree {
 //                  / \    / \   \
 //                  1  3   25 29  60
 
-let bst = new BinarySearchTree();
+let bst = new BinaryTreeDraw();
 
 bst.insert(20);
 bst.insert(6);
@@ -175,26 +228,6 @@ bst.insert(27);
 bst.insert(55);
 bst.insert(1);
 bst.insert(4);
-// bst.insert(0);
-// bst.insert(2);
-
-
-// bst.insert(25);
-// bst.insert(29);
-// bst.insert(60);
-
-// bst.insert(50);
-// bst.insert(61);
-// bst.insert(59);
-// bst.insert(51);
-// bst.insert(49);
-// bst.insert(28);
-// bst.insert(30);
-// bst.insert(21);
-// bst.insert(26);
-// bst.insert(8);
-// bst.insert(9);
-
 
 
 
