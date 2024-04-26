@@ -1,61 +1,85 @@
 "use client";
 import { NodeEdge, ArrowMarker, NodeItem } from "@/features/tree-view";
-import tree from "../model/binary-tree";
+import { BinaryTreeDraw } from "../model/binary-tree";
 import { useLayoutEffect, useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
+import { Controls } from "./controls";
+import { Dispatch, GenValuePayload } from "../model/types";
+import {
+  createStepSnapshot,
+  defaultSnapshots,
+  defaultSnapshot,
+} from "../model/create-step-snapshot";
+import { useSnapshots } from "@/shared/hooks/use-snapshots";
 
-const radius = 20;
+const tree = new BinaryTreeDraw();
 
-const getDotLineByRadius = (r: number) => (r * Math.sqrt(2)) / 2;
+const baseArrayData = [20, 6, 35, 8, 27, 55, 1, 3, 25, 29, 60, 54];
+
+baseArrayData.forEach((value) => tree.insert(value));
 
 export const BinaryTree = () => {
-  const [treeView, setTreeView] = useState<any[]>([]);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [targetValue, setTargetValue] = useState<number | null>(null);
+  const [actionType, setActionType] = useState<
+    "insert" | "delete" | "find" | null
+  >(null);
+
   const ref = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (!ref.current) return;
+  const {
+    currentSnapshot,
+    stepsSnapshot,
+    highlight,
+    hasPrevSnapshot,
+    hasNextSnapshot,
+    resetSnapshot: reset,
+    handlePreviousStep,
+    handleNextStep,
+    visualize,
+    isPlaying,
+    onChangeSpeed,
+    delayRef,
+  } = useSnapshots<typeof defaultSnapshot, GenValuePayload, [number | null]>({
+    defaultDelay: "750",
+    defaultSnapshots: [{ ...defaultSnapshot, treeView: tree.getTreeView() }],
+    genCall: tree.insertDraw as unknown as (
+      v: number | null
+    ) => Generator<GenValuePayload, void, unknown>,
+    genCallArgs: [targetValue],
+    autoStart: true,
+    // @ts-ignore
+    createStepSnapshot,
+  });
 
-    const width = ref.current.clientWidth;
+  const dispatch: Dispatch = ({ type, value }) => {
+    setTargetValue(value);
+    setActionType(type);
+  };
 
-    setTreeView(tree.getTreeView());
-  }, []);
-  const { minX, minY, maxX, maxY } = treeView.reduce(
-    (acc, node) => {
-      if (node.x < acc.minX) acc.minX = node.x;
-      if (node.x > acc.maxX) acc.maxX = node.x;
-      if (node.y < acc.minY) acc.minY = node.y;
-      if (node.y > acc.maxY) acc.maxY = node.y;
-
-      return acc;
-    },
-    { minX: Infinity, minY: Infinity, maxX: 0, maxY: 0 }
-  );
-
-  console.log({ minX, minY, maxX, maxY });
-
-  const viewBox = `${minX - radius} ${minY - radius} ${maxX + radius} ${
-    maxY + radius
-  }`;
-  console.log(viewBox);
+  console.log(currentSnapshot, stepsSnapshot);
 
   return (
     <div
       ref={ref}
-      className="max-w-7xl flex min-h-screen flex-col gap-8 items-center p-2 xl:p-24 lg-p-8 md:p-4  mx-auto"
+      className=" flex min-h-screen flex-col gap-8 items-center p-2 md:p-4 mx-auto"
+      onClick={() => setIsAnimating((isAnimating) => !isAnimating)}
     >
       <TypographyH1>Binary Search Tree</TypographyH1>
-
-      <svg
-        width="100%"
-        viewBox="0 0 1226 700"
-        // viewBox={viewBox}
-        className="bg-white aspect-video"
-      >
+      <Controls dispatch={dispatch} disabled={isPlaying} />
+      <svg className="w-full h-screen" viewBox="200 0 500 2550">
         <ArrowMarker />
         <g>
-          {treeView.map((node) => (
-            <NodeEdge key={node.value} node={node} />
-          ))}
+          {currentSnapshot.treeView.map((node) => {
+            const isActive = node.current?.id === currentSnapshot?.node?.id;
+            return (
+              <NodeEdge
+                key={node.current?.id}
+                node={node}
+                isActive={isActive}
+              />
+            );
+          })}
         </g>
       </svg>
     </div>

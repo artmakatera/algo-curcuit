@@ -12,11 +12,13 @@ interface BaseUseGeneratorCallProps<S extends BaseSnapshot, G extends unknown, P
 
 interface UseGeneratorCallProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> extends BaseUseGeneratorCallProps<S, G, P> {
   setStepSnapshots: React.Dispatch<React.SetStateAction<S[]>>;
+  setSnapshotIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 
 export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>({
   setStepSnapshots,
+  setSnapshotIndex,
   genCall,
   createStepSnapshot,
   genCallArgs
@@ -26,23 +28,25 @@ export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P ex
 
   useEffect(() => {
     const getSnapshots = async (...genCallArgs: P) => {
-      setStepSnapshots([]);
       let generator = genCall(...genCallArgs);
+      const snapshots: G[] = [];
 
       let next = generator.next();
       while (!next.done) {
         const { value } = next;
-        setStepSnapshots((prev: S[]) => [
-          ...prev,
-          createStepSnapshot(value as G),
-        ]);
+        snapshots.push(value as G);
         next = generator.next();
       }
+      if (!snapshots.length) return;
+      setSnapshotIndex(0);
+      setStepSnapshots(snapshots.map(value =>
+        createStepSnapshot(value as G),
+      ));
     };
     getSnapshots(...JSON.parse(args) as P);
 
 
-  }, [setStepSnapshots, createStepSnapshot, genCall, args]);
+  }, [setStepSnapshots, createStepSnapshot, genCall, args, setSnapshotIndex]);
 
 }
 
@@ -51,11 +55,12 @@ interface UseSnapshotsProps<S extends BaseSnapshot, G extends unknown, P extends
   defaultDelay?: string;
   defaultSnapshots?: S[];
   getGoBackSnapshot?: (snapshot: S) => S;
+  autoStart?: boolean;
 }
 
 
 export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>(options: UseSnapshotsProps<S, G, P>) => {
-  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot, getGoBackSnapshot } = options;
+  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot, getGoBackSnapshot, autoStart } = options;
   const delayRef = useRef<string>(defaultDelay);
 
   const startedRef = useRef<boolean>(false);
@@ -143,9 +148,16 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     setStepSnapshots,
     genCall: genCall,
     createStepSnapshot: createStepSnapshot,
-    genCallArgs: genCallArgs
+    genCallArgs: genCallArgs,
+    setSnapshotIndex
 
   })
+
+  useEffect(() => {
+    if (autoStart) {
+      handlePlay()
+    }
+  }, [autoStart, stepsSnapshot, handlePlay]);
 
 
   return {
