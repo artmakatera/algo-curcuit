@@ -11,6 +11,7 @@ export const Line = ({
     <motion.line
       initial={{ x2: x1 as number, y2: y1 as number }}
       animate={{ x2: x2 as number, y2: y2 as number }}
+      
       x1={x1}
       y1={y1}
       x2={x2}

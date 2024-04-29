@@ -1,6 +1,6 @@
 "use client";
-import { NodeEdge, ArrowMarker, NodeItem } from "@/features/tree-view";
-import { BinaryTreeDraw } from "../model/binary-tree";
+import { Leaf, Node } from "@/features/tree-view";
+import { BinaryTreeDraw, TreeNode } from "../model/binary-tree";
 import { useLayoutEffect, useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
@@ -57,7 +57,7 @@ export const BinaryTree = () => {
     setActionType(type);
   };
 
-  console.log(currentSnapshot, stepsSnapshot);
+  // console.log(currentSnapshot, stepsSnapshot);
 
   return (
     <div
@@ -67,21 +67,8 @@ export const BinaryTree = () => {
     >
       <TypographyH1>Binary Search Tree</TypographyH1>
       <Controls dispatch={dispatch} disabled={isPlaying} />
-      <svg className="w-full h-screen" viewBox="200 0 500 2550">
-        <ArrowMarker />
-        <g>
-          {currentSnapshot.treeView.map((node) => {
-            const isActive = node.current?.id === currentSnapshot?.node?.id;
-            return (
-              <NodeEdge
-                key={node.current?.id}
-                node={node}
-                isActive={isActive}
-              />
-            );
-          })}
-        </g>
-      </svg>
+
+      <Leaf node={tree.root as TreeNode} isAnimating={isAnimating} />
     </div>
   );
 };
