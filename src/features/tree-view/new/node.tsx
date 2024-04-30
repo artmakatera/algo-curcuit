@@ -9,8 +9,6 @@ type NodeItemProps = {
 
 export const Node = forwardRef(
   ({ current, active }: NodeItemProps, ref: ForwardedRef<HTMLDivElement>) => {
-    console.log(current, active);
-    if (current.value === 60 && !active) return null;
     return (
       <motion.div
         className="bg-green-600 w-10 h-10 text-center leading-10 text-white rounded-full"

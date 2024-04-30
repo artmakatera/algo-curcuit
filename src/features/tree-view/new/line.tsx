@@ -1,7 +1,14 @@
 "use client";
 import { createPortal } from "react-dom";
 import { cn } from "@/shared/lib/utils";
-import { ForwardedRef, useLayoutEffect, useRef, useState } from "react";
+import {
+  ForwardedRef,
+  use,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { motion } from "framer-motion";
 
 type LeafRef = ForwardedRef<HTMLDivElement>;
@@ -45,29 +52,37 @@ const getStyle = (
 };
 
 export const Line = ({ isLeft, childRef, parentRef }: LineProps) => {
-  const style = getStyle(parentRef, childRef, isLeft);
-  const [show, setShow] = useState(false);
+  const [style, setStyle] = useState<React.CSSProperties | null>(null);
   const durationRef = useRef(1);
+  console.log("Line");
 
   useLayoutEffect(() => {
-    setShow(true);
+    let raf: number;
 
-    const onResize = async () => {
-      durationRef.current = 0;
-      setShow(false);
-      await Promise.resolve();
-      setShow(true);
-      durationRef.current = 1;
+    const animate = () => {
+      const style = getStyle(parentRef, childRef, isLeft);
+      setStyle((prev) => {
+        if (!prev) return style;
+        if (!style) return prev;
+
+        const isEqual = Object.entries(prev).every(([key, value]) => {
+          return value === style[key];
+        });
+
+        return isEqual ? prev : style;
+        // return Object.is(prev, style) ? prev : style;
+      });
+
+      raf = requestAnimationFrame(animate);
     };
-
-    window.addEventListener("resize", onResize);
+    raf = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(raf);
     };
-  }, [style]);
+  }, [parentRef, childRef, isLeft]);
 
-  if (style === null || !show) {
+  if (style === null) {
     return null;
   }
 
@@ -90,3 +105,14 @@ export const Line = ({ isLeft, childRef, parentRef }: LineProps) => {
     document.body
   );
 };
+
+// {
+//     "x": 375,
+//     "y": 218.8125,
+//     "width": 40,
+//     "height": 40,
+//     "top": 218.8125,
+//     "right": 415,
+//     "bottom": 258.8125,
+//     "left": 375
+// }
