@@ -16,29 +16,28 @@ export type Dispatch = (d: DispatchPayload) => void;
 export type GenValuePayload = {
   type: Partial<STEPS>;
   node: TreeNode,
-  treeView: TreeViewItem[]
+  treeView: TreeArrayItem[]
 };
 
 export type GenValue = Generator<GenValuePayload, void, number>;
-
-export type TreeViewItem = {
-
-  current: TreeNode | null | undefined,
-  result: Partial<TreeViewItem>[],
-  level: number,
-  height: number,
-  isLeft?: boolean,
-  x?: number,
-  y?: number,
-  parent?: Partial<TreeViewItem> | null
-}
 
 
 export interface StepSnapshot extends BaseSnapshot {
   type: Partial<STEPS>,
   highlightLines: number[],
   node: TreeNode,
-  treeView: TreeViewItem[]
+  treeView: TreeArrayItem[]
 };
+
+
+export type TreeArrayItem = {
+  node: TreeNode;
+  parent: TreeNode | null;
+  isLeft: boolean;
+}
+
+export type TreeArrayGroups = { [key: string]: TreeArrayItem[] }
+
+
 
 

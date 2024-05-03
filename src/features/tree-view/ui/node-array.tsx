@@ -12,7 +12,6 @@ export const NodeArray = (props: {
   groups: { [key: string]: TreeArrayItem[] };
 }) => {
   const { parentKey, groups } = props;
-  console.log(parentKey);
 
   return (
     groups[parentKey] &&

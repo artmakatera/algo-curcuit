@@ -1,6 +1,6 @@
 import { TreeNode } from "./binary-tree";
 import { STEPS } from "./constants";
-import { GenValuePayload, StepSnapshot, TreeViewItem } from "./types";
+import { GenValuePayload, StepSnapshot, TreeArrayGroups } from "./types";
 
 export const createStepSnapshot = (payload: GenValuePayload): StepSnapshot => {
   const { type, treeView, node } = payload;
@@ -17,7 +17,7 @@ export const createStepSnapshot = (payload: GenValuePayload): StepSnapshot => {
 export const defaultSnapshot = {
   type: STEPS.start,
   node: null as TreeNode | null,
-  treeView: [] as Partial<TreeViewItem>[],
+  treeView: {} as TreeArrayGroups,
   highlightLines: [],
 }
 

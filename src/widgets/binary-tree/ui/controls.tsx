@@ -1,55 +1,123 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dispatch, ActionType } from "../model/types";
+import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { CollapsibleContent } from "@radix-ui/react-collapsible";
 
 type ControlsProps = {
   dispatch: Dispatch;
   disabled?: boolean;
+  activeType: ActionType | null;
+  setActiveType: React.Dispatch<React.SetStateAction<ActionType | null>>;
 };
 
-export const Controls = ({ dispatch, disabled }: ControlsProps) => {
-  const ref = useRef<HTMLInputElement>(null);
+type ControlColor = "blue" | "orange" | "red";
 
-  const handleClick = (type: ActionType) => {
-    if (ref.current) {
-      dispatch({ type, value: Number(ref.current.value) });
-    }
+type CollapsibleControlProps = {
+  type: ActionType;
+  disabled?: boolean;
+  color: ControlColor;
+  onTriggerClick: (type: ActionType, value: boolean) => void;
+  isOpen?: boolean;
+  dispatch: Dispatch;
+};
+
+const CollapsibleControl = ({
+  type,
+  disabled,
+  color,
+  isOpen,
+  onTriggerClick,
+  dispatch,
+}: CollapsibleControlProps) => {
+  const [value, setValue] = useState<number>(40);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(Number(e.target.value));
+  };
+
+  const handleOpen = (value: boolean) => {
+    onTriggerClick(type, value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch({ type, value });
+  };
+
+  return (
+    <Collapsible
+      open={isOpen}
+      onOpenChange={handleOpen}
+      className=" space-y-2 flex flex-col items-center justify-center"
+    >
+      <CollapsibleTrigger asChild>
+        <Button
+          className={`px-2 w-40 capitalize`}
+          variant={isOpen ? "outline" : "default"}
+          onClick={() => {}}
+          disabled={disabled}
+        >
+          {type}
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent asChild>
+        <form
+          className="flex items-center justify-center gap-2"
+          onSubmit={handleSubmit}
+        >
+          <Input
+            className="w-20"
+            value={value}
+            onChange={handleChange}
+            type="number"
+          />
+          <Button
+            className={`bg-${color}-500 hover:bg-${color}-400 text-white`}
+            type="submit"
+          >
+            Go
+          </Button>
+        </form>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+};
+
+type ControlsType = { type: ActionType; color: ControlColor }[];
+
+const CONTROLS: ControlsType = [
+  { type: "find", color: "blue" },
+  { type: "insert", color: "orange" },
+  { type: "delete", color: "red" },
+];
+
+export const Controls = ({
+  dispatch,
+  disabled,
+  activeType,
+  setActiveType,
+}: ControlsProps) => {
+  const toggleActiveType = (type: ActionType) => {
+    setActiveType((activeType) => (activeType === type ? null : type));
   };
 
   return (
     <div>
-      {/* <Label>Control:</Label> */}
-      <div className="flex items-center justify-center gap-1 w-full">
-        <Input
-          ref={ref}
-          className="w-20"
-          onChange={() => {}}
-          type="number"
-          id="insert-node"
-          disabled={disabled}
-        />
-        <Button
-          className="px-2 bg-blue-500 hover:bg-blue-400"
-          onClick={() => handleClick("find")}
-          disabled={disabled}
-        >
-          Find
-        </Button>
-        <Button
-          className="px-2 bg-orange-500 hover:bg-orange-400"
-          onClick={() => handleClick("insert")}
-          disabled={disabled}
-        >
-          Insert
-        </Button>
-        <Button
-          className="px-2 bg-red-500 hover:bg-red-400"
-          onClick={() => handleClick("delete")}
-          disabled={disabled}
-        >
-          Delete
-        </Button>
+      <div className="flex items-start justify-center w-full">
+        {CONTROLS.map(({ type, color }) => (
+          <CollapsibleControl
+            key={type}
+            type={type}
+            color={color}
+            disabled={disabled}
+            onTriggerClick={toggleActiveType}
+            isOpen={activeType === type}
+            dispatch={dispatch}
+          />
+        ))}
       </div>
     </div>
   );

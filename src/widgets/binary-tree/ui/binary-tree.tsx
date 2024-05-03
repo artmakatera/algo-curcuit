@@ -3,7 +3,7 @@ import { BinaryTreeDraw } from "../model/binary-tree";
 import { useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
-import { Dispatch, GenValuePayload } from "../model/types";
+import { ActionType, Dispatch, GenValuePayload } from "../model/types";
 import {
   createStepSnapshot,
   defaultSnapshots,
@@ -21,9 +21,7 @@ baseArrayData.forEach((value) => tree.insert(value));
 export const BinaryTree = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [targetValue, setTargetValue] = useState<number | null>(null);
-  const [actionType, setActionType] = useState<
-    "insert" | "delete" | "find" | null
-  >(null);
+  const [activeType, setActiveType] = useState<ActionType | null>(null);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -54,7 +52,6 @@ export const BinaryTree = () => {
 
   const dispatch: Dispatch = ({ type, value }) => {
     setTargetValue(value);
-    setActionType(type);
   };
 
   return (
@@ -64,8 +61,12 @@ export const BinaryTree = () => {
       onClick={() => setIsAnimating((isAnimating) => !isAnimating)}
     >
       <TypographyH1>Binary Search Tree</TypographyH1>
-      <Controls dispatch={dispatch} disabled={isPlaying} />
-
+      <Controls
+        dispatch={dispatch}
+        disabled={isPlaying}
+        activeType={activeType}
+        setActiveType={setActiveType}
+      />
       <NodeArray parentKey={null} groups={tree.getNodeGroups()} />
     </div>
   );

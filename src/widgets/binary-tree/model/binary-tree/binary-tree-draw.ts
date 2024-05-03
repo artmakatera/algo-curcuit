@@ -1,13 +1,7 @@
+import { tree } from "next/dist/build/templates/app-page";
 import { STEPS } from "../constants";
-import { TreeViewItem } from "../types";
+import { TreeArrayGroups, TreeArrayItem } from "../types";
 import { BinaryTree, TreeNode } from "./base-binary-tree";
-
-export type TreeArrayItem = {
-  node: TreeNode;
-  parent: TreeNode | null;
-  isLeft: boolean;
-}
-
 
 
 
@@ -49,7 +43,7 @@ class BinaryTreeDraw extends BinaryTree {
   }
 
   getNodeGroups() {
-    return this.getTreeArray(false).reduce((acc: { [key: string]: TreeArrayItem[] }, item) => {
+    return this.getTreeArray(false).reduce((acc: TreeArrayGroups, item) => {
       const parentId = item.parent?.id || "null";
       acc[parentId] = acc[parentId] || [null, null];
       acc[parentId][item.isLeft ? 0 : 1] = item
@@ -73,6 +67,7 @@ class BinaryTreeDraw extends BinaryTree {
     yield {
       type: STEPS.start,
       node: node,
+      treeView: this.getNodeGroups(),
 
     }
 
@@ -80,6 +75,7 @@ class BinaryTreeDraw extends BinaryTree {
       yield {
         type: STEPS.checkNode,
         node: node,
+        treeView: this.getNodeGroups(),
 
       }
       if (value < node.value) {
@@ -88,6 +84,7 @@ class BinaryTreeDraw extends BinaryTree {
           yield {
             type: STEPS.insertNode,
             node: node.left,
+            treeView: this.getNodeGroups(),
 
           }
           return;
@@ -99,6 +96,7 @@ class BinaryTreeDraw extends BinaryTree {
           yield {
             type: STEPS.insertNode,
             node: node.right,
+            treeView: this.getNodeGroups(),
 
           }
           return;
