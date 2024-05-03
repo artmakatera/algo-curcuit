@@ -1,48 +1,35 @@
 import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
-import { SVGMotionProps, motion } from "framer-motion";
+import { ForwardedRef, forwardRef } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/shared/lib/utils";
+import { NODE_SIZE } from "../constants";
 
 type NodeItemProps = {
   current: TreeNode;
-  x: number;
-  y: number;
-  r: number;
   active?: boolean;
 };
 
-export const NodeItem = ({
-  current,
-  x,
-  y,
-  r,
-  active,
-  ...props
-}: NodeItemProps & SVGMotionProps<SVGGElement>) => {
-  return (
-    <motion.g {...props}>
-      <circle
-        cx={x}
-        cy={y}
-        r={r}
-        stroke="black"
-        strokeWidth="0"
-        className={active ? "fill-blue-500" : "fill-green-600"}
-      />
-      <text
-        x={x}
-        y={y || 0 + 5}
-        textAnchor="middle"
-        className="fill-white font-semibold"
-        fontSize="20px"
+export const Node = forwardRef(
+  ({ current, active }: NodeItemProps, ref: ForwardedRef<HTMLDivElement>) => {
+    return (
+      <motion.div
+        className={cn(
+          `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
+          "bg-green-600  text-center  text-white rounded-full"
+        )}
+        ref={ref}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{
+          type: "spring",
+          duration: current.value === 60 ? 0.8 : 0.3,
+          delay: current.value === 60 ? 0.5 : 0,
+        }}
       >
         {current?.value}
-      </text>
-    </motion.g>
-  );
-};
+      </motion.div>
+    );
+  }
+);
 
-const FILL_CLASSES = {
-  default: "fill-green-600",
-  active: "fill-yellow-600",
-  check: "fill-blue-500",
-  remove: "fill-red-600",
-};
+Node.displayName = "Node";

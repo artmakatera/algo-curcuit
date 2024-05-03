@@ -1,7 +1,6 @@
 "use client";
-import { Leaf, Node } from "@/features/tree-view";
-import { BinaryTreeDraw, TreeNode } from "../model/binary-tree";
-import { useLayoutEffect, useRef, useState } from "react";
+import { BinaryTreeDraw } from "../model/binary-tree";
+import { useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
 import { Dispatch, GenValuePayload } from "../model/types";
@@ -11,6 +10,7 @@ import {
   defaultSnapshot,
 } from "../model/create-step-snapshot";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
+import { NodeArray } from "@/features/tree-view/ui/node-array";
 
 const tree = new BinaryTreeDraw();
 
@@ -42,12 +42,12 @@ export const BinaryTree = () => {
     delayRef,
   } = useSnapshots<typeof defaultSnapshot, GenValuePayload, [number | null]>({
     defaultDelay: "750",
-    defaultSnapshots: [{ ...defaultSnapshot, treeView: tree.getTreeView() }],
+    defaultSnapshots: [{ ...defaultSnapshot }],
     genCall: tree.insertDraw as unknown as (
       v: number | null
     ) => Generator<GenValuePayload, void, unknown>,
     genCallArgs: [targetValue],
-    autoStart: true,
+    // autoStart: true,
     // @ts-ignore
     createStepSnapshot,
   });
@@ -56,8 +56,6 @@ export const BinaryTree = () => {
     setTargetValue(value);
     setActionType(type);
   };
-
-  // console.log(currentSnapshot, stepsSnapshot);
 
   return (
     <div
@@ -68,7 +66,7 @@ export const BinaryTree = () => {
       <TypographyH1>Binary Search Tree</TypographyH1>
       <Controls dispatch={dispatch} disabled={isPlaying} />
 
-      <Leaf node={tree.root as TreeNode} isAnimating={isAnimating} />
+      <NodeArray parentKey={null} groups={tree.getNodeGroups()} />
     </div>
   );
 };

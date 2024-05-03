@@ -1,26 +1,30 @@
-import { motion, SVGMotionProps } from "framer-motion";
+"use client";
+import { cn } from "@/shared/lib/utils";
 
-export const Line = ({
-  x1,
-  y1,
-  x2,
-  y2,
-  ...props
-}: SVGMotionProps<SVGLineElement>) => {
-  return (
-    <motion.line
-      initial={{ x2: x1 as number, y2: y1 as number }}
-      animate={{ x2: x2 as number, y2: y2 as number }}
-      
-      x1={x1}
-      y1={y1}
-      x2={x2}
-      y2={y2}
-      strokeWidth="1"
-      markerEnd="url(#arrowHead)"
-      className="stroke-black dark:stroke-white"
-      {...props}
-    />
-  );
+import { motion } from "framer-motion";
+import { LINE_SIZE } from "../constants";
+
+type LineProps = {
+  isLeft?: boolean;
+  className?: string;
 };
 
+export const Line = ({ isLeft, className }: LineProps) => {
+  return (
+    <div className={cn(`absolute h-${LINE_SIZE}  -z-10`, className)}>
+      <svg className="w-full h-full">
+        <motion.line
+          initial={{ x2: 0, y2: isLeft ? "100%" : 0 }}
+          animate={{ x2: "100%", y2: isLeft ? 0 : "100%" }}
+          // transition={{ type: "linear", duration: durationRef.current }}
+          x1={0}
+          x2={"100%"}
+          y1={isLeft ? "100%" : 0}
+          y2={isLeft ? 0 : "100%"}
+          className="stroke-black dark:stroke-white"
+          strokeWidth="1"
+        />
+      </svg>
+    </div>
+  );
+};

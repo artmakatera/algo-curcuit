@@ -2,6 +2,11 @@ import { STEPS } from "../constants";
 import { TreeViewItem } from "../types";
 import { BinaryTree, TreeNode } from "./base-binary-tree";
 
+export type TreeArrayItem = {
+  node: TreeNode;
+  parent: TreeNode | null;
+  isLeft: boolean;
+}
 
 
 
@@ -21,60 +26,35 @@ class BinaryTreeDraw extends BinaryTree {
     return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
   }
 
-  addTreeNode({ current, result, isLeft, x = 400, y = 50, parent, level, height }: TreeViewItem) {
-    if (current) {
-
-      let nextLevel = level - 1;
-
-      const step = 35;
-      const data = { value: current.value, current, isLeft: !!isLeft, x, y, parent, level, id: current.id }
-      result.push(data);
 
 
 
 
+  getTreeArray(isLeft: boolean = false, node: TreeNode | null = this.root, parent: TreeNode | null = null, result: TreeArrayItem[] = []) {
 
-
-      this.addTreeNode({
-        current: current.left,
-        result, isLeft: true,
-        parent: data,
-        level: nextLevel,
-        height,
-        y: (y + 60),
-        x: x - step * Math.pow(2, nextLevel)
-      });
-      this.addTreeNode({
-        current: current.right,
-        result,
-        isLeft: false,
-        parent: data,
-        level: nextLevel,
-        height,
-        y: (y + 60),
-        x: x + step * Math.pow(2, nextLevel)
-      });
-
+    if (node === null) {
+      return result;
     }
 
-    result.sort((a, b) => (a.current?.value || 0) - (b.current?.value || 0))
+    result.push({
+      isLeft: isLeft,
+      node: node,
+      parent: parent ? parent : null,
+    });
 
-    return result
+    this.getTreeArray(true, node.left, node, result);
+    this.getTreeArray(false, node.right, node, result);
 
+    return result;
   }
 
-
-
-  getTreeView() {
-
-    const result: any[] = [];
-    const height = 4;
-    const width = Math.pow(2, height)
-
-    console.log(width)
-
-    const x = 1226 / 2
-    return this.addTreeNode({ current: this.root, result, x: x, level: height, height });
+  getNodeGroups() {
+    return this.getTreeArray(false).reduce((acc: { [key: string]: TreeArrayItem[] }, item) => {
+      const parentId = item.parent?.id || "null";
+      acc[parentId] = acc[parentId] || [null, null];
+      acc[parentId][item.isLeft ? 0 : 1] = item
+      return acc;
+    }, {});
   }
 
   *insertDraw(value: number) {
@@ -93,7 +73,6 @@ class BinaryTreeDraw extends BinaryTree {
     yield {
       type: STEPS.start,
       node: node,
-      treeView: [...this.getTreeView()]
 
     }
 
@@ -101,7 +80,7 @@ class BinaryTreeDraw extends BinaryTree {
       yield {
         type: STEPS.checkNode,
         node: node,
-        treeView: [...this.getTreeView()]
+
       }
       if (value < node.value) {
         if (node.left === null) {
@@ -109,7 +88,7 @@ class BinaryTreeDraw extends BinaryTree {
           yield {
             type: STEPS.insertNode,
             node: node.left,
-            treeView: [...this.getTreeView()]
+
           }
           return;
         }
@@ -120,7 +99,7 @@ class BinaryTreeDraw extends BinaryTree {
           yield {
             type: STEPS.insertNode,
             node: node.right,
-            treeView: [...this.getTreeView()]
+
           }
           return;
         }
