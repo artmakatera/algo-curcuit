@@ -1,5 +1,6 @@
 export enum STEPS {
   start,
   checkNode,
-  insertNode
+  insertNode,
+  foundNode,
 }

@@ -1,8 +1,9 @@
-import { TreeArrayItem } from "@/widgets/binary-tree/model/binary-tree";
 import { Node } from "./node";
 import { cn } from "@/shared/lib/utils";
 import { Line } from "./line";
 import { GAP_SIZE } from "../constants";
+import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
+import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -10,8 +11,9 @@ const getLen = (childrenArr: TreeArrayItem[]) =>
 export const NodeArray = (props: {
   parentKey: any;
   groups: { [key: string]: TreeArrayItem[] };
+  activeNode: TreeNode | null;
 }) => {
-  const { parentKey, groups } = props;
+  const { activeNode, groups, parentKey } = props;
 
   return (
     groups[parentKey] &&
@@ -58,11 +60,16 @@ export const NodeArray = (props: {
                 hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
               )}
             >
-              <Node current={node} />
+              <Node current={node} active={activeNode?.id === node.id} />
             </div>
           </div>
-          {/* {!isLeft && hasChildren && <div></div>} */}
-          {hasChildren && <NodeArray parentKey={node.id} groups={groups} />}
+          {hasChildren && (
+            <NodeArray
+              parentKey={node.id}
+              groups={groups}
+              activeNode={activeNode}
+            />
+          )}
         </div>
       );
     })

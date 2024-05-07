@@ -1,6 +1,6 @@
 "use client";
 import { BinaryTreeDraw } from "../model/binary-tree";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
 import { ActionType, Dispatch, GenValuePayload } from "../model/types";
@@ -25,6 +25,17 @@ export const BinaryTree = () => {
 
   const ref = useRef<HTMLDivElement>(null);
 
+  const genCall = useMemo(() => {
+    if (activeType === "insert") {
+      return tree.insertDraw as unknown as (
+        v: number | null
+      ) => Generator<GenValuePayload, void, unknown>;
+    }
+    return tree.findDraw as unknown as (
+      v: number | null
+    ) => Generator<GenValuePayload, void, unknown>;
+  }, [activeType]);
+
   const {
     currentSnapshot,
     stepsSnapshot,
@@ -40,18 +51,25 @@ export const BinaryTree = () => {
     delayRef,
   } = useSnapshots<typeof defaultSnapshot, GenValuePayload, [number | null]>({
     defaultDelay: "750",
-    defaultSnapshots: [{ ...defaultSnapshot }],
-    genCall: tree.insertDraw as unknown as (
-      v: number | null
-    ) => Generator<GenValuePayload, void, unknown>,
+    defaultSnapshots: [{ ...defaultSnapshot, treeView: tree.getNodeGroups() }],
+    genCall,
     genCallArgs: [targetValue],
     // autoStart: true,
     // @ts-ignore
     createStepSnapshot,
   });
 
-  const dispatch: Dispatch = ({ type, value }) => {
+  const dispatch: Dispatch = ({ type, value, canClose }) => {
     setTargetValue(value);
+    setActiveType((activeType) =>
+      activeType === type && canClose ? null : type
+    );
+  };
+
+  console.log("value", targetValue);
+
+  const onSubmitValue = () => {
+    visualize();
   };
 
   return (
@@ -65,9 +83,13 @@ export const BinaryTree = () => {
         dispatch={dispatch}
         disabled={isPlaying}
         activeType={activeType}
-        setActiveType={setActiveType}
+        onSubmitValue={onSubmitValue}
       />
-      <NodeArray parentKey={null} groups={tree.getNodeGroups()} />
+      <NodeArray
+        parentKey={null}
+        groups={currentSnapshot.treeView}
+        activeNode={currentSnapshot.node}
+      />
     </div>
   );
 };

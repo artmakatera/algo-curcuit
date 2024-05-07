@@ -7,7 +7,8 @@ export type ActionType = "find" | "insert" | "delete";
 
 export type DispatchPayload = {
   type: ActionType;
-  value: number;
+  value: number | null;
+  canClose?: boolean;
 };
 
 export type Dispatch = (d: DispatchPayload) => void;

@@ -10,6 +10,7 @@ class BinaryTreeDraw extends BinaryTree {
   constructor() {
     super();
     this.insertDraw = this.insertDraw.bind(this);
+    this.findDraw = this.findDraw.bind(this);
   }
 
   getHeight(node: TreeNode | null = this.root): number {
@@ -19,9 +20,6 @@ class BinaryTreeDraw extends BinaryTree {
 
     return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
   }
-
-
-
 
 
   getTreeArray(isLeft: boolean = false, node: TreeNode | null = this.root, parent: TreeNode | null = null, result: TreeArrayItem[] = []) {
@@ -67,7 +65,7 @@ class BinaryTreeDraw extends BinaryTree {
     yield {
       type: STEPS.start,
       node: node,
-      treeView: this.getNodeGroups(),
+      treeView: { ...this.getNodeGroups() },
 
     }
 
@@ -75,7 +73,7 @@ class BinaryTreeDraw extends BinaryTree {
       yield {
         type: STEPS.checkNode,
         node: node,
-        treeView: this.getNodeGroups(),
+        treeView: { ...this.getNodeGroups() },
 
       }
       if (value < node.value) {
@@ -84,7 +82,7 @@ class BinaryTreeDraw extends BinaryTree {
           yield {
             type: STEPS.insertNode,
             node: node.left,
-            treeView: this.getNodeGroups(),
+            treeView: { ...this.getNodeGroups() },
 
           }
           return;
@@ -96,7 +94,7 @@ class BinaryTreeDraw extends BinaryTree {
           yield {
             type: STEPS.insertNode,
             node: node.right,
-            treeView: this.getNodeGroups(),
+            treeView: { ...this.getNodeGroups() },
 
           }
           return;
@@ -108,6 +106,60 @@ class BinaryTreeDraw extends BinaryTree {
     this.count++;
 
   }
+
+  *findDraw(value: number) {
+    if (typeof value !== "number") {
+      return
+    }
+
+    const treeView = this.getNodeGroups();
+
+    //write your code here
+
+    let currentNode = this.root;
+    yield {
+      type: STEPS.start,
+      node: currentNode,
+      treeView: treeView,
+
+    }
+
+    while (currentNode) {
+      if (currentNode.value === value) {
+        yield {
+          type: STEPS.foundNode,
+          node: currentNode,
+          treeView: treeView,
+
+        }
+        return currentNode;
+      }
+
+      if (value > currentNode.value) {
+        yield {
+          type: STEPS.checkNode,
+          node: currentNode,
+          treeView: treeView,
+
+        }
+        currentNode = currentNode.right;
+      } else {
+        yield {
+          type: STEPS.checkNode,
+          node: currentNode,
+          treeView: treeView,
+
+        }
+        currentNode = currentNode.left;
+      }
+
+    }
+
+    return false;
+
+
+  }
+
 }
 
 export { BinaryTreeDraw }

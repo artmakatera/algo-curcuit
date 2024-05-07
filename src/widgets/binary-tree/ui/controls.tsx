@@ -9,7 +9,7 @@ type ControlsProps = {
   dispatch: Dispatch;
   disabled?: boolean;
   activeType: ActionType | null;
-  setActiveType: React.Dispatch<React.SetStateAction<ActionType | null>>;
+  onSubmitValue: (value: number) => void;
 };
 
 type ControlColor = "blue" | "orange" | "red";
@@ -21,6 +21,7 @@ type CollapsibleControlProps = {
   onTriggerClick: (type: ActionType, value: boolean) => void;
   isOpen?: boolean;
   dispatch: Dispatch;
+  onSubmitValue: (value: number) => void;
 };
 
 const CollapsibleControl = ({
@@ -29,12 +30,15 @@ const CollapsibleControl = ({
   color,
   isOpen,
   onTriggerClick,
+  onSubmitValue,
   dispatch,
 }: CollapsibleControlProps) => {
   const [value, setValue] = useState<number>(40);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(Number(e.target.value));
+    const value = Number(e.target.value);
+    setValue(Number(value));
+    dispatch({ type, value, canClose: false });
   };
 
   const handleOpen = (value: boolean) => {
@@ -43,8 +47,7 @@ const CollapsibleControl = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    dispatch({ type, value });
+    onSubmitValue(value);
   };
 
   return (
@@ -91,17 +94,17 @@ type ControlsType = { type: ActionType; color: ControlColor }[];
 const CONTROLS: ControlsType = [
   { type: "find", color: "blue" },
   { type: "insert", color: "orange" },
-  { type: "delete", color: "red" },
+  // { type: "delete", color: "red" },
 ];
 
 export const Controls = ({
   dispatch,
   disabled,
   activeType,
-  setActiveType,
+  onSubmitValue,
 }: ControlsProps) => {
   const toggleActiveType = (type: ActionType) => {
-    setActiveType((activeType) => (activeType === type ? null : type));
+    dispatch({ type, value: null, canClose: true });
   };
 
   return (
@@ -116,6 +119,7 @@ export const Controls = ({
             onTriggerClick={toggleActiveType}
             isOpen={activeType === type}
             dispatch={dispatch}
+            onSubmitValue={onSubmitValue}
           />
         ))}
       </div>

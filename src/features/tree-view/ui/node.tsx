@@ -14,8 +14,10 @@ export const Node = forwardRef(
     return (
       <motion.div
         className={cn(
+          "leading-10",
           `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
-          "bg-green-600  text-center  text-white rounded-full"
+          "bg-green-600  text-center  text-white rounded-full",
+          active && "bg-blue-600"
         )}
         ref={ref}
         initial={{ scale: 0 }}
