@@ -56,7 +56,7 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshot: reset,
+    rebuildSnapshots: reset,
     handlePreviousStep,
     handleNextStep,
     visualize,
@@ -78,13 +78,9 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
     visualize();
   }, [visualize]);
 
-  const updateTarget = useCallback(
-    (value: string) => {
-      reset();
-      setTarget(value === "" ? null : +value);
-    },
-    [reset]
-  );
+  const updateTarget = useCallback((value: string) => {
+    setTarget(value === "" ? null : +value);
+  }, []);
 
   return (
     <div>
@@ -111,7 +107,10 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
 
             <EditButton
               editMode={editMode}
-              onClick={() => setEditMode((prev) => !prev)}
+              onClick={() => {
+                reset();
+                setEditMode((prev) => !prev);
+              }}
               disabled={target === null || isPlaying}
             />
           </div>

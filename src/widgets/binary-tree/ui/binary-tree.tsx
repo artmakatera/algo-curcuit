@@ -42,7 +42,6 @@ export const BinaryTree = () => {
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshot: reset,
     handlePreviousStep,
     handleNextStep,
     visualize,

@@ -13,18 +13,6 @@ export const CodeViewer = ({
   language = "javascript",
   highlight,
 }: CodeViewerProps) => {
-  const mounted = useRef(false);
-
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-
-  if (!mounted.current) {
-    return null;
-  }
 
   return (
     <div className="shadow-md max-w-5xl text-sm">

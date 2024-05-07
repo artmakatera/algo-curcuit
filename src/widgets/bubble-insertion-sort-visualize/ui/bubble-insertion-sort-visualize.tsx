@@ -56,7 +56,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshot: reset,
+    rebuildSnapshots: reset,
     handlePreviousStep,
     handleNextStep,
     visualize,
@@ -69,7 +69,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
     genCall: sort as unknown as (
       arr: number[]
     ) => Generator<StepSnapshotPayload, void, unknown>,
-    genCallArgs: [array],
+    genCallArgs: [[...array]],
     createStepSnapshot,
     getGoBackSnapshot,
   });
@@ -104,7 +104,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
         />
       </div>
       <VisualSortArrayAnimated
-        arrToSort={currentSnapshot.array}
+        arrToSort={editMode ? array : currentSnapshot.array}
         compareIndexes={currentSnapshot.compareIndexes}
         swapIndexes={currentSnapshot.swapIndexes}
         sortedIndex={currentSnapshot.sortedIndex}

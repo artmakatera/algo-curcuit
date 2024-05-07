@@ -7,67 +7,69 @@ import { BaseSnapshot } from "../types/snapshot";
 interface BaseUseGeneratorCallProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> {
   genCall: (...args: P) => Generator<G, void, unknown>;
   createStepSnapshot: (payload: G) => S;
-  genCallArgs: P;
 }
 
 interface UseGeneratorCallProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> extends BaseUseGeneratorCallProps<S, G, P> {
-  setStepSnapshots: React.Dispatch<React.SetStateAction<S[]>>;
-  setSnapshotIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 
 export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>({
-  setStepSnapshots,
-  setSnapshotIndex,
   genCall,
   createStepSnapshot,
-  genCallArgs
 }: UseGeneratorCallProps<S, G, P>
 ) => {
-  const args = JSON.stringify(genCallArgs);
 
-  useEffect(() => {
-    const getSnapshots = async (...genCallArgs: P) => {
-      let generator = genCall(...genCallArgs);
-      const snapshots: G[] = [];
+  const getSnapshots = useCallback((...genCallArgs: P) => {
 
-      let next = generator.next();
-      while (!next.done) {
-        const { value } = next;
-        snapshots.push(value as G);
-        next = generator.next();
-      }
-      if (!snapshots.length) return;
-      setSnapshotIndex(0);
-      setStepSnapshots(snapshots.map(value =>
-        createStepSnapshot(value as G),
-      ));
-    };
-    getSnapshots(...JSON.parse(args) as P);
+    let generator = genCall(...genCallArgs);
+    const snapshots: G[] = [];
+
+    let next = generator.next();
+    while (!next.done) {
+      const { value } = next;
+      snapshots.push(value as G);
+      next = generator.next();
+    }
+    if (!snapshots.length) return;
+    return snapshots.map(value =>
+      createStepSnapshot(value as G),
+    )
+  }, [genCall, createStepSnapshot,]);
 
 
-  }, [setStepSnapshots, createStepSnapshot, genCall, args, setSnapshotIndex]);
-
+  return getSnapshots
 }
-
 
 interface UseSnapshotsProps<S extends BaseSnapshot, G extends unknown, P extends unknown[]> extends BaseUseGeneratorCallProps<S, G, P> {
   defaultDelay?: string;
   defaultSnapshots?: S[];
   getGoBackSnapshot?: (snapshot: S) => S;
-  autoStart?: boolean;
+  genCallArgs: P;
+  createStepSnapshot: (payload: G) => S;
+
+
 }
 
 
 export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extends unknown[]>(options: UseSnapshotsProps<S, G, P>) => {
-  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot, getGoBackSnapshot, autoStart } = options;
+  const { defaultDelay = "750", defaultSnapshots = [], genCall, genCallArgs, createStepSnapshot, getGoBackSnapshot } = options;
   const delayRef = useRef<string>(defaultDelay);
+
+  const createSnapshots = useGeneratorCall({
+    genCall: genCall,
+    createStepSnapshot: createStepSnapshot,
+  })
+
 
   const startedRef = useRef<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [stepsSnapshot, setStepSnapshots] = useState<S[]>(defaultSnapshots);
+  const [stepsSnapshot, setStepSnapshots] = useState<S[]>(() => createSnapshots(...genCallArgs) || defaultSnapshots);
   const [snapshotIndex, setSnapshotIndex] = useState<number>(0);
   const [isGoBack, setIsGoBack] = useState<boolean>(false);
+
+  const updateSnapshots = useCallback(() => {
+    setStepSnapshots(createSnapshots(...genCallArgs) || defaultSnapshots);
+  }, [createSnapshots, genCallArgs, defaultSnapshots]);
 
 
   const currentSnapshot = useMemo(() => {
@@ -87,10 +89,17 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
   const hasPrevSnapshot = snapshotIndex > 0;
   const hasNextSnapshot = !!stepsSnapshot[snapshotIndex + 1];
 
+
+
   const resetSnapshot = useCallback(() => {
     setIsGoBack(false);
     setSnapshotIndex(0);
   }, []);
+
+  const rebuildSnapshots = useCallback(() => {
+    resetSnapshot();
+    updateSnapshots();
+  }, [updateSnapshots, resetSnapshot]);
 
   const clearSnapshots = useCallback(() => {
     setIsGoBack(false);
@@ -144,20 +153,6 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     delayRef.current = value;
   }, []);
 
-  useGeneratorCall({
-    setStepSnapshots,
-    genCall: genCall,
-    createStepSnapshot: createStepSnapshot,
-    genCallArgs: genCallArgs,
-    setSnapshotIndex
-
-  })
-
-  useEffect(() => {
-    if (autoStart) {
-      handlePlay()
-    }
-  }, [autoStart, stepsSnapshot, handlePlay]);
 
 
   return {
@@ -169,13 +164,14 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
-    resetSnapshot,
+    rebuildSnapshots,
     clearSnapshots,
     handlePreviousStep,
     handleNextStep,
     visualize: handlePlay,
     isPlaying,
     onChangeSpeed,
+    createSnapshots,
     delayRef
   };
 }
