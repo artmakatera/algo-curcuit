@@ -22,8 +22,6 @@ export class BinaryTree {
     this.root = null;
   }
   insert(value: number) {
-    //return this once you are done 
-    //write your code here
 
     if (this.root === null) {
       this.root = new TreeNode(value)
@@ -71,8 +69,6 @@ export class BinaryTree {
     }
 
     return false;
-
-
   }
 
 

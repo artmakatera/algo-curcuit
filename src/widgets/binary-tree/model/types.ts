@@ -17,7 +17,9 @@ export type Dispatch = (d: DispatchPayload) => void;
 export type GenValuePayload = {
   type: Partial<STEPS>;
   node: TreeNode,
-  treeView: TreeArrayItem[]
+  treeView: TreeArrayItem[],
+
+  insertedNode?: TreeNode,
 };
 
 export type GenValue = Generator<GenValuePayload, void, number>;
@@ -27,6 +29,8 @@ export interface StepSnapshot extends BaseSnapshot {
   type: Partial<STEPS>,
   highlightLines: number[],
   node: TreeNode,
+  insertedNode?: TreeNode,
+  deleteNode?: TreeNode,
   treeView: TreeArrayItem[]
 };
 

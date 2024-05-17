@@ -7,25 +7,30 @@ import { NODE_SIZE } from "../constants";
 type NodeItemProps = {
   current: TreeNode;
   active?: boolean;
+  inserted?: boolean;
 };
 
 export const Node = forwardRef(
-  ({ current, active }: NodeItemProps, ref: ForwardedRef<HTMLDivElement>) => {
+  (
+    { current, active, inserted }: NodeItemProps,
+    ref: ForwardedRef<HTMLDivElement>
+  ) => {
     return (
       <motion.div
         className={cn(
           "leading-10",
           `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
           "bg-green-600  text-center  text-white rounded-full",
-          active && "bg-blue-600"
+          active && "bg-blue-600",
+          inserted && "bg-orange-600"
         )}
         ref={ref}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{
           type: "spring",
-          duration: current.value === 60 ? 0.8 : 0.3,
-          delay: current.value === 60 ? 0.5 : 0,
+          duration: inserted ? 0.8 : 0.3,
+          delay: inserted ? 0.5 : 0,
         }}
       >
         {current?.value}

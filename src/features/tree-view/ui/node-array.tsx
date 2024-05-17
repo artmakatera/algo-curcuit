@@ -12,8 +12,9 @@ export const NodeArray = (props: {
   parentKey: any;
   groups: { [key: string]: TreeArrayItem[] };
   activeNode: TreeNode | null;
+  insertedNode?: TreeNode | null;
 }) => {
-  const { activeNode, groups, parentKey } = props;
+  const { activeNode, groups, parentKey, insertedNode } = props;
 
   return (
     groups[parentKey] &&
@@ -22,6 +23,7 @@ export const NodeArray = (props: {
       const { node, isLeft } = item;
 
       const hasChildren = getLen(groups[node.id]) > 0;
+
       return (
         <div
           key={node.id}
@@ -60,7 +62,11 @@ export const NodeArray = (props: {
                 hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
               )}
             >
-              <Node current={node} active={activeNode?.id === node.id} />
+              <Node
+                current={node}
+                active={activeNode?.id === node.id}
+                inserted={insertedNode?.id === node.id}
+              />
             </div>
           </div>
           {hasChildren && (
@@ -68,6 +74,7 @@ export const NodeArray = (props: {
               parentKey={node.id}
               groups={groups}
               activeNode={activeNode}
+              insertedNode={insertedNode}
             />
           )}
         </div>

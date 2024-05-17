@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dispatch, ActionType } from "../model/types";
-import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { CollapsibleContent } from "@radix-ui/react-collapsible";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 
 type ControlsProps = {
   dispatch: Dispatch;
@@ -56,16 +55,6 @@ const CollapsibleControl = ({
       onOpenChange={handleOpen}
       className=" space-y-2 flex flex-col items-center justify-center"
     >
-      <CollapsibleTrigger asChild>
-        <Button
-          className={`px-2 w-40 capitalize`}
-          variant={isOpen ? "outline" : "default"}
-          onClick={() => {}}
-          disabled={disabled}
-        >
-          {type}
-        </Button>
-      </CollapsibleTrigger>
       <CollapsibleContent asChild>
         <form
           className="flex items-center justify-center gap-2"
@@ -85,6 +74,16 @@ const CollapsibleControl = ({
           </Button>
         </form>
       </CollapsibleContent>
+      <CollapsibleTrigger asChild>
+        <Button
+          className={`px-2 w-40 capitalize`}
+          variant={isOpen ? "outline" : "default"}
+          onClick={() => {}}
+          disabled={disabled}
+        >
+          {type}
+        </Button>
+      </CollapsibleTrigger>
     </Collapsible>
   );
 };
@@ -104,12 +103,12 @@ export const Controls = ({
   onSubmitValue,
 }: ControlsProps) => {
   const toggleActiveType = (type: ActionType) => {
-    dispatch({ type, value: null, canClose: true });
+    dispatch({ type, value: 40, canClose: true });
   };
 
   return (
     <div>
-      <div className="flex items-start justify-center w-full">
+      <div className="flex items-end justify-center w-full">
         {CONTROLS.map(({ type, color }) => (
           <CollapsibleControl
             key={type}

@@ -31,6 +31,7 @@ export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P ex
       next = generator.next();
     }
     if (!snapshots.length) return;
+    console.log("snapshots", snapshots);
     return snapshots.map(value =>
       createStepSnapshot(value as G),
     )
@@ -135,12 +136,15 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     setIsPlaying(value);
   }, []);
 
-  const handlePlay = useCallback(async () => {
 
+  const handlePlay = useCallback(async () => {
+    console.log("handlePlay", startedRef.current);
     if (startedRef.current === true) {
       setStarted(false);
       return;
     }
+
+
 
     setStarted(true);
 
@@ -165,6 +169,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     hasPrevSnapshot,
     hasNextSnapshot,
     rebuildSnapshots,
+    updateSnapshots,
     clearSnapshots,
     handlePreviousStep,
     handleNextStep,

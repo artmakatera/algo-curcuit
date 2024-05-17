@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { CodeBlock, dracula } from "react-code-blocks";
 
-type CodeViewerProps = {
+export type CodeViewerProps = {
   text: string;
   language?: string;
   highlight?: string;
@@ -13,12 +12,15 @@ export const CodeViewer = ({
   language = "javascript",
   highlight,
 }: CodeViewerProps) => {
-
   return (
     <div className="shadow-md max-w-5xl text-sm">
       <CodeBlock
         text={text}
-        codeContainerStyle={{ width: "500px", borderRadius: "25px" }}
+        codeContainerStyle={{
+          width: "500px",
+          borderRadius: "25px",
+          fontSize: "0.8rem",
+        }}
         language={language}
         showLineNumbers
         theme={dracula}

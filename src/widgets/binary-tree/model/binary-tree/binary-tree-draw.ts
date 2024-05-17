@@ -58,6 +58,13 @@ class BinaryTreeDraw extends BinaryTree {
 
     if (this.root === null) {
       this.root = new TreeNode(value)
+      yield {
+        type: STEPS.insertNode,
+        node: this.root,
+        insertedNode: this.root,
+        treeView: { ...this.getNodeGroups() },
+
+      }
       return;
     }
 
@@ -81,7 +88,8 @@ class BinaryTreeDraw extends BinaryTree {
           node.left = new TreeNode(value);
           yield {
             type: STEPS.insertNode,
-            node: node.left,
+            node: node,
+            insertedNode: node.left,
             treeView: { ...this.getNodeGroups() },
 
           }
@@ -93,7 +101,8 @@ class BinaryTreeDraw extends BinaryTree {
           node.right = new TreeNode(value);
           yield {
             type: STEPS.insertNode,
-            node: node.right,
+            node: node,
+            insertedNode: node.right,
             treeView: { ...this.getNodeGroups() },
 
           }
