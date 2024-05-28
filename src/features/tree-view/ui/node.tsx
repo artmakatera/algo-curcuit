@@ -1,31 +1,87 @@
 import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
-import { ForwardedRef, forwardRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/shared/lib/utils";
 import { NODE_SIZE } from "../constants";
+import { useNodeToRemove } from "../context/node-to-remove-context";
 
 type NodeItemProps = {
   current: TreeNode;
   active?: boolean;
   inserted?: boolean;
+  found?: boolean;
+  isNodeToRemove?: boolean;
+  isMinValueNode?: boolean;
+  preventAnimation?: boolean;
 };
 
-export const Node = forwardRef(
-  (
-    { current, active, inserted }: NodeItemProps,
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    return (
+const getAnimationCoords = (
+  ref: RefObject<HTMLDivElement>,
+  targetRef?: RefObject<HTMLDivElement>
+) => {
+  const targetBoundingBox = targetRef?.current?.getBoundingClientRect();
+  if (!ref.current || !targetBoundingBox) {
+    return {
+      x: 0,
+      y: 0,
+    };
+  }
+
+  const { x, y } = ref.current.getBoundingClientRect();
+  const targetX = targetBoundingBox.x - x;
+  const targetY = targetBoundingBox.y - y;
+
+  return {
+    x: targetX,
+    y: targetY,
+  };
+};
+
+export const Node = ({
+  current,
+  active,
+  inserted,
+  found,
+  isNodeToRemove,
+  isMinValueNode,
+  preventAnimation,
+}: NodeItemProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { nodeToRemove, setNodeToRemove } = useNodeToRemove();
+
+  useEffect(() => {
+    if (isNodeToRemove && ref.current) {
+      setNodeToRemove(ref);
+    }
+  }, [setNodeToRemove, isNodeToRemove]);
+
+  const { x, y } = getAnimationCoords(ref, nodeToRemove);
+
+  return (
+    <motion.div
+      animate={isMinValueNode ? "minVal" : "normal"}
+      variants={{
+        minVal: {
+          x,
+          y,
+          transition: {
+            duration: preventAnimation ? 0 : 0.2,
+          },
+        },
+      }}
+    >
       <motion.div
         className={cn(
           "leading-10",
           `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
           "bg-green-600  text-center  text-white rounded-full",
           active && "bg-blue-600",
-          inserted && "bg-orange-600"
+          found && "bg-yellow-500 scale-50",
+          inserted && "bg-orange-600",
+          isNodeToRemove && "bg-red-600"
         )}
         ref={ref}
-        initial={{ scale: 0 }}
+        initial={{ scale: preventAnimation ? 1 : 0 }}
         animate={{ scale: 1 }}
         transition={{
           type: "spring",
@@ -35,8 +91,8 @@ export const Node = forwardRef(
       >
         {current?.value}
       </motion.div>
-    );
-  }
-);
+    </motion.div>
+  );
+};
 
 Node.displayName = "Node";

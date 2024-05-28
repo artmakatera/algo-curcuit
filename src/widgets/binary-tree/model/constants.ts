@@ -3,4 +3,13 @@ export enum STEPS {
   checkNode,
   insertNode,
   foundNode,
+  notFound,
+
+  highlightToRemove,
+  removeNode,
+  removeSingleChild,
+  removedNode,
+  checkMinValue,
+  foundMinValue,
+
 }

@@ -28,6 +28,7 @@ import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewer } from "@/components/ui/code-viewer";
 import { EditButton } from "@/features/edit-button";
+import { NotFoundTitle } from "@/components/ui/not-found-title";
 
 type BinarySearchVisualizeProps<S extends StepSnapshot> = {
   defaultArray: number[];
@@ -169,14 +170,8 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
             })}
           </VisualArrayWrapper>
         )}
-        <TypographyH3
-          className={cn(
-            "text-center font-bold text-disabled",
-            currentSnapshot.type !== STEPS.notFound && "invisible"
-          )}
-        >
-          {"Not Found :("}
-        </TypographyH3>
+       
+        <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
       </div>
       <div>
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>

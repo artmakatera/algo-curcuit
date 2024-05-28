@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dispatch, ActionType } from "../model/types";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
 
 type ControlsProps = {
   dispatch: Dispatch;
@@ -93,7 +97,7 @@ type ControlsType = { type: ActionType; color: ControlColor }[];
 const CONTROLS: ControlsType = [
   { type: "find", color: "blue" },
   { type: "insert", color: "orange" },
-  // { type: "delete", color: "red" },
+  { type: "delete", color: "red" },
 ];
 
 export const Controls = ({

@@ -20,6 +20,8 @@ export type GenValuePayload = {
   treeView: TreeArrayItem[],
 
   insertedNode?: TreeNode,
+  nodeToRemove?: TreeNode,
+  minValueNode?: TreeNode,
 };
 
 export type GenValue = Generator<GenValuePayload, void, number>;
@@ -31,6 +33,8 @@ export interface StepSnapshot extends BaseSnapshot {
   node: TreeNode,
   insertedNode?: TreeNode,
   deleteNode?: TreeNode,
+  nodeToRemove?: TreeNode,
+  minValueNode?: TreeNode,
   treeView: TreeArrayItem[]
 };
 

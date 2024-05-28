@@ -11,6 +11,7 @@ class BinaryTreeDraw extends BinaryTree {
     super();
     this.insertDraw = this.insertDraw.bind(this);
     this.findDraw = this.findDraw.bind(this);
+    this.removeDraw = this.removeDraw.bind(this);
   }
 
   getHeight(node: TreeNode | null = this.root): number {
@@ -44,7 +45,7 @@ class BinaryTreeDraw extends BinaryTree {
     return this.getTreeArray(false).reduce((acc: TreeArrayGroups, item) => {
       const parentId = item.parent?.id || "null";
       acc[parentId] = acc[parentId] || [null, null];
-      acc[parentId][item.isLeft ? 0 : 1] = item
+      acc[parentId][item.isLeft ? 0 : 1] = structuredClone(item)
       return acc;
     }, {});
   }
@@ -164,9 +165,186 @@ class BinaryTreeDraw extends BinaryTree {
 
     }
 
+    yield {
+      type: STEPS.notFound,
+      node: null,
+      treeView: treeView,
+
+    }
+
     return false;
 
 
+  }
+
+  *removeDraw(value: number, root: TreeNode | null = this.root) {
+    yield {
+      type: STEPS.start,
+      node: root,
+      treeView: { ...this.getNodeGroups() },
+    }
+
+    if (this.root === null) {
+      return;
+    }
+
+    let currentNode: TreeNode | null = this.root;
+    let parentNode: TreeNode | null = null;
+
+    while (currentNode) {
+      yield {
+        type: STEPS.checkNode,
+        node: currentNode,
+        treeView: { ...this.getNodeGroups() },
+
+      }
+
+      if (value < currentNode.value) {
+        parentNode = currentNode;
+        currentNode = currentNode.left;
+        continue;
+      }
+
+      if (value > currentNode.value) {
+        parentNode = currentNode;
+        currentNode = currentNode.right;
+        continue;
+      }
+
+      yield {
+        type: STEPS.highlightToRemove,
+        node: currentNode,
+        nodeToRemove: currentNode,
+        treeView: { ...this.getNodeGroups() },
+
+      }
+      if (currentNode.left === null) {
+        if (parentNode === null) {
+          this.root = currentNode.right;
+          yield {
+            type: STEPS.removedNode,
+            node: null,
+
+            treeView: { ...this.getNodeGroups() },
+
+          }
+          return;
+        }
+
+        yield {
+          type: STEPS.removeSingleChild,
+          nodeToRemove: currentNode,
+          treeView: { ...this.getNodeGroups() },
+
+        }
+
+        if (currentNode.value < parentNode.value) {
+          let id = parentNode?.left?.id
+
+          parentNode.left = currentNode.right;
+          if (id && parentNode?.left?.id) {
+            parentNode.left.id = id;
+          }
+
+        } else {
+          let id = parentNode?.right?.id
+
+          parentNode.right = currentNode.right;
+          if (id && parentNode?.right?.id) {
+            parentNode.right.id = id;
+          }
+        }
+
+        yield {
+          type: STEPS.removedNode,
+          node: null,
+          treeView: { ...this.getNodeGroups() },
+
+        }
+
+
+        return;
+      }
+
+
+      if (currentNode.right === null) {
+        if (parentNode === null) {
+          this.root = currentNode.left;
+          yield {
+            type: STEPS.removedNode,
+            node: null,
+            treeView: { ...this.getNodeGroups() },
+
+          }
+          return;
+        }
+
+
+
+
+        if (currentNode.value < parentNode.value) {
+
+          parentNode.left = currentNode.left;
+        } else {
+          parentNode.right = currentNode.left;
+
+        }
+
+        yield {
+          type: STEPS.removedNode,
+          node: null,
+          treeView: { ...this.getNodeGroups() },
+
+        }
+
+        return;
+      }
+
+      let minValue = currentNode.right;
+      let minParent = currentNode;
+      yield {
+        type: STEPS.checkMinValue,
+        node: minValue,
+        nodeToRemove: currentNode,
+        treeView: { ...this.getNodeGroups() },
+      }
+
+      while (minValue.left) {
+        minParent = minValue;
+        minValue = minValue.left;
+        yield {
+          type: STEPS.checkMinValue,
+          node: minValue,
+          nodeToRemove: currentNode,
+          treeView: { ...this.getNodeGroups() },
+        }
+
+      }
+      yield {
+        type: STEPS.foundMinValue,
+        minValueNode: minValue,
+        nodeToRemove: currentNode,
+        treeView: { ...this.getNodeGroups() },
+      }
+
+
+
+      currentNode.value = minValue.value;
+      if (minValue.value < minParent.value) {
+        minParent.left = minValue.right;
+      } else {
+        minParent.right = minValue.right;
+      }
+
+      yield {
+        type: STEPS.removedNode,
+        node: null,
+        treeView: { ...this.getNodeGroups() },
+
+      }
+
+      return;
+    }
   }
 
 }

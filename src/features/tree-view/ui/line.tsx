@@ -3,14 +3,17 @@ import { cn } from "@/shared/lib/utils";
 
 import { motion } from "framer-motion";
 import { LINE_SIZE } from "../constants";
-import { init } from "next/dist/compiled/webpack/webpack";
 
 type LineProps = {
   isLeft?: boolean;
   className?: string;
+  preventAnimation?: boolean;
 };
 
-const getAnimationProps = (isLeft?: boolean) => {
+const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
+  if (preventAnimation) {
+    return {};
+  }
   if (isLeft) {
     return {
       initial: {
@@ -21,6 +24,11 @@ const getAnimationProps = (isLeft?: boolean) => {
       animate: {
         x1: 0,
         y1: "100%",
+        y2: 0,
+      },
+      exit: {
+        x1: "100%",
+        y1: 0,
         y2: 0,
       },
     };
@@ -34,16 +42,20 @@ const getAnimationProps = (isLeft?: boolean) => {
       x2: "100%",
       y2: "100%",
     },
+    exit: {
+      x2: 0,
+      y2: 0,
+    },
   };
 };
 
-export const Line = ({ isLeft, className }: LineProps) => {
+export const Line = ({ isLeft, className, preventAnimation }: LineProps) => {
   return (
-    <div className={cn(`absolute h-${LINE_SIZE}  -z-10`, className)}>
+    <div className={cn(`absolute h-${LINE_SIZE} -z-10`, className)}>
       <svg className="w-full h-full">
         <motion.line
-          {...getAnimationProps(isLeft)}
-          transition={{ duration: 0.8 }}
+          {...getAnimationProps(isLeft, preventAnimation)}
+          transition={{ duration: preventAnimation ? 0 : 0.8 }}
           x1={0}
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
