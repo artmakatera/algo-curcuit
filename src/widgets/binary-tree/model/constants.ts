@@ -11,5 +11,6 @@ export enum STEPS {
   removedNode,
   checkMinValue,
   foundMinValue,
+  minValueFirstRightChild,
 
 }

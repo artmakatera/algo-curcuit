@@ -21,10 +21,12 @@ type NodeArrayProps = {
   nodeToRemove?: TreeNode | null;
   minValueNode?: TreeNode | null;
   isRemoveSingleChild?: boolean;
-  isParentToRemove?: boolean;
+  isSingleChildToRemove?: boolean;
   parentRef?: React.RefObject<HTMLDivElement>;
   durationMs?: number;
   preventNodeEdgeAnimation?: boolean;
+  isMinValueFirstRightChild?: boolean;
+  isRightChildToRemove?: boolean;
 };
 
 export const NodeArray = (props: NodeArrayProps) => {
@@ -60,10 +62,12 @@ function NodeArrayItem({
     nodeToRemove,
     minValueNode,
     isRemoveSingleChild,
-    isParentToRemove,
+    isSingleChildToRemove,
     parentRef,
     durationMs,
     preventNodeEdgeAnimation,
+    isMinValueFirstRightChild,
+    isRightChildToRemove,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -77,17 +81,21 @@ function NodeArrayItem({
   const isMinNode = minValueNode?.id === node.id;
   const isSingleRemove = isNodeToRemove && isRemoveSingleChild;
 
+  const isChildAndRemove =
+    isSingleChildToRemove || (isRightChildToRemove && !isLeft);
+
   return (
     <CollapseDiv
       key={node.id}
       className={cn(`grid gap-${GAP_SIZE}`)}
       animate={
-        isSingleRemove
+        isSingleRemove && hasChildren
           ? "singleChildRemove"
-          : isParentToRemove
+          : isChildAndRemove
           ? "slideToParent"
           : "normal"
       }
+      hasChildren={hasChildren}
       variants={getSlideToParentVariant(parentRef, wrapperRef, durationMs)}
       style={{
         gridArea: `item${index + 1}`,
@@ -105,7 +113,7 @@ function NodeArrayItem({
           gridColumn: isLeft ? "2 / -1" : undefined,
         }}
       >
-        {parentKey !== null && !isMinNode && !isParentToRemove && (
+        {parentKey !== null && !isMinNode && !isChildAndRemove && (
           <Line
             className={cn(
               "h-12",
@@ -133,13 +141,15 @@ function NodeArrayItem({
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}
             preventAnimation={preventNodeEdgeAnimation}
+            hasChildren={hasChildren}
           />
         </div>
       </div>
       <NodeArray
         {...props}
         parentKey={node.id}
-        isParentToRemove={isSingleRemove}
+        isSingleChildToRemove={isSingleRemove}
+        isRightChildToRemove={isNodeToRemove && isMinValueFirstRightChild}
         parentRef={wrapperRef}
       />
     </CollapseDiv>

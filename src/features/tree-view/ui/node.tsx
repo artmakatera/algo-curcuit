@@ -13,6 +13,7 @@ type NodeItemProps = {
   isNodeToRemove?: boolean;
   isMinValueNode?: boolean;
   preventAnimation?: boolean;
+  hasChildren?: boolean;
 };
 
 const getAnimationCoords = (
@@ -38,6 +39,7 @@ const getAnimationCoords = (
 };
 
 export const Node = ({
+  hasChildren,
   current,
   active,
   inserted,
@@ -57,15 +59,28 @@ export const Node = ({
 
   const { x, y } = getAnimationCoords(ref, nodeToRemove);
 
+  const getAnimateType = () => {
+    if (isMinValueNode) return "minVal";
+
+    return "normal";
+  };
+
   return (
     <motion.div
       animate={isMinValueNode ? "minVal" : "normal"}
+      exit={"exit"}
       variants={{
         minVal: {
           x,
           y,
           transition: {
             duration: preventAnimation ? 0 : 0.2,
+          },
+        },
+        exit: {
+          opacity: 0,
+          transition: {
+            duration: 0,
           },
         },
       }}

@@ -26,11 +26,6 @@ const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
         y1: "100%",
         y2: 0,
       },
-      exit: {
-        x1: "100%",
-        y1: 0,
-        y2: 0,
-      },
     };
   }
   return {
@@ -42,10 +37,13 @@ const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
       x2: "100%",
       y2: "100%",
     },
-    exit: {
-      x2: 0,
-      y2: 0,
-    },
+    // exit: {
+    //   x2: 0,
+    //   y2: 0,
+    //   transition: {
+    //     duration: 0.1,
+    //   },
+    // },
   };
 };
 

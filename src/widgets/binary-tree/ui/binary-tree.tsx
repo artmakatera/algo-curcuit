@@ -117,6 +117,9 @@ export const BinaryTree = () => {
             isRemoveSingleChild={
               currentSnapshot.type === STEPS.removeSingleChild
             }
+            isMinValueFirstRightChild={
+              currentSnapshot.type === STEPS.minValueFirstRightChild
+            }
             preventNodeEdgeAnimation={
               currentSnapshot.type === STEPS.removedNode
             }

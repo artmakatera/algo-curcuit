@@ -280,7 +280,12 @@ class BinaryTreeDraw extends BinaryTree {
         }
 
 
+        yield {
+          type: STEPS.removeSingleChild,
+          nodeToRemove: currentNode,
+          treeView: { ...this.getNodeGroups() },
 
+        }
 
         if (currentNode.value < parentNode.value) {
 
@@ -320,11 +325,23 @@ class BinaryTreeDraw extends BinaryTree {
         }
 
       }
-      yield {
-        type: STEPS.foundMinValue,
-        minValueNode: minValue,
-        nodeToRemove: currentNode,
-        treeView: { ...this.getNodeGroups() },
+
+      if (minValue === currentNode.right) {
+        yield {
+          type: STEPS.minValueFirstRightChild,
+          nodeToRemove: currentNode,
+          treeView: { ...this.getNodeGroups() },
+
+        }
+      } else {
+
+        yield {
+          type: STEPS.foundMinValue,
+          minValueNode: minValue,
+          node: minValue,
+          nodeToRemove: currentNode,
+          treeView: { ...this.getNodeGroups() },
+        }
       }
 
 
