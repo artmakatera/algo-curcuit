@@ -17,18 +17,20 @@ import { CodeSection } from "./code-section";
 import { STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
 import { NodeToRemoveProvider } from "../../../features/tree-view/context/node-to-remove-context";
+import TypographyH3 from "@/components/ui/typography/typographyH3";
 
 const tree = new BinaryTreeDraw();
 
 const baseArrayData = [
-  20, 6, 35, 8, 27, 55, 1, 10, 30, 40, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
-  33, 42, 65, 75, 3, 32, 34,
+  20, 6, 40, 8, 27, 55, 1,
+  //  10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
+  // 33, 42, 65, 75, 3, 32, 34,
 ];
 
 baseArrayData.forEach((value) => tree.insert(value));
 
 export const BinaryTree = () => {
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
   const [codeLang] = useState(LANGUAGES.javascript);
@@ -75,13 +77,18 @@ export const BinaryTree = () => {
   });
 
   const dispatch: Dispatch = ({ type, value, canClose }) => {
+    setError(null);
     setTargetValue(value);
     setActiveType((activeType) =>
       activeType === type && canClose ? null : type
     );
   };
 
-  const onSubmitValue = () => {
+  const onSubmitValue = (value: number) => {
+    if (activeType === "insert" && tree.isValueExisted(value)) {
+      setError("Value already exists");
+      return;
+    }
     rebuildSnapshots();
   };
 
@@ -90,21 +97,23 @@ export const BinaryTree = () => {
   }, [stepsSnapshot, visualize]);
 
   return (
-    <div
-      ref={ref}
-      className=" flex min-h-[calc(100vh-54px)] flex-col gap-8 items-center p-2 md:p-4 mx-auto"
-      onClick={() => setIsAnimating((isAnimating) => !isAnimating)}
-    >
-      <TypographyH1>Binary Search Tree</TypographyH1>
+    <div ref={ref} className=" items-center p-2 md:p-4 mx-auto">
+      <TypographyH1 className="w-max text-center m-auto">
+        Binary Search Tree
+      </TypographyH1>
       <Controls
         dispatch={dispatch}
         disabled={isPlaying}
         activeType={activeType}
         onSubmitValue={onSubmitValue}
       />
+
+      {error && (
+        <p className="text-center text-red-600 font-bold mt-2">{error}</p>
+      )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
 
-      <div className="grow">
+      <div className="m-auto w-fit mt-8">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
           <NodeArray
             parentKey={null}

@@ -21,7 +21,7 @@ type CollapsibleControlProps = {
   type: ActionType;
   disabled?: boolean;
   color: ControlColor;
-  onTriggerClick: (type: ActionType, value: boolean) => void;
+  onTriggerClick: (type: ActionType, value: number) => void;
   isOpen?: boolean;
   dispatch: Dispatch;
   onSubmitValue: (value: number) => void;
@@ -36,20 +36,22 @@ const CollapsibleControl = ({
   onSubmitValue,
   dispatch,
 }: CollapsibleControlProps) => {
-  const [value, setValue] = useState<number>(40);
+  const [value, setValue] = useState<number | "">("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    setValue(Number(value));
-    dispatch({ type, value, canClose: false });
+    const value = e.target.value;
+
+    setValue(value === "" ? "" : Number(value));
+    dispatch({ type, value: Number(value), canClose: false });
   };
 
-  const handleOpen = (value: boolean) => {
-    onTriggerClick(type, value);
+  const handleOpen = () => {
+    onTriggerClick(type, value || 0);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (typeof value !== "number") return;
     onSubmitValue(value);
   };
 
@@ -59,28 +61,9 @@ const CollapsibleControl = ({
       onOpenChange={handleOpen}
       className=" space-y-2 flex flex-col items-center justify-center"
     >
-      <CollapsibleContent asChild>
-        <form
-          className="flex items-center justify-center gap-2"
-          onSubmit={handleSubmit}
-        >
-          <Input
-            className="w-20"
-            value={value}
-            onChange={handleChange}
-            type="number"
-          />
-          <Button
-            className={`bg-${color}-500 hover:bg-${color}-400 text-white`}
-            type="submit"
-          >
-            Go
-          </Button>
-        </form>
-      </CollapsibleContent>
       <CollapsibleTrigger asChild>
         <Button
-          className={`px-2 w-40 capitalize`}
+          className={`px-2 w-28 md:w-40 capitalize`}
           variant={isOpen ? "outline" : "default"}
           onClick={() => {}}
           disabled={disabled}
@@ -88,6 +71,27 @@ const CollapsibleControl = ({
           {type}
         </Button>
       </CollapsibleTrigger>
+      <CollapsibleContent asChild>
+        <form
+          className="flex items-center justify-center gap-2"
+          onSubmit={handleSubmit}
+        >
+          <Input
+            className="w-12 md:w-20"
+            value={value}
+            onChange={handleChange}
+            type="number"
+            autoFocus
+          />
+          <Button
+            className={`bg-${color}-500 hover:bg-${color}-400 text-white`}
+            type="submit"
+            disabled={disabled}
+          >
+            Go
+          </Button>
+        </form>
+      </CollapsibleContent>
     </Collapsible>
   );
 };
@@ -106,25 +110,27 @@ export const Controls = ({
   activeType,
   onSubmitValue,
 }: ControlsProps) => {
-  const toggleActiveType = (type: ActionType) => {
-    dispatch({ type, value: 40, canClose: true });
+  const toggleActiveType = (type: ActionType, value: number) => {
+    dispatch({ type, value, canClose: true });
   };
 
   return (
-    <div>
-      <div className="flex items-end justify-center w-full">
-        {CONTROLS.map(({ type, color }) => (
-          <CollapsibleControl
-            key={type}
-            type={type}
-            color={color}
-            disabled={disabled}
-            onTriggerClick={toggleActiveType}
-            isOpen={activeType === type}
-            dispatch={dispatch}
-            onSubmitValue={onSubmitValue}
-          />
-        ))}
+    <div className="mt-8">
+      <div className="flex items-start justify-center w-full">
+        {CONTROLS.map(({ type, color }) => {
+          return (
+            <CollapsibleControl
+              key={type}
+              type={type}
+              color={color}
+              disabled={disabled}
+              onTriggerClick={toggleActiveType}
+              isOpen={activeType === type}
+              dispatch={dispatch}
+              onSubmitValue={onSubmitValue}
+            />
+          );
+        })}
       </div>
     </div>
   );

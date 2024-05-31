@@ -23,6 +23,8 @@ export class BinaryTree {
   constructor() {
     this.root = null;
   }
+
+
   insert(value: number) {
 
     if (this.root === null) {

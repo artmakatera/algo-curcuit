@@ -6,6 +6,7 @@ import { BinaryTree, TreeNode } from "./base-binary-tree";
 
 
 class BinaryTreeDraw extends BinaryTree {
+  private existedValues: number[] = [];
 
   constructor() {
     super();
@@ -50,7 +51,30 @@ class BinaryTreeDraw extends BinaryTree {
     }, {});
   }
 
+  private addExistedValue(value: number) {
+    if (this.existedValues.includes(value)) {
+      throw new Error("Value already exists");
+    }
+
+    this.existedValues.push(value)
+  }
+
+  private removeExistedValue(value: number) {
+    this.existedValues = this.existedValues.filter((v) => v !== value);
+  }
+
+  isValueExisted = (value: number) => {
+    return this.existedValues.includes(value);
+  }
+
+  insert(value: number): void {
+    this.addExistedValue(value);
+    super.insert(value);
+  }
+
   *insertDraw(value: number) {
+    this.addExistedValue(value);
+
     if (typeof value !== "number") {
       return
     }
@@ -178,6 +202,7 @@ class BinaryTreeDraw extends BinaryTree {
   }
 
   *removeDraw(value: number, root: TreeNode | null = this.root) {
+    this.removeExistedValue(value);
     yield {
       type: STEPS.start,
       node: root,
@@ -361,6 +386,13 @@ class BinaryTreeDraw extends BinaryTree {
       }
 
       return;
+    }
+
+    yield {
+      type: STEPS.notFound,
+      node: null,
+      treeView: { ...this.getNodeGroups() },
+
     }
   }
 
