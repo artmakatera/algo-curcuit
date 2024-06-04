@@ -14,16 +14,21 @@ import { NodeArray } from "@/features/tree-view/ui/node-array";
 import { LANGUAGES } from "@/shared/constants/languages";
 import { languagesInsertMapSettings } from "../model/languages-map-settings";
 import { CodeSection } from "./code-section";
-import { STEPS } from "../model/constants";
+import { LANGUAGES_KEYS, STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
 import { NodeToRemoveProvider } from "../../../features/tree-view/context/node-to-remove-context";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
+import {
+  getIsRemoveSingleChild,
+  getPreventNodeEdgeAnimation,
+} from "../model/snapshot-helpers";
 
 const tree = new BinaryTreeDraw();
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 1,
-  //  10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
+  //10, 30,
+  // 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
   // 33, 42, 65, 75, 3, 32, 34,
 ];
 
@@ -34,6 +39,24 @@ export const BinaryTree = () => {
   const [targetValue, setTargetValue] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
   const [codeLang] = useState(LANGUAGES.javascript);
+
+  const codeLangValue:
+    | LANGUAGES_KEYS.javascriptInsert
+    | LANGUAGES_KEYS.javascriptFind
+    | undefined = activeType
+    ? (`${codeLang}~~${activeType}` as
+        | LANGUAGES_KEYS.javascriptInsert
+        | LANGUAGES_KEYS.javascriptFind)
+    : undefined;
+
+  const createStepSnapshotMemo = useMemo(
+    () =>
+      createStepSnapshot.bind(
+        null,
+        codeLangValue || LANGUAGES_KEYS.javascriptFind
+      ),
+    [codeLangValue]
+  );
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -73,7 +96,7 @@ export const BinaryTree = () => {
     genCall,
     genCallArgs: [targetValue],
     // @ts-ignore
-    createStepSnapshot,
+    createStepSnapshot: createStepSnapshotMemo,
   });
 
   const dispatch: Dispatch = ({ type, value, canClose }) => {
@@ -123,15 +146,13 @@ export const BinaryTree = () => {
             nodeToRemove={currentSnapshot.nodeToRemove}
             minValueNode={currentSnapshot.minValueNode}
             durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
-            isRemoveSingleChild={
-              currentSnapshot.type === STEPS.removeSingleChild
-            }
+            isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
             isMinValueFirstRightChild={
               currentSnapshot.type === STEPS.minValueFirstRightChild
             }
-            preventNodeEdgeAnimation={
-              currentSnapshot.type === STEPS.removedNode
-            }
+            preventNodeEdgeAnimation={getPreventNodeEdgeAnimation(
+              currentSnapshot.type
+            )}
             foundNode={
               currentSnapshot.type === STEPS.foundNode
                 ? currentSnapshot.node
@@ -140,10 +161,14 @@ export const BinaryTree = () => {
           />
         </NodeToRemoveProvider>
       </div>
-      {/* <CodeSection
-        text={languagesInsertMapSettings[codeLang]?.code}
-        highlight={highlight}
-      /> */}
+      {codeLangValue && (
+        <div className="m-auto max-w-2xl mt-4">
+          <CodeSection
+            text={languagesInsertMapSettings[codeLangValue]?.code}
+            highlight={highlight}
+          />
+        </div>
+      )}
     </div>
   );
 };

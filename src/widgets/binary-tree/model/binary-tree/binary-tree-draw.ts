@@ -84,7 +84,7 @@ class BinaryTreeDraw extends BinaryTree {
     if (this.root === null) {
       this.root = new TreeNode(value)
       yield {
-        type: STEPS.insertNode,
+        type: STEPS.insertRootNode,
         node: this.root,
         insertedNode: this.root,
         treeView: { ...this.getNodeGroups() },
@@ -102,17 +102,17 @@ class BinaryTreeDraw extends BinaryTree {
     }
 
     while (node) {
-      yield {
-        type: STEPS.checkNode,
-        node: node,
-        treeView: { ...this.getNodeGroups() },
-
-      }
       if (value < node.value) {
+        yield {
+          type: STEPS.checkLeftNode,
+          node: node,
+          treeView: { ...this.getNodeGroups() },
+
+        }
         if (node.left === null) {
           node.left = new TreeNode(value);
           yield {
-            type: STEPS.insertNode,
+            type: STEPS.insertLeftNode,
             node: node,
             insertedNode: node.left,
             treeView: { ...this.getNodeGroups() },
@@ -122,10 +122,16 @@ class BinaryTreeDraw extends BinaryTree {
         }
         node = node.left
       } else {
+        yield {
+          type: STEPS.checkRightNode,
+          node: node,
+          treeView: { ...this.getNodeGroups() },
+
+        }
         if (node.right === null) {
           node.right = new TreeNode(value);
           yield {
-            type: STEPS.insertNode,
+            type: STEPS.insertRightNode,
             node: node,
             insertedNode: node.right,
             treeView: { ...this.getNodeGroups() },
@@ -148,8 +154,6 @@ class BinaryTreeDraw extends BinaryTree {
 
     const treeView = this.getNodeGroups();
 
-    //write your code here
-
     let currentNode = this.root;
     yield {
       type: STEPS.start,
@@ -170,21 +174,21 @@ class BinaryTreeDraw extends BinaryTree {
       }
 
       if (value > currentNode.value) {
-        yield {
-          type: STEPS.checkNode,
-          node: currentNode,
-          treeView: treeView,
-
-        }
         currentNode = currentNode.right;
-      } else {
         yield {
-          type: STEPS.checkNode,
+          type: STEPS.checkRightNode,
           node: currentNode,
           treeView: treeView,
 
         }
+      } else {
         currentNode = currentNode.left;
+        yield {
+          type: STEPS.checkLeftNode,
+          node: currentNode,
+          treeView: treeView,
+
+        }
       }
 
     }
@@ -201,11 +205,11 @@ class BinaryTreeDraw extends BinaryTree {
 
   }
 
-  *removeDraw(value: number, root: TreeNode | null = this.root) {
+  *removeDraw(value: number) {
     this.removeExistedValue(value);
     yield {
       type: STEPS.start,
-      node: root,
+      node: this.root,
       treeView: { ...this.getNodeGroups() },
     }
 
@@ -217,22 +221,27 @@ class BinaryTreeDraw extends BinaryTree {
     let parentNode: TreeNode | null = null;
 
     while (currentNode) {
-      yield {
-        type: STEPS.checkNode,
-        node: currentNode,
-        treeView: { ...this.getNodeGroups() },
-
-      }
-
       if (value < currentNode.value) {
         parentNode = currentNode;
         currentNode = currentNode.left;
+        yield {
+          type: STEPS.checkLeftNode,
+          node: currentNode,
+          treeView: { ...this.getNodeGroups() },
+        }
+
         continue;
       }
 
       if (value > currentNode.value) {
         parentNode = currentNode;
         currentNode = currentNode.right;
+        yield {
+          type: STEPS.checkRightNode,
+          node: currentNode,
+          treeView: { ...this.getNodeGroups() },
+        }
+
         continue;
       }
 
@@ -247,7 +256,7 @@ class BinaryTreeDraw extends BinaryTree {
         if (parentNode === null) {
           this.root = currentNode.right;
           yield {
-            type: STEPS.removedNode,
+            type: STEPS.removedRootNodeWithSingleRightChild,
             node: null,
 
             treeView: { ...this.getNodeGroups() },
@@ -256,32 +265,31 @@ class BinaryTreeDraw extends BinaryTree {
           return;
         }
 
-        yield {
-          type: STEPS.removeSingleChild,
-          nodeToRemove: currentNode,
-          treeView: { ...this.getNodeGroups() },
-
-        }
-
         if (currentNode.value < parentNode.value) {
-          let id = parentNode?.left?.id
+          yield {
+            type: STEPS.removeWithSingleRightChildToLeftParent,
+            nodeToRemove: currentNode,
+            treeView: { ...this.getNodeGroups() },
+
+          }
 
           parentNode.left = currentNode.right;
-          if (id && parentNode?.left?.id) {
-            parentNode.left.id = id;
-          }
+
 
         } else {
-          let id = parentNode?.right?.id
+          yield {
+            type: STEPS.removeWithSingleRightChildToRightParent,
+            nodeToRemove: currentNode,
+            treeView: { ...this.getNodeGroups() },
+
+          }
 
           parentNode.right = currentNode.right;
-          if (id && parentNode?.right?.id) {
-            parentNode.right.id = id;
-          }
+
         }
 
         yield {
-          type: STEPS.removedNode,
+          type: STEPS.removedSingleNodeWithSingleRightChild,
           node: null,
           treeView: { ...this.getNodeGroups() },
 
@@ -296,7 +304,7 @@ class BinaryTreeDraw extends BinaryTree {
         if (parentNode === null) {
           this.root = currentNode.left;
           yield {
-            type: STEPS.removedNode,
+            type: STEPS.removedRootNodeWithSingleLeftChild,
             node: null,
             treeView: { ...this.getNodeGroups() },
 
@@ -305,23 +313,28 @@ class BinaryTreeDraw extends BinaryTree {
         }
 
 
-        yield {
-          type: STEPS.removeSingleChild,
-          nodeToRemove: currentNode,
-          treeView: { ...this.getNodeGroups() },
-
-        }
-
         if (currentNode.value < parentNode.value) {
+          yield {
+            type: STEPS.removeWithSingleLeftChildToLeftParent,
+            nodeToRemove: currentNode,
+            treeView: { ...this.getNodeGroups() },
+
+          }
 
           parentNode.left = currentNode.left;
         } else {
+          yield {
+            type: STEPS.removeWithSingleLeftChildToRightParent,
+            nodeToRemove: currentNode,
+            treeView: { ...this.getNodeGroups() },
+
+          }
           parentNode.right = currentNode.left;
 
         }
 
         yield {
-          type: STEPS.removedNode,
+          type: STEPS.removedSingleNodeWithSingleLeftChild,
           node: null,
           treeView: { ...this.getNodeGroups() },
 
@@ -333,7 +346,7 @@ class BinaryTreeDraw extends BinaryTree {
       let minValue = currentNode.right;
       let minParent = currentNode;
       yield {
-        type: STEPS.checkMinValue,
+        type: STEPS.firstCheckMinValue,
         node: minValue,
         nodeToRemove: currentNode,
         treeView: { ...this.getNodeGroups() },

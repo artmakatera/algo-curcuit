@@ -35,9 +35,13 @@ export const code = ` class BinaryTree {
 
 
 export const highlightLines: { [key in STEPS]?: number[] } = {
-  [STEPS.insertNode]: [7, 28, 8, 9, 10, 11],
+  [STEPS.insertRootNode]: [7, 28, 8, 9, 10, 11],
+  [STEPS.insertLeftNode]: [7, 28, 13, 27, 14, 15, 16, 17, 18,],
+  [STEPS.insertRightNode]: [7, 28, 13, 27, 20, 21, 22, 23, 24, 26],
   [STEPS.start]: [7, 28, 71],
-  [STEPS.checkNode]: [7, 28],
+  [STEPS.checkLeftNode]: [7, 28, 13, 27, 14, 15, 16, 17, 18, 19, 20],
+  [STEPS.checkRightNode]: [7, 28, 13, 27, 20, 21, 22, 23, 24, 25, 26],
+
   [STEPS.foundNode]: [7, 28],
 };
 
