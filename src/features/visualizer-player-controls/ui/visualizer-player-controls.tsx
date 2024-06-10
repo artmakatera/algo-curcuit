@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { memo } from "react";
 
 type ControlsProps = {
-  onPlay: () => void;
+  onPlay?: () => void;
   onReset?: () => void;
   onPreviousStep?: () => void;
   onNextStep?: () => void;
@@ -51,18 +51,20 @@ export const VisualizeControls = memo(
           </Button>
         )}
 
-        <Button
-          variant="default"
-          size="icon"
-          title={isPlaying ? "Pause" : "Start"}
-          onClick={onPlay}
-        >
-          {isPlaying ? (
-            <PauseIcon className="h-4 w-4" />
-          ) : (
-            <PlayIcon className="h-4 w-4" />
-          )}
-        </Button>
+        {onPlay && (
+          <Button
+            variant="default"
+            size="icon"
+            title={isPlaying ? "Pause" : "Start"}
+            onClick={onPlay}
+          >
+            {isPlaying ? (
+              <PauseIcon className="h-4 w-4" />
+            ) : (
+              <PlayIcon className="h-4 w-4" />
+            )}
+          </Button>
+        )}
         {onNextStep && (
           <Button
             variant="outline"

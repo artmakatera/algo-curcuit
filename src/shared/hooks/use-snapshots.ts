@@ -31,7 +31,6 @@ export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P ex
       next = generator.next();
     }
     if (!snapshots.length) return;
-    console.log("snapshots", snapshots);
     return snapshots.map(value =>
       createStepSnapshot(value as G),
     )

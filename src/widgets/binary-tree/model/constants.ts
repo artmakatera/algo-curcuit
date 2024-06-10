@@ -12,15 +12,12 @@ export enum STEPS {
   checkMinValue,
   foundMinValue,
   minValueFirstRightChild,
-  removeWithSingleRightChildToLeftParent,
-  removeWithSingleRightChildToRightParent,
-  removeWithSingleLeftChildToLeftParent,
-  removeWithSingleLeftChildToRightParent,
+  removeSingleChild,
   removeNode,
-  removedSingleNodeWithSingleLeftChild,
-  removedSingleNodeWithSingleRightChild,
-  removedRootNodeWithSingleLeftChild,
-  removedRootNodeWithSingleRightChild,
+
+  checkNodeWithoutLeftChild,
+  highlightToRemoveWithoutLeftChild,
+  highlightToRemoveWithoutRightChild,
 
 
   insertRootNode,

@@ -17,7 +17,8 @@ import { CodeSection } from "./code-section";
 import { LANGUAGES_KEYS, STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
 import { NodeToRemoveProvider } from "../../../features/tree-view/context/node-to-remove-context";
-import TypographyH3 from "@/components/ui/typography/typographyH3";
+import { VisualizeControls } from "@/features/visualizer-player-controls";
+
 import {
   getIsRemoveSingleChild,
   getPreventNodeEdgeAnimation,
@@ -27,8 +28,7 @@ const tree = new BinaryTreeDraw();
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 1,
-  //10, 30,
-  // 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
+  // 10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
   // 33, 42, 65, 75, 3, 32, 34,
 ];
 
@@ -124,12 +124,28 @@ export const BinaryTree = () => {
       <TypographyH1 className="w-max text-center m-auto">
         Binary Search Tree
       </TypographyH1>
-      <Controls
-        dispatch={dispatch}
-        disabled={isPlaying}
-        activeType={activeType}
-        onSubmitValue={onSubmitValue}
-      />
+      <div className="flex justify-center items-start mt-8 gap-4">
+        <Controls
+          dispatch={dispatch}
+          disabled={isPlaying}
+          activeType={activeType}
+          onSubmitValue={onSubmitValue}
+        />
+        {activeType && (
+          <div className="hidden sm:block">
+            <VisualizeControls
+              onPreviousStep={handlePreviousStep}
+              onNextStep={handleNextStep}
+              isPlaying={isPlaying}
+              isResetDisabled={isPlaying}
+              isPreviousStepDisabled={!hasPrevSnapshot}
+              isNextStepDisabled={!hasNextSnapshot}
+              speed={delayRef.current}
+              onChangeSpeed={onChangeSpeed}
+            />
+          </div>
+        )}
+      </div>
 
       {error && (
         <p className="text-center text-red-600 font-bold mt-2">{error}</p>
@@ -162,7 +178,7 @@ export const BinaryTree = () => {
         </NodeToRemoveProvider>
       </div>
       {codeLangValue && (
-        <div className="m-auto max-w-2xl mt-4">
+        <div className="m-auto max-w-2xl mt-4 hidden sm:block">
           <CodeSection
             text={languagesInsertMapSettings[codeLangValue]?.code}
             highlight={highlight}

@@ -115,7 +115,7 @@ export const Controls = ({
   };
 
   return (
-    <div className="mt-8">
+    <div>
       <div className="flex items-start justify-center w-full">
         {CONTROLS.map(({ type, color }) => {
           return (

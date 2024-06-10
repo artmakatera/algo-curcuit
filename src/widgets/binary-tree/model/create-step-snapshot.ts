@@ -1,22 +1,37 @@
-import { LANGUAGES } from "@/shared/constants/languages";
 import { TreeNode } from "./binary-tree";
 import { LANGUAGES_KEYS, STEPS } from "./constants";
 import { GenValuePayload, StepSnapshot, TreeArrayGroups } from "./types";
 import { LanguagesMapKeys, languagesInsertMapSettings } from "./languages-map-settings";
 
-export const createStepSnapshot = (codeLang: LanguagesMapKeys = LANGUAGES_KEYS.javascriptInsert, payload: GenValuePayload,): StepSnapshot => {
-  const { type, treeView, node, insertedNode, nodeToRemove, minValueNode } = payload;
-  return {
-    type,
-    node: node || null,
-    treeView,
-    insertedNode,
-    nodeToRemove,
-    minValueNode,
+const createStepSnapshotWithPrevHighlight = () => {
+  let prevHighlight: number[] = [];
 
-    highlightLines: languagesInsertMapSettings[codeLang]?.highlightLines[type] || [],
+  return (codeLang: LanguagesMapKeys = LANGUAGES_KEYS.javascriptInsert, payload: GenValuePayload,): StepSnapshot => {
+    const { type, treeView, node, insertedNode, nodeToRemove, minValueNode } = payload;
+    if (type === STEPS.start) {
+      prevHighlight = [];
+    }
+
+    let highlightLines = languagesInsertMapSettings[codeLang]?.highlightLines[type] || null;
+
+    if (highlightLines) {
+      prevHighlight = highlightLines;
+    }
+
+    return {
+      type,
+      node: node || null,
+      treeView,
+      insertedNode,
+      nodeToRemove,
+      minValueNode,
+
+      highlightLines: highlightLines || prevHighlight,
+    };
   };
-};
+}
+
+export const createStepSnapshot = createStepSnapshotWithPrevHighlight();
 
 export const defaultSnapshot = {
   type: STEPS.start,
