@@ -40,6 +40,9 @@ const CollapsibleControl = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    if (value.length > 4) {
+      return;
+    }
 
     setValue(value === "" ? "" : Number(value));
     dispatch({ type, value: Number(value), canClose: false });
@@ -80,6 +83,8 @@ const CollapsibleControl = ({
             className="w-12 md:w-20"
             value={value}
             onChange={handleChange}
+            max={9999}
+            min={-999}
             type="number"
             autoFocus
           />
