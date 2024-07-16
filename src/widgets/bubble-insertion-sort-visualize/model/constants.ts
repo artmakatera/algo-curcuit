@@ -9,4 +9,5 @@ export enum STEPS {
 
 export enum LANGUAGES {
   javascript = "javascript",
+  java = "java",
 };

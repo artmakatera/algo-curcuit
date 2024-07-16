@@ -16,7 +16,7 @@ export const CodeViewer = ({
       <CodeBlock
         text={text}
         codeContainerStyle={{
-          width: "500px",
+          width: "100%",
           borderRadius: "25px",
           fontSize: "0.8rem",
         }}

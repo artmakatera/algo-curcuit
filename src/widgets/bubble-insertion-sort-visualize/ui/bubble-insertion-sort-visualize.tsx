@@ -11,7 +11,6 @@ import { defaultSnapshots } from "../model";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { EditButton } from "@/features/edit-button";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
-import { CodeViewer } from "@/components/ui/code-viewer";
 import {
   LANGUAGES,
   StepSnapshot,
@@ -19,6 +18,7 @@ import {
   languagesMapSettings as languagesMapSettingsBase,
   getGoBackSnapshot,
 } from "../model";
+import { CodeViewers } from "@/components/ui/code-viewers";
 
 const arrToSort = [99, 4, 122, 555, 2, 1, 3, 5, 6, 8];
 
@@ -41,7 +41,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
   getIsSorted,
 }: BubbleInsertionSortVisualizeProps<S>) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [codeLang] = useState(LANGUAGES.javascript);
+  const [codeLang, setCodeLang] = useState(LANGUAGES.javascript);
 
   const { array, addNumber, removeNumber, updateNumber } =
     useNumberArray(arrToSort);
@@ -53,7 +53,6 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
 
   const {
     currentSnapshot,
-    highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
     rebuildSnapshots: reset,
@@ -117,9 +116,11 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
 
       <div className="mt-12">
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
-        <CodeViewer
-          text={languagesMapSettings[codeLang]?.code}
-          highlight={highlight}
+        <CodeViewers
+          langMap={languagesMapSettings}
+          language={codeLang}
+          onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+          step={currentSnapshot.type}
         />
       </div>
     </div>

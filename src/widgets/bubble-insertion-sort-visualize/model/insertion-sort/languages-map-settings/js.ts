@@ -18,7 +18,7 @@ const code = `function insertionSort(array) {
 
 
 export const highlightLines: { [key in STEPS]?: number[] } = {
-  [STEPS.started]: [2, 7],
+  [STEPS.started]: [2, 8],
   [STEPS.compare]: [4, 6],
   [STEPS.swap]: [4, 5, 6],
   [STEPS.sortedIndex]: [10],
