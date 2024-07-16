@@ -15,6 +15,7 @@ export enum STEPS {
 
 export enum LANGUAGES {
   javascript = "javascript",
+  java = "java",
 };
 
 export const DEFAULT_SORTED_ARRAY = [

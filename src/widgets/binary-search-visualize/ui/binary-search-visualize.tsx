@@ -1,5 +1,5 @@
 "use client";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 // Constants
@@ -26,9 +26,9 @@ import { Button } from "@/components/ui/button";
 import { TargetInput } from "@/components/ui/target-input";
 import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
-import { CodeViewer } from "@/components/ui/code-viewer";
 import { EditButton } from "@/features/edit-button";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
+import { CodeViewers } from "@/components/ui/code-viewers";
 
 type BinarySearchVisualizeProps<S extends StepSnapshot> = {
   defaultArray: number[];
@@ -47,14 +47,13 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
 }: BinarySearchVisualizeProps<S>) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [target, setTarget] = useState<number | null>(12);
-  const [codeLang] = useState(LANGUAGES.javascript);
+  const [codeLang, setCodeLang] = useState(LANGUAGES.javascript);
 
   const { array, updateNumber, addNumber, removeNumber } =
     useNumberArray(defaultArray);
 
   const {
     currentSnapshot,
-    highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
     rebuildSnapshots: reset,
@@ -170,14 +169,16 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
             })}
           </VisualArrayWrapper>
         )}
-       
+
         <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
       </div>
       <div>
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
-        <CodeViewer
-          text={languagesMapSettings[codeLang]?.code}
-          highlight={highlight}
+        <CodeViewers
+          langMap={languagesMapSettings}
+          language={codeLang}
+          onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+          step={currentSnapshot.type}
         />
       </div>
     </div>
