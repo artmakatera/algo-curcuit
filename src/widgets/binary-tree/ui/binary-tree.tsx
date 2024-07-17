@@ -15,6 +15,7 @@ import { LANGUAGES, STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
 import { NodeToRemoveProvider } from "../../../features/tree-view/context/node-to-remove-context";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
+import { useCodeLang } from "@/shared/contexts/code-lang";
 
 import {
   getIsRemoveSingleChild,
@@ -36,7 +37,7 @@ export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
-  const [codeLang, setCodeLang] = useState(LANGUAGES.javascript);
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const hasCodeLang = codeLang && activeType;
 

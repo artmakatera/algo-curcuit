@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 
 // Hooks
 import { useNumberArray } from "@/shared/hooks/use-number-array";
+import { useCodeLang } from "@/shared/contexts/code-lang";
 
 // Components
 import { VisualSortArrayAnimated } from "@/features/visual-sort-array-animated";
@@ -41,7 +42,7 @@ export const BubbleInsertionSortVisualize = <S extends StepSnapshot>({
   getIsSorted,
 }: BubbleInsertionSortVisualizeProps<S>) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [codeLang, setCodeLang] = useState(LANGUAGES.javascript);
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const { array, addNumber, removeNumber, updateNumber } =
     useNumberArray(arrToSort);

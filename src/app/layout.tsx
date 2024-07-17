@@ -6,6 +6,7 @@ import "./globals.css";
 
 import { Header } from "@/widgets/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { CodeLangProvider } from "@/shared/contexts/code-lang";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -34,8 +35,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          {children}
+          <CodeLangProvider>
+            <Header />
+            {children}
+          </CodeLangProvider>
         </ThemeProvider>
       </body>
     </html>

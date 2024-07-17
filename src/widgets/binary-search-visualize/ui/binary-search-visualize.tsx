@@ -3,11 +3,12 @@ import { useCallback, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 // Constants
-import { LANGUAGES, STEPS } from "../model/constants";
+import { STEPS } from "../model/constants";
 
 // Hooks
 import { useNumberArray } from "@/shared/hooks/use-number-array";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
+import { useCodeLang } from "@/shared/contexts/code-lang";
 
 // Helpers
 import { binarySearch } from "../model/binary-search";
@@ -47,7 +48,7 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
 }: BinarySearchVisualizeProps<S>) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [target, setTarget] = useState<number | null>(12);
-  const [codeLang, setCodeLang] = useState(LANGUAGES.javascript);
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const { array, updateNumber, addNumber, removeNumber } =
     useNumberArray(defaultArray);
@@ -177,7 +178,7 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
         <CodeViewers
           langMap={languagesMapSettings}
           language={codeLang}
-          onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+          onLanguageChange={setCodeLang}
           step={currentSnapshot.type}
         />
       </div>

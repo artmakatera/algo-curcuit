@@ -6,8 +6,5 @@ export enum STEPS {
   sortedIndex,
   end
 }
+export { LANGUAGES } from "@/shared/constants/languages";
 
-export enum LANGUAGES {
-  javascript = "javascript",
-  java = "java",
-};
