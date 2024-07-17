@@ -6,7 +6,6 @@ import { Controls } from "./controls";
 import { ActionType, Dispatch, GenValuePayload } from "../model/types";
 import {
   createStepSnapshot,
-  defaultSnapshots,
   defaultSnapshot,
 } from "../model/create-step-snapshot";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
