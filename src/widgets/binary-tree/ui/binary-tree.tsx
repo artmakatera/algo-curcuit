@@ -66,6 +66,7 @@ export const BinaryTree = () => {
     hasNextSnapshot,
     handlePreviousStep,
     handleNextStep,
+    goToLastStep,
     rebuildSnapshots,
     visualize,
     isPlaying,
@@ -93,6 +94,7 @@ export const BinaryTree = () => {
       setError("Value already exists");
       return;
     }
+    goToLastStep();
     rebuildSnapshots();
   };
 

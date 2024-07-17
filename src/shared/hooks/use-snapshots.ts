@@ -113,6 +113,10 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     setIsGoBack(false);
     setSnapshotIndex((prev: number) => prev + 1);
   }, []);
+  const goToLastStep = useCallback(() => {
+    setIsGoBack(false);
+    setSnapshotIndex(stepsSnapshot[stepsSnapshot.length - 1] ? stepsSnapshot.length - 1 : 0);
+  }, [stepsSnapshot]);
 
   const visualize = useCallback(async () => {
     resetSnapshot();
@@ -135,7 +139,6 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
 
 
   const handlePlay = useCallback(async () => {
-    console.log("handlePlay", startedRef.current);
     if (startedRef.current === true) {
       setStarted(false);
       return;
@@ -173,6 +176,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     isPlaying,
     onChangeSpeed,
     createSnapshots,
+    goToLastStep,
     delayRef
   };
 }
