@@ -11,10 +11,8 @@ import {
 } from "../model/create-step-snapshot";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { NodeArray } from "@/features/tree-view/ui/node-array";
-import { LANGUAGES } from "@/shared/constants/languages";
-import { languagesInsertMapSettings } from "../model/languages-map-settings";
-import { CodeSection } from "./code-section";
-import { LANGUAGES_KEYS, STEPS } from "../model/constants";
+import { languagesMapSettings } from "../model/languages-map-settings";
+import { LANGUAGES, STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
 import { NodeToRemoveProvider } from "../../../features/tree-view/context/node-to-remove-context";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
@@ -23,6 +21,7 @@ import {
   getIsRemoveSingleChild,
   getPreventNodeEdgeAnimation,
 } from "../model/snapshot-helpers";
+import { CodeViewers } from "@/components/ui/code-viewers";
 
 const tree = new BinaryTreeDraw();
 
@@ -38,25 +37,9 @@ export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
-  const [codeLang] = useState(LANGUAGES.javascript);
+  const [codeLang, setCodeLang] = useState(LANGUAGES.javascript);
 
-  const codeLangValue:
-    | LANGUAGES_KEYS.javascriptInsert
-    | LANGUAGES_KEYS.javascriptFind
-    | undefined = activeType
-    ? (`${codeLang}~~${activeType}` as
-        | LANGUAGES_KEYS.javascriptInsert
-        | LANGUAGES_KEYS.javascriptFind)
-    : undefined;
-
-  const createStepSnapshotMemo = useMemo(
-    () =>
-      createStepSnapshot.bind(
-        null,
-        codeLangValue || LANGUAGES_KEYS.javascriptFind
-      ),
-    [codeLangValue]
-  );
+  const hasCodeLang = codeLang && activeType;
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -80,7 +63,6 @@ export const BinaryTree = () => {
   const {
     currentSnapshot,
     stepsSnapshot,
-    highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
     handlePreviousStep,
@@ -96,7 +78,7 @@ export const BinaryTree = () => {
     genCall,
     genCallArgs: [targetValue],
     // @ts-ignore
-    createStepSnapshot: createStepSnapshotMemo,
+    createStepSnapshot,
   });
 
   const dispatch: Dispatch = ({ type, value, canClose }) => {
@@ -177,11 +159,13 @@ export const BinaryTree = () => {
           />
         </NodeToRemoveProvider>
       </div>
-      {codeLangValue && (
+      {hasCodeLang && (
         <div className="m-auto max-w-2xl mt-4 hidden sm:block">
-          <CodeSection
-            text={languagesInsertMapSettings[codeLangValue]?.code}
-            highlight={highlight}
+          <CodeViewers
+            langMap={languagesMapSettings[activeType]}
+            language={codeLang}
+            onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+            step={currentSnapshot.type}
           />
         </div>
       )}

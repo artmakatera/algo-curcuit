@@ -84,8 +84,6 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
 
 
 
-  const highlight = currentSnapshot?.highlightLines?.join(", ") || "";
-
   const hasPrevSnapshot = snapshotIndex > 0;
   const hasNextSnapshot = !!stepsSnapshot[snapshotIndex + 1];
 
@@ -164,7 +162,6 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     setStepSnapshots,
     setSnapshotIndex,
     currentSnapshot,
-    highlight,
     hasPrevSnapshot,
     hasNextSnapshot,
     rebuildSnapshots,

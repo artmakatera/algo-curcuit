@@ -29,7 +29,6 @@ export type GenValue = Generator<GenValuePayload, void, number>;
 
 export interface StepSnapshot extends BaseSnapshot {
   type: Partial<STEPS>,
-  highlightLines: number[],
   node: TreeNode,
   insertedNode?: TreeNode,
   deleteNode?: TreeNode,

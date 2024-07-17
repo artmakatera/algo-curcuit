@@ -1,16 +1,28 @@
 
 
-import { LANGUAGES_KEYS } from "../constants";
-import jsInsertModel from "./js-insert"
-import jsFindModel from "./js-find"
-import jsRemoveModel from "./js-remove"
+import { LANGUAGES } from "../constants";
+import jsInsertModel from "./js/insert"
+import jsFindModel from "./js/find"
+import jsRemoveModel from "./js/remove";
+import javaInsertModel from "./java/insert";
+import javaRemoveModel from "./java/remove";
+import javaFindModel from "./java/find";
 
 
-export const languagesInsertMapSettings = {
-  [LANGUAGES_KEYS.javascriptInsert]: jsInsertModel,
-  [LANGUAGES_KEYS.javascriptFind]: jsFindModel,
-  [LANGUAGES_KEYS.javascriptDelete]: jsRemoveModel,
+
+export const languagesMapSettings = {
+  insert: {
+    [LANGUAGES.javascript]: jsInsertModel,
+    [LANGUAGES.java]: javaInsertModel,
+
+  },
+  find: {
+    [LANGUAGES.javascript]: jsFindModel,
+    [LANGUAGES.java]: javaFindModel
+  },
+  delete: {
+    [LANGUAGES.javascript]: jsRemoveModel,
+    [LANGUAGES.java]: javaRemoveModel
+  }
 }
 
-export type LanguagesMapKeys = keyof typeof languagesInsertMapSettings;
-export type LanguagesMapValues = typeof languagesInsertMapSettings[LanguagesMapKeys];

@@ -19,5 +19,4 @@ export interface StepSnapshot extends BaseSnapshot {
   result?: number,
   compareIndexes: number[],
   checkIndex: number,
-  highlightLines: number[]
 };

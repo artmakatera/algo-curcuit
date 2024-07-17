@@ -28,8 +28,8 @@ export enum STEPS {
 
 
 
-export enum LANGUAGES_KEYS {
-  javascriptInsert = "javascript~~insert",
-  javascriptDelete = "javascript~~delete",
-  javascriptFind = "javascript~~find",
+export enum LANGUAGES {
+  javascript = "javascript",
+  java = "java",
+
 };

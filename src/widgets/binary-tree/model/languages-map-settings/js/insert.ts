@@ -1,5 +1,5 @@
 import { LANGUAGES } from "@/shared/constants/languages";
-import { STEPS } from "../constants";
+import { STEPS } from "../../constants";
 
 
 export const code = ` class BinaryTree {

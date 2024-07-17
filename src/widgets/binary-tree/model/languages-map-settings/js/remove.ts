@@ -1,5 +1,5 @@
 import { LANGUAGES } from "@/shared/constants/languages";
-import { STEPS } from "../constants";
+import { STEPS } from "../../constants";
 
 
 export const code = ` class BinaryTree {
@@ -48,14 +48,17 @@ export const highlightLines: { [key in STEPS]?: number[] } = {
   [STEPS.start]: [3, 38],
   [STEPS.notFound]: [3, 38, 4, 5, 6],
   [STEPS.checkLeftNode]: [3, 38, 8, 9, 10, 11],
+  [STEPS.checkNode]: [3, 38, 17],
   [STEPS.checkRightNode]: [3, 38, 13, 14, 15, 16],
   [STEPS.highlightToRemoveWithoutRightChild]: [3, 38, 18, 19, 20],
   [STEPS.highlightToRemoveWithoutLeftChild]: [3, 38, 22, 23, 24],
+  [STEPS.highlightToRemove]: [3, 38, 26, 27],
   [STEPS.firstCheckMinValue]: [3, 38, 26, 27],
   [STEPS.checkMinValue]: [3, 38, 26, 27, 28, 29, 30, 31, 32],
+  [STEPS.minValueFirstRightChild]: [3, 38, 26, 27, 28, 29, 30, 31, 32],
   [STEPS.foundMinValue]: [3, 38, 33, 34, 35, 36, 37],
 
-
+  [STEPS.removeSingleChild]: [],
   [STEPS.removedNode]: [],
 
 
