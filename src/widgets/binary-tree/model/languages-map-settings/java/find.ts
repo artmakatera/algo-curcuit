@@ -4,12 +4,12 @@ import { STEPS } from "../../constants";
 
 export const code = ` class BinaryTree {
   ...
-   Node find(int value) {
+   public Optional<Node> find(int value) {
     Node currentNode = root;
 
     while (currentNode) {
       if (currentNode.value == value) {
-        return currentNode;
+        return Optional.of(currentNode);
       }
 
       if (value > currentNode.value) {
@@ -19,7 +19,7 @@ export const code = ` class BinaryTree {
       }
     }
 
-    return null;
+    return Optional.empty();
   }
 }
 `;

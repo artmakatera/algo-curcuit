@@ -9,7 +9,7 @@ export const code = ` class BinaryTree {
         root = null;
   }
 
-  Node insert(Node node, int value) {
+  public Node insert(Node node, int value) {
     if (node == null) {
         return new Node(value);
     }

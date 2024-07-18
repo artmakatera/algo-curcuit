@@ -4,9 +4,9 @@ import { STEPS } from "../../constants";
 
 export const code = ` class BinaryTree {
   ...
-    Node deleteNode(Node root, int value) {
+    public Optional<Node> deleteNode(Node root, int value) {
       if (root == null) {
-          return root;
+          return Optional.empty();
       }
 
       if (value < root.value) {
@@ -30,7 +30,7 @@ export const code = ` class BinaryTree {
           root.right = deleteNode(root.right, root.value);
       }
 
-      return root;
+      return Optional.of(root);
     }
 }
 `;
