@@ -1,0 +1,1 @@
+export { MergeSortVisualize } from "./merge-sort-visualize";

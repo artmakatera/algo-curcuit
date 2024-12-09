@@ -1,3 +1,4 @@
+"use client";
 import { TrashIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";

@@ -12,12 +12,12 @@ import { getAnimateValues, getTransition } from "../model";
 export const AnimatedArrayItem = ({
   value,
   index,
-  compareIndexes,
-  swapIndexes,
+  compareIndexes = [],
+  swapIndexes = [],
   sortedIndex,
   indexToUpdate,
   pivotIndex,
-  getIsSorted,
+  getIsSorted = () => false,
   isSwapping,
 }: AnimatedArrayItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
