@@ -10,6 +10,7 @@ export interface VisualArrayItemProps {
   index: number;
   isSwapping?: boolean;
   className?: string;
+  initialClassName?: string;
 
   isComparing?: boolean;
   isSorted?: boolean;
@@ -20,6 +21,7 @@ export interface VisualArrayItemProps {
 }
 
 export const VisualArrayItem = ({
+  initialClassName,
   className,
   value,
   isComparing,
@@ -33,6 +35,7 @@ export const VisualArrayItem = ({
     <>
       <div
         className={cn(
+          initialClassName,
           "min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100 ",
           isComparing && COMPARE_CLASSES.COMPARING,
           isSwapping && COMPARE_CLASSES.SWAPPING,

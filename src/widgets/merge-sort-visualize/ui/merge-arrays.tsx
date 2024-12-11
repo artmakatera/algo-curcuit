@@ -1,0 +1,77 @@
+"use client";
+import { useRef } from "react";
+import { MergeArray } from "@/features/visual-merge-sort-array";
+import { StepSnapshot } from "../model/types";
+import {
+  AnimatePresence,
+  domAnimation,
+  LazyMotion,
+  motion,
+} from "framer-motion";
+import { STEPS } from "../model";
+import { cn } from "@/shared/lib/utils";
+
+interface MergeArraysProps {
+  currentSnapshot: StepSnapshot;
+}
+
+export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
+  const sourceRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const {
+    type,
+    firstArray,
+    secondArray,
+    indexOfSourceSubArray,
+    indexOfTargetSubArray,
+    subArraysIndexesToMerge,
+    moveIndex,
+    targetIndex,
+    sourceIndexesToMerge,
+  } = currentSnapshot;
+
+
+  const open = type !== STEPS.collapsePreviousArray;
+
+  return (
+    <div className={cn("grid gap-8 pt-8")}>
+      <motion.div
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1 },
+        }}
+        initial="visible"
+        animate={open ? "visible" : "hidden"}
+      >
+        <MergeArray
+          array={firstArray}
+          sourceRef={sourceRef}
+          targetRef={targetRef}
+          indexOfSourceSubArray={indexOfSourceSubArray}
+          moveIndex={moveIndex}
+          subArraysIndexesToMerge={subArraysIndexesToMerge}
+          sourceIndexesToMerge={sourceIndexesToMerge}
+          isSourceArray
+        />
+      </motion.div>
+      <motion.div
+        variants={{
+          start: { y: 0 },
+          moved: { y: -72 - 32 },
+        }}
+        initial="start"
+        animate={open ? "start" : "moved"}
+        transition={{ duration: 0.5, type: "spring" }}
+      >
+        <MergeArray
+          array={secondArray}
+          sourceRef={targetRef}
+          targetRef={targetRef}
+          indexOfTargetSubArray={indexOfTargetSubArray}
+          targetIndex={targetIndex}
+        />
+      </motion.div>
+    </div>
+  );
+};
