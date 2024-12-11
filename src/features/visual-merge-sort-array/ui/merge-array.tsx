@@ -5,23 +5,6 @@ import { AnimatedArrayItem } from "./animated-array-item";
 import { MergeArrayWrapper } from "./merge-array-wrapper";
 import { MergeSubArrayWrapper } from "./merge-subarray-wrapper";
 
-function setItemRef(
-  sourceRef?: React.RefObject<HTMLDivElement>,
-  targetRef?: React.RefObject<HTMLDivElement>,
-  isMoveIndex?: boolean,
-  isTargetIndex?: boolean
-) {
-  if (isMoveIndex) {
-    return sourceRef;
-  }
-
-  if (isTargetIndex) {
-    return targetRef;
-  }
-
-  return null;
-}
-
 interface MergeArrayProps {
   array: number[][] | number[] | null;
   sourceRef?: React.RefObject<HTMLDivElement>;
@@ -32,6 +15,7 @@ interface MergeArrayProps {
   targetIndex?: number;
   subArraysIndexesToMerge?: [number, number];
   isSourceArray?: boolean;
+  isSubArrayMoving?: boolean;
   sourceIndexesToMerge?: number[];
 }
 
@@ -46,6 +30,7 @@ export const MergeArray = ({
   subArraysIndexesToMerge,
   sourceIndexesToMerge,
   isSourceArray,
+  isSubArrayMoving,
 }: MergeArrayProps) => {
   if (array === null) {
     return null;
@@ -67,7 +52,25 @@ export const MergeArray = ({
                 key={index}
                 className={cn(
                   isMergeSubArray && " bg-blue-300/35",
-                  !isSourceArray &&subArray.length >1 && subArray.every(isNaN) && "bg-transparent"
+                  !isSourceArray &&
+                    subArray.length > 1 &&
+                    subArray.every(isNaN) &&
+                    "bg-transparent"
+                )}
+                ref={
+                  isSubArrayMoving
+                    ? setSubArrayRef(
+                        sourceRef,
+                        targetRef,
+                        isSourceSubArray,
+                        isTargetSubArray
+                      )
+                    : null
+                }
+                {...getSubArrayAnimationProps(
+                  isSubArrayMoving && isSourceSubArray,
+                  sourceRef,
+                  targetRef
                 )}
               >
                 {subArray.map((value, index) => {
@@ -83,12 +86,16 @@ export const MergeArray = ({
                       key={index}
                       value={value}
                       index={index}
-                      ref={setItemRef(
-                        sourceRef,
-                        targetRef,
-                        isMoveIndex,
-                        isTargetSubArray
-                      )}
+                      ref={
+                        isSubArrayMoving
+                          ? null
+                          : setItemRef(
+                              sourceRef,
+                              targetRef,
+                              isMoveIndex,
+                              isTargetSubArray
+                            )
+                      }
                       isMoveIndex={isMoveIndex}
                       isTargetIndex={isTargetIndex}
                       isComparing={isComparing}
@@ -109,12 +116,16 @@ export const MergeArray = ({
                 key={index}
                 value={value as number}
                 index={index}
-                ref={setItemRef(
-                  sourceRef,
-                  targetRef,
-                  isMoveIndex,
-                  isTargetIndex
-                )}
+                ref={
+                  isSubArrayMoving
+                    ? null
+                    : setItemRef(
+                        sourceRef,
+                        targetRef,
+                        isMoveIndex,
+                        isTargetIndex
+                      )
+                }
                 isMoveIndex={isMoveIndex}
                 isTargetIndex={isTargetIndex}
                 sourceRef={sourceRef}
@@ -126,3 +137,61 @@ export const MergeArray = ({
     </div>
   );
 };
+
+function setItemRef(
+  sourceRef?: React.RefObject<HTMLDivElement>,
+  targetRef?: React.RefObject<HTMLDivElement>,
+  isMoveIndex?: boolean,
+  isTargetIndex?: boolean
+) {
+  if (isMoveIndex) {
+    return sourceRef;
+  }
+
+  if (isTargetIndex) {
+    return targetRef;
+  }
+
+  return null;
+}
+
+function setSubArrayRef(
+  sourceRef?: React.RefObject<HTMLDivElement>,
+  targetRef?: React.RefObject<HTMLDivElement>,
+  isSourceSubArray?: boolean,
+  isTargetSubArray?: boolean
+) {
+  if (isSourceSubArray) {
+    return sourceRef;
+  }
+
+  if (isTargetSubArray) {
+    return targetRef;
+  }
+
+  return null;
+}
+
+function getSubArrayAnimationProps(
+  isSubArrayMoving?: boolean,
+  sourceRef?: React.RefObject<HTMLDivElement>,
+  targetRef?: React.RefObject<HTMLDivElement>
+) {
+  if (!isSubArrayMoving || !sourceRef?.current || !targetRef?.current) {
+    return {
+      initial: { x: 0, y: 0 },
+      animate: { x: 0, y: 0 },
+    };
+  }
+
+  const sourceRect = sourceRef.current.getBoundingClientRect();
+  const targetRect = targetRef.current.getBoundingClientRect();
+
+  const x = targetRect.x - sourceRect.x;
+  const y = targetRect.y - sourceRect.y;
+
+  return {
+    initial: { x: 0, y: 0 },
+    animate: { x, y },
+  };
+}

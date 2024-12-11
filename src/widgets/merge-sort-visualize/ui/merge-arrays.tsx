@@ -33,6 +33,7 @@ export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
 
 
   const open = type !== STEPS.collapsePreviousArray;
+  const isSubArrayMoving  = type === STEPS.moveSubArray || type === STEPS.movingSubArray;
 
   return (
     <div className={cn("grid gap-8 pt-8")}>
@@ -52,6 +53,7 @@ export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
           moveIndex={moveIndex}
           subArraysIndexesToMerge={subArraysIndexesToMerge}
           sourceIndexesToMerge={sourceIndexesToMerge}
+          isSubArrayMoving={isSubArrayMoving}
           isSourceArray
         />
       </motion.div>
@@ -70,6 +72,7 @@ export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
           targetRef={targetRef}
           indexOfTargetSubArray={indexOfTargetSubArray}
           targetIndex={targetIndex}
+          isSubArrayMoving={isSubArrayMoving}
         />
       </motion.div>
     </div>

@@ -4,16 +4,21 @@ import { motion, MotionProps } from "framer-motion";
 
 import { VisualArrayWrapperProps } from "@/features/visual-array";
 import { MergeBaseArrayWrapper } from "./merge-base-array-wrapper";
+import { forwardRef } from "react";
 
-export const MergeSubArrayWrapper = ({
-  className,
-  ...props
-}: VisualArrayWrapperProps & MotionProps) => {
+export const MergeSubArrayWrapper = forwardRef<
+  HTMLDivElement,
+  VisualArrayWrapperProps & MotionProps
+>(({ className, ...props }, ref) => {
   return (
-    <MergeBaseArrayWrapper
-      component={motion.div}
-      className={cn(className)}
-      {...props}
-    />
+    <div ref={ref}>
+      <MergeBaseArrayWrapper
+        component={motion.div}
+        className={cn(className)}
+        {...props}
+      />
+    </div>
   );
-};
+});
+
+MergeSubArrayWrapper.displayName = "MergeSubArrayWrapper";
