@@ -5,8 +5,6 @@ import { AnimatedArrayItem } from "./animated-array-item";
 import { MergeArrayWrapper } from "./merge-array-wrapper";
 import { MergeSubArrayWrapper } from "./merge-subarray-wrapper";
 
-
-
 function setItemRef(
   sourceRef?: React.RefObject<HTMLDivElement>,
   targetRef?: React.RefObject<HTMLDivElement>,
@@ -47,7 +45,7 @@ export const MergeArray = ({
   targetIndex,
   subArraysIndexesToMerge,
   sourceIndexesToMerge,
-  isSourceArray
+  isSourceArray,
 }: MergeArrayProps) => {
   if (array === null) {
     return null;
@@ -61,19 +59,24 @@ export const MergeArray = ({
             const subArray = subArrayProp as number[];
             const isSourceSubArray = indexOfSourceSubArray === index;
             const isTargetSubArray = indexOfTargetSubArray === index;
-            const isMergeSubArray = isSourceArray && subArraysIndexesToMerge?.includes(index);
+            const isMergeSubArray =
+              isSourceArray && subArraysIndexesToMerge?.includes(index);
 
             return (
               <MergeSubArrayWrapper
                 key={index}
-                className={cn(isMergeSubArray && " bg-blue-300/35")}
+                className={cn(
+                  isMergeSubArray && " bg-blue-300/35",
+                  !isSourceArray &&subArray.length >1 && subArray.every(isNaN) && "bg-transparent"
+                )}
               >
                 {subArray.map((value, index) => {
                   const isMoveIndex = isSourceSubArray && moveIndex === index;
                   const isTargetIndex =
                     isTargetSubArray && targetIndex === index;
 
-                  const isComparing = isMergeSubArray && sourceIndexesToMerge?.includes(index);
+                  const isComparing =
+                    isMergeSubArray && sourceIndexesToMerge?.includes(index);
 
                   return (
                     <AnimatedArrayItem

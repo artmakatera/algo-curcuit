@@ -1,6 +1,5 @@
 import { StepSnapshot } from './types'
 import { STEPS } from './constants'
-import { s } from 'vitest/dist/reporters-1evA5lom.js';
 
 
 
@@ -106,7 +105,18 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
           yield {
             type: STEPS.addingSortedItem,
             firstArray: cloneArray(arrays),
-            secondArray: cloneArray(result).concat([cloneArray(subArr)] as number[][]) as number[][],
+            secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
+            indexOfSourceSubArray: i,
+            indexOfTargetSubArray: result.length,
+            moveIndex: 0,
+            targetIndex: subArr.length,
+            subArraysIndexesToMerge: [i - 1, i],
+            sourceIndexesToMerge: [0, 0]
+          }
+          yield {
+            type: STEPS.addingSortedItem,
+            firstArray: cloneArray(arrays),
+            secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
             indexOfSourceSubArray: i,
             indexOfTargetSubArray: result.length,
             moveIndex: 0,
@@ -123,13 +133,26 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
             indexOfSourceSubArray: -1,
             indexOfTargetSubArray: -1,
             targetIndex: -1,
+            subArraysIndexesToMerge: [i - 1, i],
+
             sourceIndexesToMerge: []
           }
         } else {
           yield {
             type: STEPS.addingSortedItem,
             firstArray: cloneArray(arrays),
-            secondArray: cloneArray(result).concat([cloneArray(subArr)] as number[][]) as number[][],
+            secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
+            indexOfSourceSubArray: i - 1,
+            indexOfTargetSubArray: result.length,
+            moveIndex: 0,
+            targetIndex: subArr.length,
+            subArraysIndexesToMerge: [i - 1, i],
+            sourceIndexesToMerge: [0, 0]
+          }
+          yield {
+            type: STEPS.addingSortedItem,
+            firstArray: cloneArray(arrays),
+            secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
             indexOfSourceSubArray: i - 1,
             indexOfTargetSubArray: result.length,
             moveIndex: 0,
@@ -146,6 +169,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
             indexOfSourceSubArray: -1,
             indexOfTargetSubArray: -1,
             targetIndex: -1,
+            subArraysIndexesToMerge: [i - 1, i],
             sourceIndexesToMerge: []
           }
         }
@@ -153,11 +177,35 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
 
       result.push(subArr as number[])
 
-    
+
     }
 
 
     if (arrays.length % 2 !== 0) {
+      yield {
+        type: STEPS.moveSubArray,
+        firstArray: cloneArray(arrays),
+        secondArray: cloneArray(result).concat([Array(arrays[arrays.length - 1].length).fill(NaN)]) as number[][],
+        moveIndex: -1,
+        indexOfSourceSubArray: arrays.length - 1,
+        indexOfTargetSubArray: result.length,
+        targetIndex: -1,
+        subArraysIndexesToMerge: [arrays.length - 1, -1],
+        sourceIndexesToMerge: []
+      }
+      yield {
+        type: STEPS.movingSubArray,
+        firstArray: cloneArray(arrays),
+        secondArray: cloneArray(result).concat([Array(arrays[arrays.length - 1].length).fill(NaN)]) as number[][],
+        moveIndex: -1,
+        indexOfSourceSubArray: arrays.length - 1,
+        indexOfTargetSubArray: result.length,
+        targetIndex: -1,
+        subArraysIndexesToMerge: [arrays.length - 1, -1],
+        sourceIndexesToMerge: []
+      }
+  
+
       result.push(arrays[arrays.length - 1])
     }
     arrays = result as number[][];
@@ -176,7 +224,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
 
   yield {
     type: STEPS.secondArrayAsFirstArray,
-    firstArray: cloneArray(arrays.flat()),
+    firstArray: cloneArray(arrays),
     secondArray: null,
     moveIndex: -1,
     indexOfSourceSubArray: -1,

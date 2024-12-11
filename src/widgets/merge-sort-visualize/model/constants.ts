@@ -6,6 +6,8 @@ export enum STEPS {
   addedSortedItem,
   collapsePreviousArray,
   secondArrayAsFirstArray,
+  moveSubArray,
+  movingSubArray,
 }
 
 
