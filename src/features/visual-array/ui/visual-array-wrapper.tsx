@@ -5,6 +5,7 @@ export type VisualArrayWrapperProps = {
   children?: React.ReactNode;
   className?: string;
   component?: React.ElementType;
+  layout?: boolean;
 };
 
 export const VisualArrayWrapper = ({

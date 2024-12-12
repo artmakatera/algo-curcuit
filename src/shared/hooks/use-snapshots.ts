@@ -177,6 +177,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
     onChangeSpeed,
     createSnapshots,
     goToLastStep,
+    isGoBack,
     delayRef
   };
 }

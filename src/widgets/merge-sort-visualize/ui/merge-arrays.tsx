@@ -13,9 +13,10 @@ import { cn } from "@/shared/lib/utils";
 
 interface MergeArraysProps {
   currentSnapshot: StepSnapshot;
+  isGoBack?: boolean;
 }
 
-export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
+export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => {
   const sourceRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -55,6 +56,7 @@ export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
           sourceIndexesToMerge={sourceIndexesToMerge}
           isSubArrayMoving={isSubArrayMoving}
           isSourceArray
+          isGoBack={isGoBack}
         />
       </motion.div>
       <motion.div
@@ -73,6 +75,8 @@ export const MergeArrays = ({ currentSnapshot }: MergeArraysProps) => {
           indexOfTargetSubArray={indexOfTargetSubArray}
           targetIndex={targetIndex}
           isSubArrayMoving={isSubArrayMoving}
+          isGoBack={isGoBack}
+
         />
       </motion.div>
     </div>

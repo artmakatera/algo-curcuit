@@ -17,6 +17,7 @@ interface MergeArrayProps {
   isSourceArray?: boolean;
   isSubArrayMoving?: boolean;
   sourceIndexesToMerge?: number[];
+  isGoBack?: boolean;
 }
 
 export const MergeArray = ({
@@ -31,6 +32,7 @@ export const MergeArray = ({
   sourceIndexesToMerge,
   isSourceArray,
   isSubArrayMoving,
+  isGoBack
 }: MergeArrayProps) => {
   if (array === null) {
     return null;
@@ -38,7 +40,7 @@ export const MergeArray = ({
 
   return (
     <div>
-      <MergeArrayWrapper>
+      <MergeArrayWrapper className={cn(!isSourceArray && "overflow-hidden")}>
         {Array.isArray(array[0]) &&
           array.map((subArrayProp, index) => {
             const subArray = subArrayProp as number[];
@@ -52,6 +54,7 @@ export const MergeArray = ({
                 key={index}
                 className={cn(
                   isMergeSubArray && " bg-blue-300/35",
+                  
                   !isSourceArray &&
                     subArray.length > 1 &&
                     subArray.every(isNaN) &&
@@ -101,6 +104,7 @@ export const MergeArray = ({
                       isComparing={isComparing}
                       sourceRef={sourceRef}
                       targetRef={targetRef}
+                      isGoBack={isGoBack}
                     />
                   );
                 })}
@@ -130,6 +134,7 @@ export const MergeArray = ({
                 isTargetIndex={isTargetIndex}
                 sourceRef={sourceRef}
                 targetRef={targetRef}
+                isGoBack={isGoBack}
               />
             );
           })}
@@ -179,8 +184,10 @@ function getSubArrayAnimationProps(
 ) {
   if (!isSubArrayMoving || !sourceRef?.current || !targetRef?.current) {
     return {
+      layout: true,
       initial: { x: 0, y: 0 },
       animate: { x: 0, y: 0 },
+      transition: { duration: 0 },
     };
   }
 
@@ -191,7 +198,9 @@ function getSubArrayAnimationProps(
   const y = targetRect.y - sourceRect.y;
 
   return {
+    layout: true,
+
     initial: { x: 0, y: 0 },
-    animate: { x, y },
+    animate: { x, y,},
   };
 }

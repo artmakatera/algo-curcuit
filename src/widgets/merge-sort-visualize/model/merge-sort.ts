@@ -7,7 +7,7 @@ import { STEPS } from './constants'
 
 export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown> {
   yield { type: STEPS.start, firstArray: [...arr], secondArray: null, indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
-  yield { type: STEPS.addArray, firstArray: [...arr], secondArray: [], indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
+  yield { type: STEPS.addArray, firstArray: [...arr], secondArray: [[NaN]], indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
 
   let firstArray: number[] | number[][] = [...arr];
   let secondArray: number[][] | null = [];
@@ -28,6 +28,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
       secondArray: cloneArray(secondArray).concat([[NaN]]),
       indexOfSourceSubArray: 0,
       indexOfTargetSubArray: i,
+      
       moveIndex: 0,
       targetIndex: 0,
       sourceIndexesToMerge: []
@@ -71,7 +72,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
     sourceIndexesToMerge: []
   }
 
-  yield { type: STEPS.addArray, firstArray: cloneArray(firstArray), secondArray: [], indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
+  yield { type: STEPS.addArray, firstArray: cloneArray(firstArray), secondArray: [[NaN]], indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
 
   let arrays = firstArray;
 
