@@ -12,6 +12,7 @@ import { StepSnapshot } from "../model/types";
 import { useNumberArray } from "@/shared/hooks/use-number-array";
 import { useCallback, useState } from "react";
 import { EditButton } from "@/features/edit-button";
+import { EditMergeArray } from "./edit-merge-array";
 
 const arrToSort = [3, 2, 9, 4, 1, 8];
 
@@ -61,16 +62,25 @@ export const MergeSortVisualize = () => {
           speed={delayRef.current}
           onChangeSpeed={onChangeSpeed}
         />
-        {/* <EditButton
+        <EditButton
           editMode={editMode}
           onClick={() => {
             rebuildSnapshots();
             setEditMode((prev) => !prev);
           }}
           disabled={isPlaying}
-        /> */}
+        />
       </div>
-      <MergeArrays currentSnapshot={currentSnapshot} isGoBack={isGoBack} />
+      {editMode ? (
+        <EditMergeArray
+          array={array}
+          onRemoveNumber={removeNumber}
+          onAddNumber={addNumber}
+          onUpdateNumber={updateNumber}
+        />
+      ) : (
+        <MergeArrays currentSnapshot={currentSnapshot} isGoBack={isGoBack} />
+      )}
     </div>
   );
 };

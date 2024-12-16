@@ -3,9 +3,7 @@ import { useRef } from "react";
 import { MERGE_ARRAYS_WRAPPER_ID, MergeArray } from "@/features/visual-merge-sort-array";
 import { StepSnapshot } from "../model/types";
 import {
-  AnimatePresence,
-  domAnimation,
-  LazyMotion,
+
   motion,
 } from "framer-motion";
 import { STEPS } from "../model";
@@ -36,6 +34,7 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
   const open = type !== STEPS.collapsePreviousArray && type !== STEPS.end;
   const isSubArrayMoving  = type === STEPS.moveSubArray || type === STEPS.movingSubArray;
   const hideSubArray = type === STEPS.end;
+  
 
   return (
     <div id={MERGE_ARRAYS_WRAPPER_ID} className={cn("grid gap-8 pt-8")}>
