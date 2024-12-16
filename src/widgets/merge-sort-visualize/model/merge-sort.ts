@@ -16,10 +16,10 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
       type: STEPS.addSubArray,
       firstArray: cloneArray(firstArray).slice(i),
       secondArray: cloneArray(secondArray).concat([[NaN]]),
-      indexOfSourceSubArray: 0,
-      indexOfTargetSubArray: i,
-      moveIndex: 0,
-      targetIndex: 0,
+      indexOfSourceSubArray: -1,
+      indexOfTargetSubArray: -1,
+      moveIndex: -1,
+      targetIndex: -1,
       sourceIndexesToMerge: []
     }
     yield {
@@ -114,17 +114,6 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
             subArraysIndexesToMerge: [i - 1, i],
             sourceIndexesToMerge: [0, 0]
           }
-          yield {
-            type: STEPS.addingSortedItem,
-            firstArray: cloneArray(arrays),
-            secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
-            indexOfSourceSubArray: i,
-            indexOfTargetSubArray: result.length,
-            moveIndex: 0,
-            targetIndex: subArr.length,
-            subArraysIndexesToMerge: [i - 1, i],
-            sourceIndexesToMerge: [0, 0]
-          }
           subArr.push(currentArr.shift() as number)
           yield {
             type: STEPS.addedSortedItem,
@@ -139,17 +128,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
             sourceIndexesToMerge: []
           }
         } else {
-          yield {
-            type: STEPS.addingSortedItem,
-            firstArray: cloneArray(arrays),
-            secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
-            indexOfSourceSubArray: i - 1,
-            indexOfTargetSubArray: result.length,
-            moveIndex: 0,
-            targetIndex: subArr.length,
-            subArraysIndexesToMerge: [i - 1, i],
-            sourceIndexesToMerge: [0, 0]
-          }
+
           yield {
             type: STEPS.addingSortedItem,
             firstArray: cloneArray(arrays),

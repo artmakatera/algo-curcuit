@@ -4,6 +4,7 @@ import { cn } from "@/shared/lib/utils";
 import { AnimatedArrayItem } from "./animated-array-item";
 import { MergeArrayWrapper } from "./merge-array-wrapper";
 import { MergeSubArrayWrapper } from "./merge-subarray-wrapper";
+import { SOURCE_ARRAY_ID, TARGET_ARRAY_ID } from "../constants";
 
 interface MergeArrayProps {
   array: number[][] | number[] | null;
@@ -32,7 +33,7 @@ export const MergeArray = ({
   sourceIndexesToMerge,
   isSourceArray,
   isSubArrayMoving,
-  isGoBack
+  isGoBack,
 }: MergeArrayProps) => {
   if (array === null) {
     return null;
@@ -40,7 +41,7 @@ export const MergeArray = ({
 
   return (
     <div>
-      <MergeArrayWrapper className={cn(!isSourceArray && "overflow-hidden")}>
+      <MergeArrayWrapper className={cn(!isSourceArray && "overflow-hidden")} >
         {Array.isArray(array[0]) &&
           array.map((subArrayProp, index) => {
             const subArray = subArrayProp as number[];
@@ -54,7 +55,7 @@ export const MergeArray = ({
                 key={index}
                 className={cn(
                   isMergeSubArray && " bg-blue-300/35",
-                  
+
                   !isSourceArray &&
                     subArray.length > 1 &&
                     subArray.every(isNaN) &&
@@ -89,21 +90,9 @@ export const MergeArray = ({
                       key={index}
                       value={value}
                       index={index}
-                      ref={
-                        isSubArrayMoving
-                          ? null
-                          : setItemRef(
-                              sourceRef,
-                              targetRef,
-                              isMoveIndex,
-                              isTargetSubArray
-                            )
-                      }
                       isMoveIndex={isMoveIndex}
                       isTargetIndex={isTargetIndex}
                       isComparing={isComparing}
-                      sourceRef={sourceRef}
-                      targetRef={targetRef}
                       isGoBack={isGoBack}
                     />
                   );
@@ -120,20 +109,8 @@ export const MergeArray = ({
                 key={index}
                 value={value as number}
                 index={index}
-                ref={
-                  isSubArrayMoving
-                    ? null
-                    : setItemRef(
-                        sourceRef,
-                        targetRef,
-                        isMoveIndex,
-                        isTargetIndex
-                      )
-                }
                 isMoveIndex={isMoveIndex}
                 isTargetIndex={isTargetIndex}
-                sourceRef={sourceRef}
-                targetRef={targetRef}
                 isGoBack={isGoBack}
               />
             );
@@ -201,6 +178,6 @@ function getSubArrayAnimationProps(
     layout: true,
 
     initial: { x: 0, y: 0 },
-    animate: { x, y,},
+    animate: { x, y },
   };
 }

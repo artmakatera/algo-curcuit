@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { MergeArray } from "@/features/visual-merge-sort-array";
+import { MERGE_ARRAYS_WRAPPER_ID, MergeArray } from "@/features/visual-merge-sort-array";
 import { StepSnapshot } from "../model/types";
 import {
   AnimatePresence,
@@ -37,7 +37,7 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
   const isSubArrayMoving  = type === STEPS.moveSubArray || type === STEPS.movingSubArray;
 
   return (
-    <div className={cn("grid gap-8 pt-8")}>
+    <div id={MERGE_ARRAYS_WRAPPER_ID} className={cn("grid gap-8 pt-8")}>
       <motion.div
         variants={{
           hidden: { opacity: 0 },

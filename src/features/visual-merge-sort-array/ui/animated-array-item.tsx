@@ -1,11 +1,28 @@
 "use client";
-import { forwardRef, useRef } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { m, motion } from "framer-motion";
 
 // Components
 import { VisualArrayItem } from "@/features/visual-array";
+import {
+  MERGE_ARRAYS_WRAPPER_ID,
+  MOVE_ITEM_ID,
+  TARGET_ITEM_ID,
+} from "../constants";
 
 // Helpers
+
+const getId = (isMoveIndex?: boolean, isTargetIndex?: boolean) => {
+  if (isMoveIndex) {
+    return MOVE_ITEM_ID;
+  }
+
+  if (isTargetIndex) {
+    return TARGET_ITEM_ID;
+  }
+
+  return undefined;
+};
 
 export type AnimatedArrayItemProps = {
   value: number;
@@ -20,35 +37,30 @@ export type AnimatedArrayItemProps = {
   isComparing?: boolean;
 };
 
-export const AnimatedArrayItem = forwardRef<
-  HTMLDivElement,
-  AnimatedArrayItemProps
->((props, ref) => {
+export const AnimatedArrayItem = (props: AnimatedArrayItemProps) => {
   const {
     value,
     index,
     isMoveIndex,
+    isTargetIndex,
     className,
     isComparing,
     isGoBack,
-    sourceRef,
-    targetRef,
   } = props;
-  isMoveIndex &&
-    console.log(
-      "AnimatedArrayItem -> isMoveIndex",
-      isMoveIndex,
-      sourceRef,
-      targetRef
-    );
+  const [animationVariant, setAnimationVariant] = useState("default");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setAnimationVariant(getCurrentAnimation(!!isMoveIndex, isGoBack));
+  }, [isMoveIndex, isGoBack]);
 
   return (
-    <div className="w-12 h-12" ref={ref}>
+    <div className="w-12 h-12" ref={ref} id={getId(isMoveIndex, isTargetIndex)}>
       {!isNaN(value) && (
         <motion.div
           layout
-          variants={getAnimatedVariants(props)}
-          animate={getCurrentAnimation(props, isGoBack)}
+          variants={getAnimatedVariants(!!isMoveIndex, ref)}
+          animate={animationVariant}
           transition={{
             type: "linear",
             duration: isMoveIndex ? 1.7 : 0,
@@ -66,24 +78,28 @@ export const AnimatedArrayItem = forwardRef<
       )}
     </div>
   );
-});
-
-const getBoundingRect = (ref?: React.RefObject<HTMLDivElement>) => {
-  if (!ref?.current) {
-    return {
-      left: -9999,
-      top: -9999,
-    };
-  }
-
-  return ref.current.getBoundingClientRect();
 };
 
-function getCurrentAnimation(
-  props: AnimatedArrayItemProps,
-  isGoBack?: boolean
-) {
-  if (!props.isMoveIndex) {
+const getBoundingRect = (element?: HTMLDivElement | null) => {
+  if (!element) {
+    return null;
+  }
+
+  return element.getBoundingClientRect();
+};
+
+const getTargetElement = (ref?: React.RefObject<HTMLDivElement>) => {
+  if (!ref?.current) {
+    return null;
+  }
+
+  const arrayWrapper = ref.current.closest(`#${MERGE_ARRAYS_WRAPPER_ID}`);
+
+  return arrayWrapper?.querySelector(`#${TARGET_ITEM_ID}`) as HTMLDivElement;
+};
+
+function getCurrentAnimation(isMoveIndex: boolean, isGoBack?: boolean) {
+  if (!isMoveIndex) {
     return "default";
   }
 
@@ -94,18 +110,45 @@ function getCurrentAnimation(
   return "moveForward";
 }
 
-function getAnimatedVariants({
-  sourceRef,
-  targetRef,
-}: Partial<AnimatedArrayItemProps>) {
-  const sourcePosition = getBoundingRect(sourceRef);
-  const targetPosition = getBoundingRect(targetRef);
+function getAnimatedVariants(
+  isMoveIndex: boolean,
+  ref: React.RefObject<HTMLDivElement>
+) {
+  const defaultVariants = {
+    default: {
+      x: 0,
+      y: 0,
+    },
+    moveForward: {
+      x: 0,
+      y: 0,
+    },
+    moveBackward: { x: 0, y: 0 },
+  };
+  if (!isMoveIndex) {
+    return defaultVariants;
+  }
+
+  const sourcePosition = getBoundingRect(ref.current);
+  const targetPosition = getBoundingRect(getTargetElement(ref));
+  console.log({
+    sourcePosition,
+    targetPosition,
+    el: getTargetElement(ref),
+  });
+
+  if (!sourcePosition || !targetPosition) {
+    return defaultVariants;
+  }
 
   const targetX = targetPosition.left - sourcePosition.left;
   const targetY = targetPosition.top - sourcePosition.top;
 
   return {
-    default: {},
+    default: {
+      x: 0,
+      y: 0,
+    },
     moveForward: {
       x: [0, targetX, targetX],
       y: [0, targetY, targetY],
