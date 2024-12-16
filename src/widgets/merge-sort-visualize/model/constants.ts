@@ -8,6 +8,7 @@ export enum STEPS {
   secondArrayAsFirstArray,
   moveSubArray,
   movingSubArray,
+  end,
 }
 
 

@@ -1,6 +1,6 @@
 "use client";
 import {  useEffect, useRef, useState } from "react";
-import { m, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 // Components
 import { VisualArrayItem } from "@/features/visual-array";
@@ -9,6 +9,8 @@ import {
   MOVE_ITEM_ID,
   TARGET_ITEM_ID,
 } from "../constants";
+import { getBoundingRect, getCurrentAnimation } from "../helpers";
+import { useAnimationVariant } from "../hooks";
 
 // Helpers
 
@@ -47,12 +49,9 @@ export const AnimatedArrayItem = (props: AnimatedArrayItemProps) => {
     isComparing,
     isGoBack,
   } = props;
-  const [animationVariant, setAnimationVariant] = useState("default");
   const ref = useRef<HTMLDivElement>(null);
+  const animationVariant = useAnimationVariant(isMoveIndex, isGoBack);
 
-  useEffect(() => {
-    setAnimationVariant(getCurrentAnimation(!!isMoveIndex, isGoBack));
-  }, [isMoveIndex, isGoBack]);
 
   return (
     <div className="w-12 h-12" ref={ref} id={getId(isMoveIndex, isTargetIndex)}>
@@ -80,13 +79,6 @@ export const AnimatedArrayItem = (props: AnimatedArrayItemProps) => {
   );
 };
 
-const getBoundingRect = (element?: HTMLDivElement | null) => {
-  if (!element) {
-    return null;
-  }
-
-  return element.getBoundingClientRect();
-};
 
 const getTargetElement = (ref?: React.RefObject<HTMLDivElement>) => {
   if (!ref?.current) {
@@ -98,17 +90,7 @@ const getTargetElement = (ref?: React.RefObject<HTMLDivElement>) => {
   return arrayWrapper?.querySelector(`#${TARGET_ITEM_ID}`) as HTMLDivElement;
 };
 
-function getCurrentAnimation(isMoveIndex: boolean, isGoBack?: boolean) {
-  if (!isMoveIndex) {
-    return "default";
-  }
 
-  if (isGoBack) {
-    return "moveBackward";
-  }
-
-  return "moveForward";
-}
 
 function getAnimatedVariants(
   isMoveIndex: boolean,
@@ -131,11 +113,6 @@ function getAnimatedVariants(
 
   const sourcePosition = getBoundingRect(ref.current);
   const targetPosition = getBoundingRect(getTargetElement(ref));
-  console.log({
-    sourcePosition,
-    targetPosition,
-    el: getTargetElement(ref),
-  });
 
   if (!sourcePosition || !targetPosition) {
     return defaultVariants;

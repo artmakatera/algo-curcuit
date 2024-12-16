@@ -4,7 +4,6 @@ import { cn } from "@/shared/lib/utils";
 import { AnimatedArrayItem } from "./animated-array-item";
 import { MergeArrayWrapper } from "./merge-array-wrapper";
 import { MergeSubArrayWrapper } from "./merge-subarray-wrapper";
-import { SOURCE_ARRAY_ID, TARGET_ARRAY_ID } from "../constants";
 
 interface MergeArrayProps {
   array: number[][] | number[] | null;
@@ -19,12 +18,11 @@ interface MergeArrayProps {
   isSubArrayMoving?: boolean;
   sourceIndexesToMerge?: number[];
   isGoBack?: boolean;
+  hideSubArray?: boolean;
 }
 
 export const MergeArray = ({
   array,
-  sourceRef,
-  targetRef,
   indexOfSourceSubArray,
   indexOfTargetSubArray,
   moveIndex,
@@ -34,6 +32,7 @@ export const MergeArray = ({
   isSourceArray,
   isSubArrayMoving,
   isGoBack,
+  hideSubArray,
 }: MergeArrayProps) => {
   if (array === null) {
     return null;
@@ -41,7 +40,7 @@ export const MergeArray = ({
 
   return (
     <div>
-      <MergeArrayWrapper className={cn(!isSourceArray && "overflow-hidden")} >
+      <MergeArrayWrapper className={cn(!isSourceArray && "overflow-hidden")}>
         {Array.isArray(array[0]) &&
           array.map((subArrayProp, index) => {
             const subArray = subArrayProp as number[];
@@ -55,27 +54,17 @@ export const MergeArray = ({
                 key={index}
                 className={cn(
                   isMergeSubArray && " bg-blue-300/35",
+                  hideSubArray && "bg-transparent shadow-none",
 
                   !isSourceArray &&
                     subArray.length > 1 &&
                     subArray.every(isNaN) &&
                     "bg-transparent"
                 )}
-                ref={
-                  isSubArrayMoving
-                    ? setSubArrayRef(
-                        sourceRef,
-                        targetRef,
-                        isSourceSubArray,
-                        isTargetSubArray
-                      )
-                    : null
-                }
-                {...getSubArrayAnimationProps(
-                  isSubArrayMoving && isSourceSubArray,
-                  sourceRef,
-                  targetRef
-                )}
+                isSourceSubArray={isSourceSubArray}
+                isTargetSubArray={isTargetSubArray}
+                isGoBack={isGoBack}
+                isSubArrayMoving={isSubArrayMoving}
               >
                 {subArray.map((value, index) => {
                   const isMoveIndex = isSourceSubArray && moveIndex === index;
@@ -119,65 +108,3 @@ export const MergeArray = ({
     </div>
   );
 };
-
-function setItemRef(
-  sourceRef?: React.RefObject<HTMLDivElement>,
-  targetRef?: React.RefObject<HTMLDivElement>,
-  isMoveIndex?: boolean,
-  isTargetIndex?: boolean
-) {
-  if (isMoveIndex) {
-    return sourceRef;
-  }
-
-  if (isTargetIndex) {
-    return targetRef;
-  }
-
-  return null;
-}
-
-function setSubArrayRef(
-  sourceRef?: React.RefObject<HTMLDivElement>,
-  targetRef?: React.RefObject<HTMLDivElement>,
-  isSourceSubArray?: boolean,
-  isTargetSubArray?: boolean
-) {
-  if (isSourceSubArray) {
-    return sourceRef;
-  }
-
-  if (isTargetSubArray) {
-    return targetRef;
-  }
-
-  return null;
-}
-
-function getSubArrayAnimationProps(
-  isSubArrayMoving?: boolean,
-  sourceRef?: React.RefObject<HTMLDivElement>,
-  targetRef?: React.RefObject<HTMLDivElement>
-) {
-  if (!isSubArrayMoving || !sourceRef?.current || !targetRef?.current) {
-    return {
-      layout: true,
-      initial: { x: 0, y: 0 },
-      animate: { x: 0, y: 0 },
-      transition: { duration: 0 },
-    };
-  }
-
-  const sourceRect = sourceRef.current.getBoundingClientRect();
-  const targetRect = targetRef.current.getBoundingClientRect();
-
-  const x = targetRect.x - sourceRect.x;
-  const y = targetRect.y - sourceRect.y;
-
-  return {
-    layout: true,
-
-    initial: { x: 0, y: 0 },
-    animate: { x, y },
-  };
-}

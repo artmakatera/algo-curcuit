@@ -33,8 +33,9 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
   } = currentSnapshot;
 
 
-  const open = type !== STEPS.collapsePreviousArray;
+  const open = type !== STEPS.collapsePreviousArray && type !== STEPS.end;
   const isSubArrayMoving  = type === STEPS.moveSubArray || type === STEPS.movingSubArray;
+  const hideSubArray = type === STEPS.end;
 
   return (
     <div id={MERGE_ARRAYS_WRAPPER_ID} className={cn("grid gap-8 pt-8")}>
@@ -57,6 +58,7 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
           isSubArrayMoving={isSubArrayMoving}
           isSourceArray
           isGoBack={isGoBack}
+          hideSubArray={hideSubArray}
         />
       </motion.div>
       <motion.div
@@ -76,6 +78,7 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
           targetIndex={targetIndex}
           isSubArrayMoving={isSubArrayMoving}
           isGoBack={isGoBack}
+          hideSubArray={hideSubArray}
 
         />
       </motion.div>

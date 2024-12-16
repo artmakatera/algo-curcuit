@@ -173,20 +173,19 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
         subArraysIndexesToMerge: [arrays.length - 1, -1],
         sourceIndexesToMerge: []
       }
+      
+      
+      result.push(arrays[arrays.length - 1])
       yield {
         type: STEPS.movingSubArray,
-        firstArray: cloneArray(arrays),
-        secondArray: cloneArray(result).concat([Array(arrays[arrays.length - 1].length).fill(NaN)]) as number[][],
+        firstArray: cloneArray(arrays.slice(0, arrays.length - 1)),
+        secondArray: cloneArray(result) as number[][],
         moveIndex: -1,
-        indexOfSourceSubArray: arrays.length - 1,
-        indexOfTargetSubArray: result.length,
+        indexOfSourceSubArray: - 1,
+        indexOfTargetSubArray: -1,
         targetIndex: -1,
-        subArraysIndexesToMerge: [arrays.length - 1, -1],
         sourceIndexesToMerge: []
       }
-  
-
-      result.push(arrays[arrays.length - 1])
     }
     arrays = result as number[][];
 
@@ -201,19 +200,17 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
       sourceIndexesToMerge: []
     }
   }
-
+  
   yield {
-    type: STEPS.secondArrayAsFirstArray,
-    firstArray: cloneArray(arrays),
-    secondArray: null,
+    type: STEPS.end,
+    firstArray: [],
+    secondArray: cloneArray(arrays),
     moveIndex: -1,
     indexOfSourceSubArray: -1,
     indexOfTargetSubArray: -1,
     targetIndex: -1,
     sourceIndexesToMerge: []
   }
-
-  console.log(arrays)
 
 
 }
