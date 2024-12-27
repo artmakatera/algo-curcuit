@@ -7,13 +7,13 @@ import { STEPS } from './constants'
 
 export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown> {
   yield { type: STEPS.start, firstArray: [...arr], secondArray: null, indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
-  yield { type: STEPS.addArray, firstArray: [...arr], secondArray: [[NaN]], indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
+  yield { type: STEPS.addFirstArray, firstArray: [...arr], secondArray: [[NaN]], indexOfSourceSubArray: -1, indexOfTargetSubArray: -1, moveIndex: -1, targetIndex: -1, sourceIndexesToMerge: [] };
 
   let firstArray: number[] | number[][] = [...arr];
   let secondArray: number[][] | null = [];
   for (let i = 0; i < firstArray.length; i++) {
     yield {
-      type: STEPS.addSubArray,
+      type: STEPS.addFirstSubArray,
       firstArray: cloneArray(firstArray).slice(i),
       secondArray: cloneArray(secondArray).concat([[NaN]]),
       indexOfSourceSubArray: -1,
@@ -23,12 +23,12 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
       sourceIndexesToMerge: []
     }
     yield {
-      type: STEPS.addingSortedItem,
+      type: STEPS.addingFirstItem,
       firstArray: cloneArray(firstArray).slice(i),
       secondArray: cloneArray(secondArray).concat([[NaN]]),
       indexOfSourceSubArray: 0,
       indexOfTargetSubArray: i,
-      
+
       moveIndex: 0,
       targetIndex: 0,
       sourceIndexesToMerge: []
@@ -37,7 +37,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
     secondArray.push([firstArray[i]]);
 
     yield {
-      type: STEPS.addedSortedItem,
+      type: STEPS.addingFirstItem,
       firstArray: cloneArray(firstArray).slice(i + 1),
       secondArray: cloneArray(secondArray),
       moveIndex: -1,
@@ -49,7 +49,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
   }
 
   yield {
-    type: STEPS.collapsePreviousArray,
+    type: STEPS.firstCollapsePreviousArray,
     firstArray: [],
     secondArray: cloneArray(secondArray),
     moveIndex: -1,
@@ -62,7 +62,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
   secondArray = null;
 
   yield {
-    type: STEPS.secondArrayAsFirstArray,
+    type: STEPS.firstCollapsePreviousArray,
     firstArray: cloneArray(firstArray),
     secondArray,
     moveIndex: -1,
@@ -104,7 +104,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
         if (prevArr.length === 0 || currentArr[0] < prevArr[0]) {
 
           yield {
-            type: STEPS.addingSortedItem,
+            type: STEPS.addingRightSortedItem,
             firstArray: cloneArray(arrays),
             secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
             indexOfSourceSubArray: i,
@@ -116,7 +116,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
           }
           subArr.push(currentArr.shift() as number)
           yield {
-            type: STEPS.addedSortedItem,
+            type: STEPS.addedRightSortedItem,
             firstArray: cloneArray(arrays),
             secondArray: cloneArray(result).concat([cloneArray(subArr)] as number[][]),
             moveIndex: -1,
@@ -130,7 +130,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
         } else {
 
           yield {
-            type: STEPS.addingSortedItem,
+            type: STEPS.addingLeftSortedItem,
             firstArray: cloneArray(arrays),
             secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
             indexOfSourceSubArray: i - 1,
@@ -142,7 +142,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
           }
           subArr.push(prevArr.shift() as number)
           yield {
-            type: STEPS.addedSortedItem,
+            type: STEPS.addedLeftSortedItem,
             firstArray: cloneArray(arrays),
             secondArray: cloneArray(result).concat([cloneArray(subArr)] as number[][]),
             moveIndex: -1,
@@ -173,8 +173,8 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
         subArraysIndexesToMerge: [arrays.length - 1, -1],
         sourceIndexesToMerge: []
       }
-      
-      
+
+
       result.push(arrays[arrays.length - 1])
       yield {
         type: STEPS.movingSubArray,
@@ -200,7 +200,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
       sourceIndexesToMerge: []
     }
   }
-  
+
   yield {
     type: STEPS.end,
     firstArray: [],

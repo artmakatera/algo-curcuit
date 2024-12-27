@@ -5,6 +5,8 @@ import {
   createStepSnapshot,
   defaultSnapshot,
   defaultSnapshots,
+  LANGUAGES,
+  languagesMapSettings,
 } from "../model";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { mergeSort } from "../model/merge-sort";
@@ -13,17 +15,20 @@ import { useNumberArray } from "@/shared/hooks/use-number-array";
 import { useCallback, useState } from "react";
 import { EditButton } from "@/features/edit-button";
 import { EditMergeArray } from "./edit-merge-array";
+import { useCodeLang } from "@/shared/contexts/code-lang";
+import TypographyH3 from "@/components/ui/typography/typographyH3";
+import { CodeViewers } from "@/components/ui/code-viewers";
 
 const arrToSort = [3, 2, 9, 4, 1, 8];
 
 export const MergeSortVisualize = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const { array, addNumber, removeNumber, updateNumber } =
     useNumberArray(arrToSort);
   const {
     currentSnapshot,
-    stepsSnapshot,
     hasPrevSnapshot,
     hasNextSnapshot,
     handlePreviousStep,
@@ -81,6 +86,16 @@ export const MergeSortVisualize = () => {
       ) : (
         <MergeArrays currentSnapshot={currentSnapshot} isGoBack={isGoBack} />
       )}
+
+      <div className="mt-12">
+        <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
+        <CodeViewers
+          langMap={languagesMapSettings}
+          language={codeLang}
+          onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+          step={currentSnapshot.type}
+        />
+      </div>
     </div>
   );
 };
