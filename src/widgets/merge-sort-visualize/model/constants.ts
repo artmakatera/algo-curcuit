@@ -6,6 +6,7 @@ export enum STEPS {
   addingFirstItem,
   addArray,
   addSubArray,
+  compareItems,
   addingRightSortedItem,
   addedRightSortedItem,
   addingLeftSortedItem,

@@ -101,7 +101,19 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
 
 
       while (prevArr.length > 0 || currentArr.length > 0) {
+        yield {
+          type: STEPS.compareItems,
+          firstArray: cloneArray(arrays),
+          secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
+          indexOfSourceSubArray: -1,
+          indexOfTargetSubArray: -1,
+          moveIndex: -1,
+          targetIndex: -1,
+          subArraysIndexesToMerge: [i - 1, i],
+          sourceIndexesToMerge: [0, 0]
+        };
         if (prevArr.length === 0 || currentArr[0] < prevArr[0]) {
+          
 
           yield {
             type: STEPS.addingRightSortedItem,

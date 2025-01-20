@@ -6,6 +6,5 @@ import javaModel from "./java"
 
 export const languagesMapSettings = {
   [LANGUAGES.javascript]: jsModel,
-  [LANGUAGES.java]: javaModel,
 }
 

@@ -22,6 +22,23 @@ export const CodeViewers = <T extends string>({
   onLanguageChange,
   step,
 }: CodeViewersProps<T>) => {
+  const tabsEntries = Object.entries(langMap);
+
+  if (tabsEntries.length === 0) {
+    return null;
+  }
+
+  if (tabsEntries.length === 1) {
+    const { code, language, highlightLines } = tabsEntries[0][1];
+    return (
+      <CodeViewer
+        text={code}
+        language={language as string}
+        highlight={getHighlightLinesByStep(highlightLines, step)}
+      />
+    );
+  }
+
   return (
     <Tabs
       className="shadow-md max-w-5xl text-sm"
@@ -35,7 +52,7 @@ export const CodeViewers = <T extends string>({
           </TabsTrigger>
         ))}
       </TabsList>
-      {Object.entries(langMap).map(
+      {tabsEntries.map(
         ([value, { code, language, highlightLines }]) => (
           <TabsContent className="w-full" key={language} value={value}>
             <CodeViewer

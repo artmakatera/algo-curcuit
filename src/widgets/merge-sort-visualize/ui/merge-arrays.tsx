@@ -1,11 +1,11 @@
 "use client";
 import { useRef } from "react";
-import { MERGE_ARRAYS_WRAPPER_ID, MergeArray } from "@/features/visual-merge-sort-array";
-import { StepSnapshot } from "../model/types";
 import {
-
-  motion,
-} from "framer-motion";
+  MERGE_ARRAYS_WRAPPER_ID,
+  MergeArray,
+} from "@/features/visual-merge-sort-array";
+import { StepSnapshot } from "../model/types";
+import { motion } from "framer-motion";
 import { STEPS } from "../model";
 import { cn } from "@/shared/lib/utils";
 
@@ -14,7 +14,10 @@ interface MergeArraysProps {
   isGoBack?: boolean;
 }
 
-export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => {
+export const MergeArrays = ({
+  currentSnapshot,
+  isGoBack,
+}: MergeArraysProps) => {
   const sourceRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -30,11 +33,10 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
     sourceIndexesToMerge,
   } = currentSnapshot;
 
-
   const open = type !== STEPS.collapsePreviousArray && type !== STEPS.end;
-  const isSubArrayMoving  = type === STEPS.moveSubArray || type === STEPS.movingSubArray;
+  const isSubArrayMoving =
+    type === STEPS.moveSubArray || type === STEPS.movingSubArray;
   const hideSubArray = type === STEPS.end;
-  
 
   return (
     <div id={MERGE_ARRAYS_WRAPPER_ID} className={cn("grid gap-8 pt-8")}>
@@ -78,7 +80,6 @@ export const MergeArrays = ({ currentSnapshot, isGoBack }: MergeArraysProps) => 
           isSubArrayMoving={isSubArrayMoving}
           isGoBack={isGoBack}
           hideSubArray={hideSubArray}
-
         />
       </motion.div>
     </div>
