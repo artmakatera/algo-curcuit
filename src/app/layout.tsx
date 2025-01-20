@@ -39,7 +39,7 @@ export default function RootLayout({
             <Header />
             <div className="grow shadow-md">{children}</div>
             <footer className=" p-4 text-center text-sm text-gray-500">
-              All rights reserved © Artem Makatera 2024
+              All rights reserved © Artem Makatera {new Date().getFullYear()}
             </footer>
           </CodeLangProvider>
         </ThemeProvider>
