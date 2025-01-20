@@ -1,8 +1,7 @@
-import { useMemo } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 // Components
-import { VisualArrayItem, VisualArrayWrapper } from "@/features/visual-array";
+import {  VisualArrayWrapper } from "@/features/visual-array";
 import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import { Button } from "@/components/ui/button";
 import { VisualSortArrayAnimatedProps } from "./types";
@@ -26,7 +25,7 @@ export const VisualSortArrayAnimated = ({
   if (editMode) {
     return (
       <VisualArrayWrapper>
-        {arrToSort.map((value, index, arr) => (
+        {arrToSort.map((value, index) => (
           <EditArrayItem
             key={index}
             value={value}

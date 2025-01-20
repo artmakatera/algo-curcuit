@@ -1,20 +1,30 @@
 import { cn } from "@/shared/lib/utils";
 import { isValidElement } from "react";
 
-type VisualArrayWrapperProps = {
-  children: React.ReactNode;
+export type VisualArrayWrapperProps = {
+  children?: React.ReactNode;
+  className?: string;
+  component?: React.ElementType;
+  layout?: boolean;
 };
 
-export const VisualArrayWrapper = ({ children }: VisualArrayWrapperProps) => {
+export const VisualArrayWrapper = ({
+  children,
+  className,
+  component: Component = "div",
+  ...props
+}: VisualArrayWrapperProps) => {
   return (
-    <div
+    <Component
+      {...props}
       className={cn(
         "flex items-center mt-12 flex-wrap gap-y-12",
-        getItemFontSizeClass(children)
+        getItemFontSizeClass(children),
+        className
       )}
     >
       {children}
-    </div>
+    </Component>
   );
 };
 

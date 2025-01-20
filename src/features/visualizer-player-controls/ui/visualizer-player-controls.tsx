@@ -45,7 +45,7 @@ export const VisualizeControls = memo(
             size="icon"
             title="Previous step"
             onClick={onPreviousStep}
-            disabled={isPreviousStepDisabled}
+            disabled={isPreviousStepDisabled || isPlaying}
           >
             <ResumeIcon className="h-4 w-4 rotate-180" />
           </Button>
@@ -71,7 +71,7 @@ export const VisualizeControls = memo(
             size="icon"
             title="Next step"
             onClick={onNextStep}
-            disabled={isNextStepDisabled}
+            disabled={isNextStepDisabled || isPlaying}
           >
             <ResumeIcon className="h-4 w-4" />
           </Button>

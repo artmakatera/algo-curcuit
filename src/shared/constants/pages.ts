@@ -1,4 +1,3 @@
-import { link } from "fs";
 
 
 export const pages = [
@@ -26,5 +25,10 @@ export const pages = [
     link: "/binary-tree",
     title: "Binary Tree",
     description: "A binary tree is a tree data structure in which each node has at most two children, which are referred to as the left child and the right child."
+  },
+  {
+    link: "/merge-sort",
+    title: "Merge Sort",
+    description: "Merge sort is an efficient, stable, comparison-based, divide and conquer sorting algorithm."
   }
 ]
