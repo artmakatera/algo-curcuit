@@ -24,6 +24,12 @@ export enum STEPS {
   insertLeftNode,
   insertRightNode,
 
+  addToQueue,
+  popFromQueue,
+  addToResult,
+  endTraverse,
+
+
 }
 
 

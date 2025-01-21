@@ -39,7 +39,6 @@ const getAnimationCoords = (
 };
 
 export const Node = ({
-  hasChildren,
   current,
   active,
   inserted,
@@ -59,11 +58,6 @@ export const Node = ({
 
   const { x, y } = getAnimationCoords(ref, nodeToRemove);
 
-  const getAnimateType = () => {
-    if (isMinValueNode) return "minVal";
-
-    return "normal";
-  };
 
   return (
     <motion.div

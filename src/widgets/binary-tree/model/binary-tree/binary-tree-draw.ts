@@ -13,6 +13,7 @@ class BinaryTreeDraw extends BinaryTree {
     this.insertDraw = this.insertDraw.bind(this);
     this.findDraw = this.findDraw.bind(this);
     this.removeDraw = this.removeDraw.bind(this);
+    this.bfs = this.bfs.bind(this);
   }
 
   getHeight(node: TreeNode | null = this.root): number {
@@ -425,6 +426,91 @@ class BinaryTreeDraw extends BinaryTree {
       treeView: { ...this.getNodeGroups() },
 
     }
+  }
+
+
+  *bfs() {
+    const node = this.root;
+
+    if (!node) {
+      return [];
+    }
+
+    const treeView = this.getNodeGroups();
+
+    yield {
+      type: STEPS.start,
+      node: node,
+      treeView: treeView,
+      queue: [],
+      result: [],
+    }
+
+    let queue: TreeNode[] = [node];
+    let result: TreeNode[] = [];
+
+      yield {
+        type: STEPS.addToQueue,
+        node: node,
+        treeView: treeView,
+        queue: [...queue],
+        result: [...result],
+      }
+
+
+    while (queue.length > 0) {
+      let currentNode = queue.shift()!;
+      yield {
+        type: STEPS.popFromQueue,
+        node: currentNode,
+        treeView: treeView,
+        queue: [...queue],
+        result: [...result],
+      }
+      result.push(currentNode);
+      yield {
+        type: STEPS.addToResult,
+        node: currentNode,
+        treeView: treeView,
+        queue: [...queue],
+        result: [...result],
+      }
+
+      if (currentNode.left) {
+        queue.push(currentNode.left);
+        yield {
+          type: STEPS.addToQueue,
+          node: node,
+          treeView: treeView,
+          queue: [...queue],
+          result: [...result],
+        }
+      }
+
+      if (currentNode.right) {
+        queue.push(currentNode.right);
+        yield {
+          type: STEPS.addToQueue,
+          node: node,
+          treeView: treeView,
+          queue: [...queue],
+          result: [...result],
+        }
+      }
+
+    }
+
+    yield {
+      type: STEPS.endTraverse,
+      node: null,
+      treeView: treeView,
+      queue: [...queue],
+      result: [...result],
+    }
+
+
+
+    return result;
   }
 
 }

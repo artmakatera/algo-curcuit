@@ -1,33 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dispatch, ActionType } from "../model/types";
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
+import { CollapsibleControlProps } from "./types";
+import { ActionType } from "../../model/types";
 
-type ControlsProps = {
-  dispatch: Dispatch;
-  disabled?: boolean;
-  activeType: ActionType | null;
-  onSubmitValue: (value: number) => void;
-};
-
-type ControlColor = "blue" | "orange" | "red";
-
-type CollapsibleControlProps = {
-  type: ActionType;
-  disabled?: boolean;
-  color: ControlColor;
-  onTriggerClick: (type: ActionType, value: number) => void;
-  isOpen?: boolean;
-  dispatch: Dispatch;
-  onSubmitValue: (value: number) => void;
-};
-
-const CollapsibleControl = ({
+export const InputCollapsibleControl = ({
   type,
   disabled,
   color,
@@ -45,7 +27,7 @@ const CollapsibleControl = ({
     }
 
     setValue(value === "" ? "" : Number(value));
-    dispatch({ type, value: Number(value), canClose: false });
+    dispatch({ type: type as ActionType, value: Number(value), canClose: false });
   };
 
   const handleOpen = () => {
@@ -98,45 +80,5 @@ const CollapsibleControl = ({
         </form>
       </CollapsibleContent>
     </Collapsible>
-  );
-};
-
-type ControlsType = { type: ActionType; color: ControlColor }[];
-
-const CONTROLS: ControlsType = [
-  { type: "find", color: "blue" },
-  { type: "insert", color: "orange" },
-  { type: "delete", color: "red" },
-];
-
-export const Controls = ({
-  dispatch,
-  disabled,
-  activeType,
-  onSubmitValue,
-}: ControlsProps) => {
-  const toggleActiveType = (type: ActionType, value: number) => {
-    dispatch({ type, value, canClose: true });
-  };
-
-  return (
-    <div>
-      <div className="flex items-start justify-center w-full">
-        {CONTROLS.map(({ type, color }) => {
-          return (
-            <CollapsibleControl
-              key={type}
-              type={type}
-              color={color}
-              disabled={disabled}
-              onTriggerClick={toggleActiveType}
-              isOpen={activeType === type}
-              dispatch={dispatch}
-              onSubmitValue={onSubmitValue}
-            />
-          );
-        })}
-      </div>
-    </div>
   );
 };

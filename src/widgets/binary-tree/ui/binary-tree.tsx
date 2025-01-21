@@ -1,5 +1,5 @@
 "use client";
-import { BinaryTreeDraw } from "../model/binary-tree";
+import { BinaryTreeDraw, TreeNode } from "../model/binary-tree";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
@@ -22,6 +22,7 @@ import {
   getPreventNodeEdgeAnimation,
 } from "../model/snapshot-helpers";
 import { CodeViewers } from "@/components/ui/code-viewers";
+import { TraverseDataView } from "@/features/traverse-data-view";
 
 const tree = new BinaryTreeDraw();
 
@@ -44,6 +45,14 @@ export const BinaryTree = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const genCall = useMemo(() => {
+    if (activeType === "bfs") {
+      return tree.bfs as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
+
     if (activeType === "insert") {
       return tree.insertDraw as unknown as (
         v: number | null
@@ -82,6 +91,7 @@ export const BinaryTree = () => {
     createStepSnapshot,
   });
 
+
   const dispatch: Dispatch = ({ type, value, canClose }) => {
     setError(null);
     setTargetValue(value);
@@ -102,6 +112,7 @@ export const BinaryTree = () => {
   useEffect(() => {
     visualize();
   }, [stepsSnapshot, visualize]);
+
 
   return (
     <div ref={ref} className=" items-center p-2 md:p-4 mx-auto">
@@ -136,7 +147,16 @@ export const BinaryTree = () => {
       )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
 
-      <div className="m-auto w-fit mt-8">
+      <div className="m-auto container mt-4 w-72 lg:w-96">
+        {!!currentSnapshot.queue && !!currentSnapshot.result && (
+          <TraverseDataView
+            queue={currentSnapshot.queue}
+            result={currentSnapshot.result}
+            currentNode={currentSnapshot.node}
+          />
+        )}
+      </div>
+      <div className="m-auto w-fit mt-4">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
           <NodeArray
             parentKey={null}
@@ -164,7 +184,7 @@ export const BinaryTree = () => {
       {hasCodeLang && (
         <div className="m-auto max-w-2xl mt-4 hidden sm:block">
           <CodeViewers
-            langMap={languagesMapSettings[activeType]}
+            langMap={languagesMapSettings[activeType] as any}
             language={codeLang}
             onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
             step={currentSnapshot.type}
