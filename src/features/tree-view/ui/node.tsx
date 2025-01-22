@@ -8,7 +8,7 @@ import { useNodeToRemove } from "../context/node-to-remove-context";
 type NodeItemProps = {
   current: TreeNode;
   active?: boolean;
-  inserted?: boolean;
+  completed?: boolean;
   found?: boolean;
   isNodeToRemove?: boolean;
   isMinValueNode?: boolean;
@@ -41,7 +41,7 @@ const getAnimationCoords = (
 export const Node = ({
   current,
   active,
-  inserted,
+  completed,
   found,
   isNodeToRemove,
   isMinValueNode,
@@ -86,7 +86,7 @@ export const Node = ({
           "bg-green-600  text-center  text-white rounded-full",
           active && "bg-blue-600",
           found && "bg-yellow-500 scale-50",
-          inserted && "bg-orange-600",
+          completed && "bg-orange-600",
           isNodeToRemove && "bg-red-600"
         )}
         ref={ref}
@@ -94,8 +94,8 @@ export const Node = ({
         animate={{ scale: 1 }}
         transition={{
           type: "spring",
-          duration: inserted ? 0.8 : 0.3,
-          delay: inserted ? 0.5 : 0,
+          duration: completed ? 0.8 : 0.3,
+          delay: completed ? 0.5 : 0,
         }}
       >
         {current?.value}

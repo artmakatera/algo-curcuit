@@ -8,6 +8,7 @@ type LineProps = {
   isLeft?: boolean;
   className?: string;
   preventAnimation?: boolean;
+  completed?: boolean;
 };
 
 const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
@@ -47,7 +48,7 @@ const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
   };
 };
 
-export const Line = ({ isLeft, className, preventAnimation }: LineProps) => {
+export const Line = ({ isLeft, className, preventAnimation, completed }: LineProps) => {
   return (
     <div className={cn(`absolute h-${LINE_SIZE} -z-10`, className)}>
       <svg className="w-full h-full">
@@ -58,7 +59,7 @@ export const Line = ({ isLeft, className, preventAnimation }: LineProps) => {
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
           y2={isLeft ? 0 : "100%"}
-          className="stroke-black dark:stroke-white"
+          className={cn("stroke-black dark:stroke-white", completed && "stroke-orange-600 dark:stroke-orange-600")}
           strokeWidth="1"
         />
       </svg>

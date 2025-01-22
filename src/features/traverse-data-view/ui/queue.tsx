@@ -22,7 +22,7 @@ export const Queue = ({ queue, currentNode }: QueueProps) => {
           )}
         >
           {queue.map((node, index) => (
-            <Node key={index} current={node} active />
+            <Node key={index} current={node} active preventAnimation />
           ))}
         </MergeArrayWrapper>
       </DataWrapper>

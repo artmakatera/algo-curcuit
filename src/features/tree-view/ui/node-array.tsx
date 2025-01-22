@@ -27,6 +27,8 @@ type NodeArrayProps = {
   preventNodeEdgeAnimation?: boolean;
   isMinValueFirstRightChild?: boolean;
   isRightChildToRemove?: boolean;
+  resultNodes?: TreeNode[];
+  queueNodes?: TreeNode[];
 };
 
 export const NodeArray = (props: NodeArrayProps) => {
@@ -68,6 +70,8 @@ function NodeArrayItem({
     preventNodeEdgeAnimation,
     isMinValueFirstRightChild,
     isRightChildToRemove,
+    resultNodes,
+    queueNodes,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -83,6 +87,8 @@ function NodeArrayItem({
 
   const isChildAndRemove =
     isSingleChildToRemove || (isRightChildToRemove && !isLeft);
+
+  const isCompleted = getIsNodeCompleted(node, insertedNode, resultNodes);
 
   return (
     <CollapseDiv
@@ -124,6 +130,7 @@ function NodeArrayItem({
             )}
             preventAnimation={preventNodeEdgeAnimation}
             isLeft={isLeft}
+            completed={isCompleted}
           />
         )}
         <div
@@ -135,8 +142,8 @@ function NodeArrayItem({
         >
           <Node
             current={node}
-            active={activeNode?.id === node.id}
-            inserted={insertedNode?.id === node.id}
+            active={getIsActiveNodes(node, activeNode, queueNodes)}
+            completed={isCompleted}
             found={foundNode?.id === node.id}
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}
@@ -154,6 +161,23 @@ function NodeArrayItem({
       />
     </CollapseDiv>
   );
+}
+
+function getIsNodeCompleted(node: TreeNode, insertedNode?: TreeNode | null, resultNodes?: TreeNode[]) {
+  if (Array.isArray(resultNodes) && resultNodes.length > 0) {
+    return resultNodes.some((n) => n.id === node.id);
+  }
+
+  return insertedNode?.id === node.id;
+
+}
+
+function getIsActiveNodes(node: TreeNode, activeNode: TreeNode | null, queueNodes?: TreeNode[]) {
+  if (queueNodes) {
+    return queueNodes.some((n) => n.id === node.id);
+  }
+
+  return activeNode?.id === node.id;
 }
 
 function getSlideToParentVariant(

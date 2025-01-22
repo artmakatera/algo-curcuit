@@ -16,7 +16,7 @@ export const ResultArray = ({ result }: ResultArrayProps) => {
         className={cn("mt-2 p-2 relative min-w-10")}
       >
         {result.map((node, index) => (
-          <Node key={index} current={node} inserted />
+          <Node key={index} current={node} completed preventAnimation />
         ))}
       </MergeArrayWrapper>
     </DataWrapper>

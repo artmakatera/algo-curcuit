@@ -165,6 +165,8 @@ export const BinaryTree = () => {
             insertedNode={currentSnapshot.insertedNode}
             nodeToRemove={currentSnapshot.nodeToRemove}
             minValueNode={currentSnapshot.minValueNode}
+            resultNodes={currentSnapshot.result}
+            queueNodes={currentSnapshot.queue}
             durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
             isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
             isMinValueFirstRightChild={

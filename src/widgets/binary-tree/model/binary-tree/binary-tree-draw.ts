@@ -449,24 +449,23 @@ class BinaryTreeDraw extends BinaryTree {
     let queue: TreeNode[] = [node];
     let result: TreeNode[] = [];
 
-      yield {
-        type: STEPS.addToQueue,
-        node: node,
-        treeView: treeView,
-        queue: [...queue],
-        result: [...result],
-      }
+    yield {
+      type: STEPS.addToQueue,
+      node: node,
+      treeView: treeView,
+      queue: [...queue],
+      result: [...result],
+    }
 
 
     while (queue.length > 0) {
-      let currentNode = queue.shift()!;
       yield {
         type: STEPS.popFromQueue,
-        node: currentNode,
         treeView: treeView,
         queue: [...queue],
         result: [...result],
       }
+      let currentNode = queue.shift()!;
       result.push(currentNode);
       yield {
         type: STEPS.addToResult,
@@ -480,7 +479,7 @@ class BinaryTreeDraw extends BinaryTree {
         queue.push(currentNode.left);
         yield {
           type: STEPS.addToQueue,
-          node: node,
+          node: currentNode.left,
           treeView: treeView,
           queue: [...queue],
           result: [...result],
@@ -491,7 +490,7 @@ class BinaryTreeDraw extends BinaryTree {
         queue.push(currentNode.right);
         yield {
           type: STEPS.addToQueue,
-          node: node,
+          node: currentNode.right,
           treeView: treeView,
           queue: [...queue],
           result: [...result],
