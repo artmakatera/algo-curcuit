@@ -8,6 +8,7 @@ import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { AnimatePresence } from "framer-motion";
 import { CollapseDiv } from "./collpase-div";
 import { useRef } from "react";
+import { get } from "http";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -88,7 +89,7 @@ function NodeArrayItem({
   const isChildAndRemove =
     isSingleChildToRemove || (isRightChildToRemove && !isLeft);
 
-  const isCompleted = getIsNodeCompleted(node, insertedNode, resultNodes);
+  const isCompleted = getIsNodeInserted(node, insertedNode, resultNodes);
 
   return (
     <CollapseDiv
@@ -130,7 +131,9 @@ function NodeArrayItem({
             )}
             preventAnimation={preventNodeEdgeAnimation}
             isLeft={isLeft}
-            completed={isCompleted}
+            found={getIsFoundNode(node, foundNode, resultNodes)}
+            active={getIsActiveNodes(node, activeNode, queueNodes)}
+            
           />
         )}
         <div
@@ -143,8 +146,8 @@ function NodeArrayItem({
           <Node
             current={node}
             active={getIsActiveNodes(node, activeNode, queueNodes)}
-            completed={isCompleted}
-            found={foundNode?.id === node.id}
+            inserted={isCompleted}
+            found={getIsFoundNode(node, foundNode, resultNodes)}
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}
             preventAnimation={preventNodeEdgeAnimation}
@@ -163,10 +166,20 @@ function NodeArrayItem({
   );
 }
 
-function getIsNodeCompleted(node: TreeNode, insertedNode?: TreeNode | null, resultNodes?: TreeNode[]) {
-  if (Array.isArray(resultNodes) && resultNodes.length > 0) {
+function getIsCompletedNode(node: TreeNode,  resultNodes: TreeNode[]) {
     return resultNodes.some((n) => n.id === node.id);
+}
+
+
+function getIsFoundNode(node: TreeNode, foundNode?: TreeNode | null, resultNodes?: TreeNode[]) {
+  if (Array.isArray(resultNodes) && resultNodes.length > 0) {
+    return getIsCompletedNode(node, resultNodes);
   }
+
+  return foundNode?.id === node.id;
+}
+
+function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null, resultNodes?: TreeNode[]) {
 
   return insertedNode?.id === node.id;
 

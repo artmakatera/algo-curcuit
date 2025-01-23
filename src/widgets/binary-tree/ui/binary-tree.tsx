@@ -22,7 +22,6 @@ import {
   getPreventNodeEdgeAnimation,
 } from "../model/snapshot-helpers";
 import { CodeViewers } from "@/components/ui/code-viewers";
-import { TraverseDataView } from "@/features/traverse-data-view";
 
 const tree = new BinaryTreeDraw();
 
@@ -147,15 +146,7 @@ export const BinaryTree = () => {
       )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
 
-      <div className="m-auto container mt-4 w-72 lg:w-96">
-        {!!currentSnapshot.queue && !!currentSnapshot.result && (
-          <TraverseDataView
-            queue={currentSnapshot.queue}
-            result={currentSnapshot.result}
-            currentNode={currentSnapshot.node}
-          />
-        )}
-      </div>
+ 
       <div className="m-auto w-fit mt-4">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
           <NodeArray

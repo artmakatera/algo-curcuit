@@ -8,7 +8,9 @@ type LineProps = {
   isLeft?: boolean;
   className?: string;
   preventAnimation?: boolean;
-  completed?: boolean;
+  inserted?: boolean;
+  found?: boolean;
+  active?: boolean;
 };
 
 const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
@@ -38,17 +40,10 @@ const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
       x2: "100%",
       y2: "100%",
     },
-    // exit: {
-    //   x2: 0,
-    //   y2: 0,
-    //   transition: {
-    //     duration: 0.1,
-    //   },
-    // },
   };
 };
 
-export const Line = ({ isLeft, className, preventAnimation, completed }: LineProps) => {
+export const Line = ({ isLeft, className, preventAnimation, active, found }: LineProps) => {
   return (
     <div className={cn(`absolute h-${LINE_SIZE} -z-10`, className)}>
       <svg className="w-full h-full">
@@ -59,9 +54,29 @@ export const Line = ({ isLeft, className, preventAnimation, completed }: LinePro
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
           y2={isLeft ? 0 : "100%"}
-          className={cn("stroke-black dark:stroke-white", completed && "stroke-orange-600 dark:stroke-orange-600")}
+          className={cn("stroke-black dark:stroke-white")}
           strokeWidth="1"
         />
+       {active && <motion.line
+          {...getAnimationProps(isLeft, preventAnimation)}
+          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          x1={0}
+          x2={"100%"}
+          y1={isLeft ? "100%" : 0}
+          y2={isLeft ? 0 : "100%"}
+          className={cn("stroke-blue-600 dark:stroke-blue-600")}
+          strokeWidth="1"
+        />}
+       {found && <motion.line
+          {...getAnimationProps(isLeft, preventAnimation)}
+          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          x1={0}
+          x2={"100%"}
+          y1={isLeft ? "100%" : 0}
+          y2={isLeft ? 0 : "100%"}
+          className={cn("stroke-yellow-500 dark:stroke-yellow-500")}
+          strokeWidth="1"
+        />}
       </svg>
     </div>
   );
