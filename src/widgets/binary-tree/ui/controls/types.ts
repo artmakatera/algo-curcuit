@@ -20,5 +20,5 @@ export type CollapsibleControlProps = {
   onSubmitValue: (value: number, type?: ActionType) => void;
 };
 
-export type ControlsType = { type: CollapseType; color: ControlColor }[];
+export type ControlsType = { type: CollapseType; color: ControlColor, label: string }[];
 

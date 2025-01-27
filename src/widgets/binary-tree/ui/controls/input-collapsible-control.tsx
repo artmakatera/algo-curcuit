@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/collapsible";
 import { CollapsibleControlProps } from "./types";
 import { ActionType } from "../../model/types";
+import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 
 export const InputCollapsibleControl = ({
   type,
@@ -41,24 +42,9 @@ export const InputCollapsibleControl = ({
   };
 
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={handleOpen}
-      className=" space-y-2 flex flex-col items-center justify-center"
-    >
-      <CollapsibleTrigger asChild>
-        <Button
-          className={`px-2 w-28 md:w-40 capitalize`}
-          variant={isOpen ? "outline" : "default"}
-          onClick={() => {}}
-          disabled={disabled}
-        >
-          {type}
-        </Button>
-      </CollapsibleTrigger>
-      <CollapsibleContent asChild>
+   <TabsContent value={type}>
         <form
-          className="flex items-center justify-center gap-2"
+          className="flex items-center gap-2 p-2"
           onSubmit={handleSubmit}
         >
           <Input
@@ -78,7 +64,6 @@ export const InputCollapsibleControl = ({
             Go
           </Button>
         </form>
-      </CollapsibleContent>
-    </Collapsible>
+    </TabsContent>
   );
 };

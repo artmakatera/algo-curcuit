@@ -10,7 +10,7 @@ type LineProps = {
   preventAnimation?: boolean;
   inserted?: boolean;
   found?: boolean;
-  active?: boolean;
+  isQueueLine?: boolean;
 };
 
 const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
@@ -43,7 +43,7 @@ const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
   };
 };
 
-export const Line = ({ isLeft, className, preventAnimation, active, found }: LineProps) => {
+export const Line = ({ isLeft, className, preventAnimation, isQueueLine, found }: LineProps) => {
   return (
     <div className={cn(`absolute h-${LINE_SIZE} -z-10`, className)}>
       <svg className="w-full h-full">
@@ -57,7 +57,7 @@ export const Line = ({ isLeft, className, preventAnimation, active, found }: Lin
           className={cn("stroke-black dark:stroke-white")}
           strokeWidth="1"
         />
-       {active && <motion.line
+       {isQueueLine  && <motion.line
           {...getAnimationProps(isLeft, preventAnimation)}
           transition={{ duration: preventAnimation ? 0 : 0.8 }}
           x1={0}

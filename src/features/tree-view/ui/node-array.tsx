@@ -8,7 +8,6 @@ import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { AnimatePresence } from "framer-motion";
 import { CollapseDiv } from "./collpase-div";
 import { useRef } from "react";
-import { get } from "http";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -131,8 +130,8 @@ function NodeArrayItem({
             )}
             preventAnimation={preventNodeEdgeAnimation}
             isLeft={isLeft}
-            found={getIsFoundNode(node, foundNode, resultNodes)}
-            active={getIsActiveNodes(node, activeNode, queueNodes)}
+            found={getIsCompletedNode(node, resultNodes ||[])}
+            isQueueLine={getIsQueueNode(node, queueNodes)}
             
           />
         )}
@@ -145,9 +144,11 @@ function NodeArrayItem({
         >
           <Node
             current={node}
-            active={getIsActiveNodes(node, activeNode, queueNodes)}
+            active={getIsActiveNodes(node, activeNode)}
+            isQueueNode={getIsQueueNode(node, queueNodes)}
             inserted={isCompleted}
             found={getIsFoundNode(node, foundNode, resultNodes)}
+            isCompleted={getIsCompletedNode(node, resultNodes || [])}
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}
             preventAnimation={preventNodeEdgeAnimation}
@@ -172,9 +173,6 @@ function getIsCompletedNode(node: TreeNode,  resultNodes: TreeNode[]) {
 
 
 function getIsFoundNode(node: TreeNode, foundNode?: TreeNode | null, resultNodes?: TreeNode[]) {
-  if (Array.isArray(resultNodes) && resultNodes.length > 0) {
-    return getIsCompletedNode(node, resultNodes);
-  }
 
   return foundNode?.id === node.id;
 }
@@ -185,10 +183,15 @@ function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null, resul
 
 }
 
-function getIsActiveNodes(node: TreeNode, activeNode: TreeNode | null, queueNodes?: TreeNode[]) {
-  if (queueNodes) {
+function getIsQueueNode(node: TreeNode, queueNodes?: TreeNode[]) {
+  if (Array.isArray(queueNodes) && queueNodes.length > 0) {
     return queueNodes.some((n) => n.id === node.id);
   }
+
+  return false;
+}
+
+function getIsActiveNodes(node: TreeNode, activeNode: TreeNode | null) {
 
   return activeNode?.id === node.id;
 }

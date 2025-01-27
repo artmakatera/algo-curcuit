@@ -35,11 +35,12 @@ baseArrayData.forEach((value) => tree.insert(value));
 
 export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
-  const [targetValue, setTargetValue] = useState<number | null>(null);
-  const [activeType, setActiveType] = useState<ActionType | null>(null);
+  const [targetValue, setTargetValue] = useState<number | null>(0);
+  const [activeType, setActiveType] = useState<ActionType | null>("bfs");
   const [codeLang, setCodeLang] = useCodeLang();
 
   const hasCodeLang = codeLang && activeType;
+
 
   const ref = useRef<HTMLDivElement>(null);
 
