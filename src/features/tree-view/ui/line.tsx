@@ -8,6 +8,9 @@ type LineProps = {
   isLeft?: boolean;
   className?: string;
   preventAnimation?: boolean;
+  inserted?: boolean;
+  found?: boolean;
+  isQueueLine?: boolean;
 };
 
 const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
@@ -37,17 +40,10 @@ const getAnimationProps = (isLeft?: boolean, preventAnimation?: boolean) => {
       x2: "100%",
       y2: "100%",
     },
-    // exit: {
-    //   x2: 0,
-    //   y2: 0,
-    //   transition: {
-    //     duration: 0.1,
-    //   },
-    // },
   };
 };
 
-export const Line = ({ isLeft, className, preventAnimation }: LineProps) => {
+export const Line = ({ isLeft, className, preventAnimation, isQueueLine, found }: LineProps) => {
   return (
     <div className={cn(`absolute h-${LINE_SIZE} -z-10`, className)}>
       <svg className="w-full h-full">
@@ -58,9 +54,29 @@ export const Line = ({ isLeft, className, preventAnimation }: LineProps) => {
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
           y2={isLeft ? 0 : "100%"}
-          className="stroke-black dark:stroke-white"
+          className={cn("stroke-black dark:stroke-white")}
           strokeWidth="1"
         />
+       {isQueueLine  && <motion.line
+          {...getAnimationProps(isLeft, preventAnimation)}
+          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          x1={0}
+          x2={"100%"}
+          y1={isLeft ? "100%" : 0}
+          y2={isLeft ? 0 : "100%"}
+          className={cn("stroke-blue-600 dark:stroke-blue-600")}
+          strokeWidth="1"
+        />}
+       {found && <motion.line
+          {...getAnimationProps(isLeft, preventAnimation)}
+          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          x1={0}
+          x2={"100%"}
+          y1={isLeft ? "100%" : 0}
+          y2={isLeft ? 0 : "100%"}
+          className={cn("stroke-yellow-500 dark:stroke-yellow-500")}
+          strokeWidth="1"
+        />}
       </svg>
     </div>
   );

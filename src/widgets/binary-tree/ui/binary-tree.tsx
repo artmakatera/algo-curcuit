@@ -1,5 +1,5 @@
 "use client";
-import { BinaryTreeDraw } from "../model/binary-tree";
+import { BinaryTreeDraw, TreeNode } from "../model/binary-tree";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
@@ -35,15 +35,24 @@ baseArrayData.forEach((value) => tree.insert(value));
 
 export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
-  const [targetValue, setTargetValue] = useState<number | null>(null);
-  const [activeType, setActiveType] = useState<ActionType | null>(null);
+  const [targetValue, setTargetValue] = useState<number | null>(0);
+  const [activeType, setActiveType] = useState<ActionType | null>("bfs");
   const [codeLang, setCodeLang] = useCodeLang();
 
   const hasCodeLang = codeLang && activeType;
 
+
   const ref = useRef<HTMLDivElement>(null);
 
   const genCall = useMemo(() => {
+    if (activeType === "bfs") {
+      return tree.bfs as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
+
     if (activeType === "insert") {
       return tree.insertDraw as unknown as (
         v: number | null
@@ -82,6 +91,7 @@ export const BinaryTree = () => {
     createStepSnapshot,
   });
 
+
   const dispatch: Dispatch = ({ type, value, canClose }) => {
     setError(null);
     setTargetValue(value);
@@ -102,6 +112,7 @@ export const BinaryTree = () => {
   useEffect(() => {
     visualize();
   }, [stepsSnapshot, visualize]);
+
 
   return (
     <div ref={ref} className=" items-center p-2 md:p-4 mx-auto">
@@ -136,7 +147,8 @@ export const BinaryTree = () => {
       )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
 
-      <div className="m-auto w-fit mt-8">
+ 
+      <div className="m-auto w-fit mt-4">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
           <NodeArray
             parentKey={null}
@@ -145,6 +157,8 @@ export const BinaryTree = () => {
             insertedNode={currentSnapshot.insertedNode}
             nodeToRemove={currentSnapshot.nodeToRemove}
             minValueNode={currentSnapshot.minValueNode}
+            resultNodes={currentSnapshot.result}
+            queueNodes={currentSnapshot.queue}
             durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
             isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
             isMinValueFirstRightChild={
@@ -164,7 +178,7 @@ export const BinaryTree = () => {
       {hasCodeLang && (
         <div className="m-auto max-w-2xl mt-4 hidden sm:block">
           <CodeViewers
-            langMap={languagesMapSettings[activeType]}
+            langMap={languagesMapSettings[activeType] as any}
             language={codeLang}
             onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
             step={currentSnapshot.type}

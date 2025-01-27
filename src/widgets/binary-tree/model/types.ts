@@ -3,7 +3,7 @@ import { STEPS } from "./constants";
 import { TreeNode } from "./binary-tree";
 
 
-export type ActionType = "find" | "insert" | "delete";
+export type ActionType = "find" | "insert" | "delete" | "bfs";
 
 export type DispatchPayload = {
   type: ActionType;
@@ -18,7 +18,8 @@ export type GenValuePayload = {
   type: Partial<STEPS>;
   node: TreeNode,
   treeView: TreeArrayItem[],
-
+  queue?: TreeNode[],
+  result?: number[],
   insertedNode?: TreeNode,
   nodeToRemove?: TreeNode,
   minValueNode?: TreeNode,
@@ -34,6 +35,8 @@ export interface StepSnapshot extends BaseSnapshot {
   deleteNode?: TreeNode,
   nodeToRemove?: TreeNode,
   minValueNode?: TreeNode,
+  queue?: TreeNode[],
+  result?: number[],
   treeView: TreeArrayItem[]
 };
 

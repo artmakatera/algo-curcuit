@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      transitionDelay: {
+        800: "800ms",
+      },
       colors: {
         lead: "var(--lead)",
         border: "hsl(var(--border))",

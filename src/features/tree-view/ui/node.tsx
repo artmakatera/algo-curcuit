@@ -14,6 +14,8 @@ type NodeItemProps = {
   isMinValueNode?: boolean;
   preventAnimation?: boolean;
   hasChildren?: boolean;
+  isQueueNode?: boolean;
+  isCompleted?: boolean;
 };
 
 const getAnimationCoords = (
@@ -39,14 +41,15 @@ const getAnimationCoords = (
 };
 
 export const Node = ({
-  hasChildren,
   current,
   active,
   inserted,
   found,
   isNodeToRemove,
+  isQueueNode,
   isMinValueNode,
   preventAnimation,
+  isCompleted,
 }: NodeItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { nodeToRemove, setNodeToRemove } = useNodeToRemove();
@@ -59,11 +62,6 @@ export const Node = ({
 
   const { x, y } = getAnimationCoords(ref, nodeToRemove);
 
-  const getAnimateType = () => {
-    if (isMinValueNode) return "minVal";
-
-    return "normal";
-  };
 
   return (
     <motion.div
@@ -89,9 +87,11 @@ export const Node = ({
         className={cn(
           "leading-10",
           `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
-          "bg-green-600  text-center  text-white rounded-full",
-          active && "bg-blue-600",
-          found && "bg-yellow-500 scale-50",
+          "bg-green-600  text-center  text-white rounded-full ",
+          active && "bg-blue-600 ",
+          isQueueNode && "bg-blue-600 delay-800 transition",
+          found && "bg-yellow-500",
+          isCompleted && "bg-yellow-500 scale-50 delay-800 transition",
           inserted && "bg-orange-600",
           isNodeToRemove && "bg-red-600"
         )}
