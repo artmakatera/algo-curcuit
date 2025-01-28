@@ -8,6 +8,7 @@ import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { AnimatePresence } from "framer-motion";
 import { CollapseDiv } from "./collpase-div";
 import { useRef } from "react";
+import { get } from "http";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -29,6 +30,7 @@ type NodeArrayProps = {
   isRightChildToRemove?: boolean;
   resultNodes?: TreeNode[];
   queueNodes?: TreeNode[];
+  stackNodes?: TreeNode[];
 };
 
 export const NodeArray = (props: NodeArrayProps) => {
@@ -72,6 +74,7 @@ function NodeArrayItem({
     isRightChildToRemove,
     resultNodes,
     queueNodes,
+    stackNodes,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -131,7 +134,7 @@ function NodeArrayItem({
             preventAnimation={preventNodeEdgeAnimation}
             isLeft={isLeft}
             found={getIsCompletedNode(node, resultNodes ||[])}
-            isQueueLine={getIsQueueNode(node, queueNodes)}
+            isQueueLine={getIsQueueNode(node, queueNodes, stackNodes)}
             
           />
         )}
@@ -145,7 +148,7 @@ function NodeArrayItem({
           <Node
             current={node}
             active={getIsActiveNodes(node, activeNode)}
-            isQueueNode={getIsQueueNode(node, queueNodes)}
+            isQueueNode={getIsQueueNode(node, queueNodes, stackNodes)}
             inserted={isCompleted}
             found={getIsFoundNode(node, foundNode, resultNodes)}
             isCompleted={getIsCompletedNode(node, resultNodes || [])}
@@ -153,6 +156,7 @@ function NodeArrayItem({
             isMinValueNode={isMinNode}
             preventAnimation={preventNodeEdgeAnimation}
             hasChildren={hasChildren}
+            
           />
         </div>
       </div>
@@ -183,17 +187,28 @@ function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null, resul
 
 }
 
-function getIsQueueNode(node: TreeNode, queueNodes?: TreeNode[]) {
+function getIsQueueNode(node: TreeNode, queueNodes?: TreeNode[], stackNodes?: TreeNode[]) {
   if (Array.isArray(queueNodes) && queueNodes.length > 0) {
     return queueNodes.some((n) => n.id === node.id);
   }
+  
 
-  return false;
+
+
+  return getIsStackNode(node, stackNodes);
 }
 
 function getIsActiveNodes(node: TreeNode, activeNode: TreeNode | null) {
 
   return activeNode?.id === node.id;
+}
+
+function getIsStackNode(node: TreeNode, stackNodes?: TreeNode[]) {
+  if (Array.isArray(stackNodes) && stackNodes.length > 0) {
+    return stackNodes.some((n) => n.id === node.id);
+  }
+
+  return false;
 }
 
 function getSlideToParentVariant(

@@ -1,5 +1,5 @@
 "use client";
-import { BinaryTreeDraw, TreeNode } from "../model/binary-tree";
+import { BinaryTreeDraw } from "../model/binary-tree";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TypographyH1 } from "@/components/ui/typography";
 import { Controls } from "./controls";
@@ -36,8 +36,10 @@ baseArrayData.forEach((value) => tree.insert(value));
 export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(0);
-  const [activeType, setActiveType] = useState<ActionType | null>("bfs");
+  const [activeType, setActiveType] = useState<ActionType | null>("find");
   const [codeLang, setCodeLang] = useCodeLang();
+
+  console.log("codeLang", codeLang, activeType);
 
   const hasCodeLang = codeLang && activeType;
 
@@ -47,6 +49,14 @@ export const BinaryTree = () => {
   const genCall = useMemo(() => {
     if (activeType === "bfs") {
       return tree.bfs as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
+
+    if (activeType === "dfs") {
+      return tree.dfs as unknown as () => Generator<
         GenValuePayload,
         void,
         unknown
@@ -82,6 +92,7 @@ export const BinaryTree = () => {
     isPlaying,
     onChangeSpeed,
     delayRef,
+    clearSnapshots
   } = useSnapshots<typeof defaultSnapshot, GenValuePayload, [number | null]>({
     defaultDelay: "750",
     defaultSnapshots: [{ ...defaultSnapshot, treeView: tree.getNodeGroups() }],
@@ -98,6 +109,7 @@ export const BinaryTree = () => {
     setActiveType((activeType) =>
       activeType === type && canClose ? null : type
     );
+    clearSnapshots();
   };
 
   const onSubmitValue = (value: number) => {
@@ -141,6 +153,7 @@ export const BinaryTree = () => {
           </div>
         )}
       </div>
+      
 
       {error && (
         <p className="text-center text-red-600 font-bold mt-2">{error}</p>
@@ -172,6 +185,7 @@ export const BinaryTree = () => {
                 ? currentSnapshot.node
                 : null
             }
+            stackNodes={currentSnapshot.stack}
           />
         </NodeToRemoveProvider>
       </div>

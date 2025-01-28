@@ -28,6 +28,12 @@ export enum STEPS {
   addLeftToQueue,
   addRightToQueue,
   popFromQueue,
+
+  addToStack,
+  addLeftToStack,
+  addRightToStack,
+  popFromStack,
+
   addToResult,
   endTraverse,
   earlyEndTraverse,

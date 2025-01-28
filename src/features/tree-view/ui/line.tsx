@@ -59,7 +59,7 @@ export const Line = ({ isLeft, className, preventAnimation, isQueueLine, found }
         />
        {isQueueLine  && <motion.line
           {...getAnimationProps(isLeft, preventAnimation)}
-          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          transition={{ duration: preventAnimation ? 0 : 0.5 }}
           x1={0}
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
@@ -69,7 +69,7 @@ export const Line = ({ isLeft, className, preventAnimation, isQueueLine, found }
         />}
        {found && <motion.line
           {...getAnimationProps(isLeft, preventAnimation)}
-          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          transition={{ duration: preventAnimation ? 0 : 0.5 }}
           x1={0}
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
