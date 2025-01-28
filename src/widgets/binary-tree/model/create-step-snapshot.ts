@@ -3,7 +3,7 @@ import { STEPS } from "./constants";
 import { GenValuePayload, StepSnapshot, TreeArrayGroups } from "./types";
 
 export const createStepSnapshot = (payload: GenValuePayload,): StepSnapshot => {
-  const { type, treeView, node, insertedNode, nodeToRemove, minValueNode, queue, result } = payload;
+  const { type, treeView, node, insertedNode, nodeToRemove, minValueNode, queue, result, stack } = payload;
 
 
   return {
@@ -13,8 +13,9 @@ export const createStepSnapshot = (payload: GenValuePayload,): StepSnapshot => {
     insertedNode,
     nodeToRemove,
     minValueNode,
-    queue, result
-
+    queue,
+    result,
+    stack
   };
 };
 
@@ -28,6 +29,7 @@ export const defaultSnapshot = {
   minValueNode: undefined,
   queue: undefined,
   result: undefined,
+  stack: undefined,
   treeView: {} as TreeArrayGroups,
 }
 

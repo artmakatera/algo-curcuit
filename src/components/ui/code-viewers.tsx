@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 import { CodeViewer, CodeViewerProps } from "./code-viewer";
+import { Suspense } from "react";
 
 type LangValue<T> = {
   code: string;
@@ -40,30 +41,30 @@ export const CodeViewers = <T extends string>({
   }
 
   return (
-    <Tabs
-      className="shadow-md max-w-5xl text-sm"
-      value={language}
-      onValueChange={onLanguageChange}
-    >
-      <TabsList className="grid w-full grid-cols-2">
-        {Object.keys(langMap).map((lang) => (
-          <TabsTrigger key={lang} value={lang} className="capitalize">
-            {lang}
-          </TabsTrigger>
-        ))}
-      </TabsList>
-      {tabsEntries.map(
-        ([value, { code, language, highlightLines }]) => (
-          <TabsContent className="w-full" key={language} value={value}>
+    <Suspense fallback={null}>
+      <Tabs
+        className="shadow-md max-w-5xl text-sm"
+        value={language}
+        onValueChange={onLanguageChange}
+      >
+        <TabsList className="grid w-full grid-cols-2">
+          {Object.keys(langMap).map((lang) => (
+            <TabsTrigger key={lang} value={lang} className="capitalize">
+              {lang}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {tabsEntries.map(([value, { code, language, highlightLines }]) => (
+          <TabsContent className="w-full" key={language + value} value={value}>
             <CodeViewer
               text={code}
               language={language as string}
               highlight={getHighlightLinesByStep(highlightLines, step)}
             />
           </TabsContent>
-        )
-      )}
-    </Tabs>
+        ))}
+      </Tabs>
+    </Suspense>
   );
 };
 

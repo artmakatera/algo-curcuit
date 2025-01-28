@@ -2,13 +2,14 @@ import { CollapseType, ControlsProps, ControlsType } from "./types";
 import { ActionType } from "../../model/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { InputCollapsibleControl } from "./input-collapsible-control";
-import { TraverseCollapsibleControl } from "./traverese-collapsible-control";
+import { TraverseCollapsibleControl } from "./traverse-collapsible-control";
 
 const CONTROLS: ControlsType = [
-  { label: "Traverse", type: "bfs", color: "blue" },
   { label: "find", type: "find", color: "blue" },
-  { label: "insert", type: "insert", color: "orange" },
+  { label: "Add", type: "insert", color: "orange" },
   { label: "delete", type: "delete", color: "red" },
+  { label: "Traverse BFS", type: "bfs", color: "blue" },
+  { label: "Traverse DFS", type: "dfs", color: "blue" },
 ];
 
 export const Controls = ({
@@ -29,8 +30,8 @@ export const Controls = ({
   return (
     <div>
       <Tabs
-        defaultValue="bfs"
-        className="w-full"
+        defaultValue={String(activeType)}
+        className="w-full scale-75 sm:scale-100"
         onValueChange={handleValueChange}
       >
         <TabsList>
@@ -43,7 +44,7 @@ export const Controls = ({
           })}
         </TabsList>
         {CONTROLS.map(({ type, color }) => {
-          if (type === "bfs") {
+          if (type === "bfs" || type === "dfs") {
             return (
               <TraverseCollapsibleControl
                 key={type}
@@ -74,41 +75,4 @@ export const Controls = ({
       </Tabs>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <div className="flex items-start justify-center w-full">
-  //       {CONTROLS.map(({ type, color }) => {
-
-  //         if (type === "bfs" ) {
-  //           return (
-  //             <TraverseCollapsibleControl
-  //               key={type}
-  //               type={type}
-  //               color={color}
-  //               disabled={disabled}
-  //               onTriggerClick={toggleActiveType}
-  //               isOpen={activeType === type}
-  //               dispatch={dispatch}
-  //               onSubmitValue={onSubmitValue}
-  //             />
-  //           );
-  //         }
-
-  //         return (
-  //           <InputCollapsibleControl
-  //             key={type}
-  //             type={type}
-  //             color={color}
-  //             disabled={disabled}
-  //             onTriggerClick={toggleActiveType}
-  //             isOpen={activeType === type}
-  //             dispatch={dispatch}
-  //             onSubmitValue={onSubmitValue}
-  //           />
-  //         );
-  //       })}
-  //     </div>
-  //   </div>
-  // );
 };

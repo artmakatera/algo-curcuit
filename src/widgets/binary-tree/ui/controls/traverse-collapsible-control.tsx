@@ -17,13 +17,13 @@ export const TraverseCollapsibleControl = ({
     <TabsContent className="mt-0" value={type}>
       <div className="flex items-center gap-2 p-2">
         <Button
-          className={`bg-${color}-500 hover:bg-${color}-400 text-white h-10`}
+          className={`bg-${color}-500 hover:bg-${color}-400 text-white h-10 uppercase`}
           disabled={disabled}
           onClick={() => {
             onSubmitValue(0);
           }}
         >
-          BFS
+          {type}
         </Button>
       </div>
     </TabsContent>

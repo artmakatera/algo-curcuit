@@ -14,6 +14,7 @@ class BinaryTreeDraw extends BinaryTree {
     this.findDraw = this.findDraw.bind(this);
     this.removeDraw = this.removeDraw.bind(this);
     this.bfs = this.bfs.bind(this);
+    this.dfs = this.dfs.bind(this);
   }
 
   getHeight(node: TreeNode | null = this.root): number {
@@ -520,6 +521,93 @@ class BinaryTreeDraw extends BinaryTree {
 
 
     return result;
+  }
+
+
+  *dfs() {
+    const node = this.root;
+    const treeView = this.getNodeGroups();
+
+    if (!node) {
+      yield {
+        type: STEPS.earlyEndTraverse,
+        node: null,
+        treeView: treeView,
+        stack: [],
+        result: []
+      }
+
+      return [];
+    }
+
+    yield {
+      type: STEPS.start,
+      node: null,
+      treeView: treeView,
+      stack: [],
+      result: [],
+    }
+
+
+
+
+    const stack: TreeNode[] = [node];
+    const result: TreeNode[] = [];
+
+    yield {
+      type: STEPS.addToStack,
+      node: null,
+      treeView: treeView,
+      stack: [...stack],
+      result: [...result],
+    }
+
+    while (stack.length > 0) {
+      const currentNode = stack.pop()!;
+      result.push(currentNode);
+
+
+      yield {
+        type: STEPS.popFromStack,
+        node: null,
+        treeView: treeView,
+        stack: [...stack],
+        result: [...result],
+      }
+
+      if (currentNode.right) {
+        stack.push(currentNode.right);
+        yield {
+          type: STEPS.addRightToStack,
+          node: null,
+          treeView: treeView,
+          stack: [...stack],
+          result: [...result],
+        }
+      }
+
+      if (currentNode.left) {
+        stack.push(currentNode.left);
+        yield {
+          type: STEPS.addLeftToStack,
+          node: null,
+          treeView: treeView,
+          stack: [...stack],
+          result: [...result],
+        }
+      }
+    }
+
+    yield {
+      type: STEPS.endTraverse,
+      node: null,
+      treeView: treeView,
+      stack: [...stack],
+      result: [...result],
+    }
+
+    return result;
+
   }
 
 }

@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@/components/ui/collapsible";
+
 import { CollapsibleControlProps } from "./types";
 import { ActionType } from "../../model/types";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";

@@ -1,3 +1,4 @@
+"use client";
 import { CodeBlock, dracula } from "react-code-blocks";
 
 export type CodeViewerProps = {
