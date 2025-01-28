@@ -36,13 +36,10 @@ baseArrayData.forEach((value) => tree.insert(value));
 export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(0);
-  const [activeType, setActiveType] = useState<ActionType | null>("find");
+  const [activeType, setActiveType] = useState<ActionType | null>(null);
   const [codeLang, setCodeLang] = useCodeLang();
 
-  console.log("codeLang", codeLang, activeType);
-
   const hasCodeLang = codeLang && activeType;
-
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -92,7 +89,7 @@ export const BinaryTree = () => {
     isPlaying,
     onChangeSpeed,
     delayRef,
-    clearSnapshots
+    clearSnapshots,
   } = useSnapshots<typeof defaultSnapshot, GenValuePayload, [number | null]>({
     defaultDelay: "750",
     defaultSnapshots: [{ ...defaultSnapshot, treeView: tree.getNodeGroups() }],
@@ -101,7 +98,6 @@ export const BinaryTree = () => {
     // @ts-ignore
     createStepSnapshot,
   });
-
 
   const dispatch: Dispatch = ({ type, value, canClose }) => {
     setError(null);
@@ -124,7 +120,6 @@ export const BinaryTree = () => {
   useEffect(() => {
     visualize();
   }, [stepsSnapshot, visualize]);
-
 
   return (
     <div ref={ref} className=" items-center p-2 md:p-4 mx-auto">
@@ -153,20 +148,18 @@ export const BinaryTree = () => {
           </div>
         )}
       </div>
-      
 
       {error && (
         <p className="text-center text-red-600 font-bold mt-2">{error}</p>
       )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
 
- 
       <div className="m-auto w-fit mt-4">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
           <NodeArray
             parentKey={null}
             groups={currentSnapshot.treeView}
-            activeNode={currentSnapshot.node}
+            activeNode={activeType === null ? null : currentSnapshot.node}
             insertedNode={currentSnapshot.insertedNode}
             nodeToRemove={currentSnapshot.nodeToRemove}
             minValueNode={currentSnapshot.minValueNode}

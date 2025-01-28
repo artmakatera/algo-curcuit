@@ -30,7 +30,6 @@ export const Controls = ({
   return (
     <div>
       <Tabs
-        defaultValue={String(activeType)}
         className="w-full scale-75 sm:scale-100"
         onValueChange={handleValueChange}
       >
