@@ -71,9 +71,15 @@ export const BinaryTree = () => {
         v: number | null
       ) => Generator<GenValuePayload, void, unknown>;
     }
+
+    if (activeType === "find") {
     return tree.findDraw as unknown as (
       v: number | null
     ) => Generator<GenValuePayload, void, unknown>;
+
+    }
+
+    return () => (function* () {})();
   }, [activeType]);
 
   const {
