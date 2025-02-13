@@ -8,8 +8,8 @@ const CONTROLS: ControlsType = [
   { label: "find", type: "find", color: "blue" },
   { label: "Add", type: "insert", color: "orange" },
   { label: "delete", type: "delete", color: "red" },
-  { label: "Traverse BFS", type: "bfs", color: "blue" },
-  { label: "Traverse DFS", type: "dfs", color: "blue" },
+  { label: "Level Order", type: "bfs", color: "blue" },
+  { label: "Preorder", type: "dfs", color: "blue" },
 ];
 
 export const Controls = ({

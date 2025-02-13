@@ -610,6 +610,41 @@ class BinaryTreeDraw extends BinaryTree {
 
   }
 
+  *inOrder() {
+    const node = this.root;
+    const treeView = this.getNodeGroups();
+
+    if (!node) {
+      return [];
+    }
+
+    let stack: TreeNode[] = [];
+
+    let result: TreeNode[] = [];
+
+
+    let currentNode: TreeNode |null = node;
+
+    while (currentNode || stack.length > 0) {
+      while (currentNode) {
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      }
+
+      currentNode = stack.pop()!;
+      result.push(currentNode);
+
+
+
+      currentNode = currentNode.right;
+    }
+
+
+
+    return result;
+
+  }
+
 }
 
 export { BinaryTreeDraw }
