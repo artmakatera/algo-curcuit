@@ -93,7 +93,7 @@ export const Node = ({
           active && "bg-blue-600 ",
           isQueueNode && "bg-blue-600 delay-500 transition",
           found && "bg-yellow-500",
-          isCompleted && "bg-yellow-500 scale-50 delay-500 transition",
+          isCompleted && "bg-yellow-500 delay-500 transition",
           inserted && "bg-orange-600",
           isNodeToRemove && "bg-red-600",
         )}

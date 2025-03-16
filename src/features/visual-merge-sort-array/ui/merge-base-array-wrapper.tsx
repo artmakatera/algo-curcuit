@@ -17,7 +17,7 @@ export const MergeBaseArrayWrapper = ({
       layout
       className={cn(
         "min-w-12 ",
-        "min-h-12 w-max mt-0 p-2 rounded box-content bg-stone-300/35 shadow-sm",
+        "min-h-12 w-max mt-0 p-2 rounded box-content bg-stone-300/35 shadow-xs",
         className
       )}
       {...props}
