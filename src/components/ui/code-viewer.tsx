@@ -1,5 +1,5 @@
 "use client";
-import { CodeBlock, dracula } from "react-code-blocks";
+import { CodeHighlighter } from "./code-highlighter";
 
 export type CodeViewerProps = {
   text: string;
@@ -13,19 +13,8 @@ export const CodeViewer = ({
   highlight,
 }: CodeViewerProps) => {
   return (
-    <div className="shadow-md max-w-5xl text-sm">
-      <CodeBlock
-        text={text}
-        codeContainerStyle={{
-          width: "100%",
-          borderRadius: "25px",
-          fontSize: "0.8rem",
-        }}
-        language={language}
-        showLineNumbers
-        theme={dracula}
-        highlight={highlight}
-      />
+    <div className="max-w-5xl text-sm">
+      <CodeHighlighter text={text} language={language} highlight={highlight} />
     </div>
   );
 };
