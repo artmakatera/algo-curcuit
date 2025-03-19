@@ -1,9 +1,4 @@
 import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@/components/ui/collapsible";
 import { CollapsibleControlProps } from "./types";
 import { TabsContent } from "@/components/ui/tabs";
 
