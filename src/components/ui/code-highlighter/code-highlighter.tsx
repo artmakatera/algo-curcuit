@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { highlightCode } from './helpers';
+import { useEffect, useState } from "react";
+import { highlightCode } from "./helpers";
+import { flushSync } from "react-dom";
 
 export type CodeHighlighterProps = {
   text: string;
@@ -9,14 +10,20 @@ export type CodeHighlighterProps = {
   highlight?: string;
 };
 
-export function CodeHighlighter({ text, language = "javascript", highlight }: CodeHighlighterProps) {
+export function CodeHighlighter({
+  text,
+  language = "javascript",
+  highlight,
+}: CodeHighlighterProps) {
   const [highlightedCode, setHighlightedCode] = useState<string | null>(null);
 
   useEffect(() => {
     const getCode = async () => {
       const highlightedCode = await highlightCode(text, language, highlight);
-      setHighlightedCode(highlightedCode);
-    }
+      flushSync(() => {
+        setHighlightedCode(highlightedCode);
+      });
+    };
 
     getCode();
   }, [text, language, highlight]);
@@ -33,4 +40,3 @@ export function CodeHighlighter({ text, language = "javascript", highlight }: Co
     />
   );
 }
-
