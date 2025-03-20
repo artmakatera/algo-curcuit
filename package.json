@@ -45,7 +45,7 @@
     "@types/react-dom": "19.0.4",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.2.2",
-    "eslint": "^8",
+
     "eslint-config-next": "15.2.3",
     "happy-dom": "^13.3.8",
     "jsdom": "^24.0.0",
