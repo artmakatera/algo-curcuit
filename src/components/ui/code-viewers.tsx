@@ -41,7 +41,6 @@ export const CodeViewers = <T extends string>({
   }
 
   return (
-    <Suspense fallback={null}>
       <Tabs
         className="shadow-md max-w-5xl text-sm"
         value={language}
@@ -64,7 +63,6 @@ export const CodeViewers = <T extends string>({
           </TabsContent>
         ))}
       </Tabs>
-    </Suspense>
   );
 };
 
