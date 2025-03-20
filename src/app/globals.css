@@ -270,9 +270,7 @@ figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title])
   @apply !rounded-t-none;
 }
 
-figure {
-    @apply mb-6 mt-1;
-}
+
 pre,
 code,
 figure {

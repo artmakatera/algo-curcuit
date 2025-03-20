@@ -29,7 +29,11 @@ export function CodeHighlighter({
   }, [text, language, highlight]);
 
   if (highlightedCode === null) {
-    return null;
+    return (
+      <div className="w-full">
+        <pre className="invisible">{text}</pre>;
+      </div>
+    );
   }
 
   return (
