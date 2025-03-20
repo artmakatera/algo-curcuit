@@ -30,8 +30,8 @@ export type AnimatedArrayItemProps = {
   value: number;
   index: number;
   className?: string;
-  sourceRef?: React.RefObject<HTMLDivElement>;
-  targetRef?: React.RefObject<HTMLDivElement>;
+  sourceRef?: React.RefObject<HTMLDivElement | null>;
+  targetRef?: React.RefObject<HTMLDivElement | null>;
   isMoveIndex?: boolean;
   isTargetIndex?: boolean;
   isGoBack?: boolean;
@@ -80,7 +80,7 @@ export const AnimatedArrayItem = (props: AnimatedArrayItemProps) => {
 };
 
 
-const getTargetElement = (ref?: React.RefObject<HTMLDivElement>) => {
+const getTargetElement = (ref?: React.RefObject<HTMLDivElement | null>) => {
   if (!ref?.current) {
     return null;
   }
@@ -94,7 +94,7 @@ const getTargetElement = (ref?: React.RefObject<HTMLDivElement>) => {
 
 function getAnimatedVariants(
   isMoveIndex: boolean,
-  ref: React.RefObject<HTMLDivElement>
+  ref: React.RefObject<HTMLDivElement | null>
 ) {
   const defaultVariants = {
     default: {

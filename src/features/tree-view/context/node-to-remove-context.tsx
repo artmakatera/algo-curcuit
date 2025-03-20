@@ -9,8 +9,8 @@ import {
 } from "react";
 
 export type NodeToRemoveContextType = {
-  nodeToRemove: RefObject<HTMLDivElement>;
-  setNodeToRemove: (ref: RefObject<HTMLDivElement>) => void;
+  nodeToRemove: RefObject<HTMLDivElement | null>;
+  setNodeToRemove: (ref: RefObject<HTMLDivElement | null>) => void;
 };
 const NodeToRemoveContext = createContext<NodeToRemoveContextType>({
   nodeToRemove: { current: null },
@@ -25,7 +25,7 @@ export const NodeToRemoveProvider = ({
 }) => {
   const removeRef = useRef<HTMLDivElement | null>(null);
 
-  const setNodeToRemove = (ref: RefObject<HTMLDivElement>) => {
+  const setNodeToRemove = (ref: RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
       removeRef.current = ref.current;
     }

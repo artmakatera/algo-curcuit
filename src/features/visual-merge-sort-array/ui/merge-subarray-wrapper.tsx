@@ -56,7 +56,7 @@ export const MergeSubArrayWrapper = ({
   );
 };
 
-function getAnimationProps(ref: React.RefObject<HTMLDivElement>) {
+function getAnimationProps(ref: React.RefObject<HTMLDivElement | null>) {
   const sourceRect = getBoundingRect(ref.current);
   const targetRect = getBoundingRect(getTargetSubArrayElement(ref));
 

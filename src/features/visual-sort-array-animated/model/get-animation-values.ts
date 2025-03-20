@@ -7,7 +7,7 @@ const defaultAnimateValues = {
 };
 
 const getSiblingPosition = (
-  ref: React.RefObject<HTMLDivElement>,
+  ref: React.RefObject<HTMLDivElement | null>,
   prev: boolean
 ) => {
   if (!ref.current) return defaultAnimateValues;
@@ -35,7 +35,7 @@ const getSiblingPosition = (
 };
 
 export const getAnimateValues = (
-  ref: React.RefObject<HTMLDivElement>,
+  ref: React.RefObject<HTMLDivElement | null>,
   isGoBack: boolean,
   isGoForward: boolean
 ) => {

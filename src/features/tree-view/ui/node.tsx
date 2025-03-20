@@ -20,8 +20,8 @@ type NodeItemProps = {
 };
 
 const getAnimationCoords = (
-  ref: RefObject<HTMLDivElement>,
-  targetRef?: RefObject<HTMLDivElement>
+  ref: RefObject<HTMLDivElement | null>,
+  targetRef?: RefObject<HTMLDivElement | null>
 ) => {
   const targetBoundingBox = targetRef?.current?.getBoundingClientRect();
   if (!ref.current || !targetBoundingBox) {

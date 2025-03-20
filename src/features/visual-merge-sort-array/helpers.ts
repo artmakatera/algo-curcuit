@@ -9,7 +9,7 @@ export const getBoundingRect = (element?: HTMLDivElement | null) => {
 };
 
 
-export const getTargetSubArrayElement = (ref?: React.RefObject<HTMLDivElement>) => {
+export const getTargetSubArrayElement = (ref?: React.RefObject<HTMLDivElement | null>) => {
   if (!ref?.current) {
     return null;
   }

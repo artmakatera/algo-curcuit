@@ -23,7 +23,7 @@ type NodeArrayProps = {
   minValueNode?: TreeNode | null;
   isRemoveSingleChild?: boolean;
   isSingleChildToRemove?: boolean;
-  parentRef?: React.RefObject<HTMLDivElement>;
+  parentRef?: React.RefObject<HTMLDivElement | null>;
   durationMs?: number;
   preventNodeEdgeAnimation?: boolean;
   isMinValueFirstRightChild?: boolean;
@@ -212,8 +212,8 @@ function getIsStackNode(node: TreeNode, stackNodes?: TreeNode[]) {
 }
 
 function getSlideToParentVariant(
-  parentRef?: React.RefObject<HTMLDivElement>,
-  ref?: React.RefObject<HTMLDivElement>,
+  parentRef?: React.RefObject<HTMLDivElement | null>,
+  ref?: React.RefObject<HTMLDivElement | null>,
   durationMs: number = 750
 ) {
   if (!parentRef || !ref) return undefined;

@@ -7,8 +7,8 @@ import { MergeSubArrayWrapper } from "./merge-subarray-wrapper";
 
 interface MergeArrayProps {
   array: number[][] | number[] | null;
-  sourceRef?: React.RefObject<HTMLDivElement>;
-  targetRef?: React.RefObject<HTMLDivElement>;
+  sourceRef?: React.RefObject<HTMLDivElement | null>;
+  targetRef?: React.RefObject<HTMLDivElement | null>;
   indexOfSourceSubArray?: number;
   indexOfTargetSubArray?: number;
   moveIndex?: number;
