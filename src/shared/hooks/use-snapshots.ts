@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 // Types
 import { delay } from "@/shared/lib/utils";
@@ -22,18 +22,16 @@ export const useGeneratorCall = <S extends BaseSnapshot, G extends unknown, P ex
   const getSnapshots = useCallback((...genCallArgs: P) => {
 
     let generator = genCall(...genCallArgs);
-    const snapshots: G[] = [];
+    const snapshots: S[] = [];
 
     let next = generator.next();
     while (!next.done) {
       const { value } = next;
-      snapshots.push(value as G);
+      snapshots.push(createStepSnapshot(value as G));
       next = generator.next();
     }
     if (!snapshots.length) return;
-    return snapshots.map(value =>
-      createStepSnapshot(value as G),
-    )
+    return snapshots
   }, [genCall, createStepSnapshot,]);
 
 
@@ -69,6 +67,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
 
   const updateSnapshots = useCallback(() => {
     setStepSnapshots(createSnapshots(...genCallArgs) || defaultSnapshots);
+    setSnapshotIndex(0);
   }, [createSnapshots, genCallArgs, defaultSnapshots]);
 
 
@@ -162,6 +161,7 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
   return {
     startedRef,
     stepsSnapshot,
+    snapshotIndex,
     setStepSnapshots,
     setSnapshotIndex,
     currentSnapshot,
