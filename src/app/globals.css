@@ -276,9 +276,9 @@ code,
 figure {
   @apply overflow-x-auto;
 }
-p {
+{{/* p {
   @apply text-xs;
-}
+} */}}
 article p {
   @apply leading-9;
 }
