@@ -7,10 +7,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AlgorithmComplexities } from "@/features/algorithm-complexity";
+import { Complexity } from "@/shared/constants/complexities";
 
 import { BookOpenText } from "lucide-react";
 
-export function DescriptionDialog({ children }: { children: React.ReactNode }) {
+interface DescriptionDialogProps {
+  children: React.ReactNode;
+  spaceComplexity?: Complexity;
+  timeComplexity?: Complexity;
+  timeComplexityDescription?: React.ReactNode;
+  spaceComplexityDescription?: React.ReactNode;
+}
+
+export function DescriptionDialog({
+  children,
+  timeComplexity,
+  spaceComplexity,
+  spaceComplexityDescription,
+  timeComplexityDescription,
+}: DescriptionDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -23,10 +39,18 @@ export function DescriptionDialog({ children }: { children: React.ReactNode }) {
         </Button>
       </DialogTrigger>
       <DialogContent className="place-content-start">
-        <DialogHeader>
+        <DialogHeader className="flex-row items-center">
           <DialogTitle>Merge Sort</DialogTitle>
+         <AlgorithmComplexities
+          spaceComplexity={spaceComplexity}
+          timeComplexity={timeComplexity}
+          spaceComplexityDescription={spaceComplexityDescription}
+          timeComplexityDescription={timeComplexityDescription}
+        />
         </DialogHeader>
-        <ScrollArea className="max-h-[calc(100dvh-48px)]">{children}</ScrollArea>
+        <ScrollArea className="max-h-[calc(100dvh-48px)]">
+          {children}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
