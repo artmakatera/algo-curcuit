@@ -1,9 +1,11 @@
 import { TypographyList, TypographyP } from "@/components/ui/typography";
+import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { VisualArrayItem, VisualArrayWrapper } from "@/features/visual-array";
 
 export function DialogInfo() {
   return (
-    <>
+    <div>
+      
       <TypographyP>
         Merge sort is a classic "divide and conquer" sorting algorithm. It works
         by:
@@ -20,6 +22,8 @@ export function DialogInfo() {
           will be the sorted list.
         </li>
       </TypographyList>
+
+
       <TypographyP>
         Merge sort breaks down the problem into smaller, manageable pieces,
         sorts those pieces, and then combines them in a way that results in a
@@ -104,6 +108,6 @@ export function DialogInfo() {
           <VisualArrayItem isSorted value={4} index={0} />
         </VisualArrayWrapper>
       </div>
-    </>
+    </div>
   );
 }

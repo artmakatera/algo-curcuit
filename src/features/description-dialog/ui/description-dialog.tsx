@@ -26,7 +26,7 @@ export function DescriptionDialog({ children }: { children: React.ReactNode }) {
         <DialogHeader>
           <DialogTitle>Merge Sort</DialogTitle>
         </DialogHeader>
-        <ScrollArea>{children}</ScrollArea>
+        <ScrollArea className="max-h-[calc(100dvh-48px)]">{children}</ScrollArea>
       </DialogContent>
     </Dialog>
   );
