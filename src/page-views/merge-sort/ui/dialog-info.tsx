@@ -30,78 +30,78 @@ export function DialogInfo() {
         <VisualArrayWrapper>
           <div className="relative">
             <VisualArrayItem value={4} index={0} />
-            <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-300 origin-top-left rotate-45 " />
+            <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-400 origin-top-left rotate-45 " />
           </div>
           <div className="relative">
             <VisualArrayItem value={2} index={1} />
-            <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-300 origin-top-left rotate-[18deg] " />
+            <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-400 origin-top-left rotate-[18deg] " />
 
           </div>
           <div className="relative">
             <VisualArrayItem value={1} index={2} />
-            <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-300 origin-top-left rotate-[-18deg] " />
+            <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-400 origin-top-left rotate-[-18deg] " />
 
           </div>
           <div className="relative">
             <VisualArrayItem value={3} index={3} />
-            <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-300 origin-top-left -rotate-45 " />
+            <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-400 origin-top-left -rotate-45 " />
 
           </div>
         </VisualArrayWrapper>
         <VisualArrayWrapper className="gap-8">
           <div className="relative">
-            <VisualArrayItem value={4} index={0} />
-            <div className="absolute top-full left-1/2 w-px h-[5.9rem] bg-gray-300 origin-top-left -rotate-[58deg] " />
+            <VisualArrayItem isComparing value={4} index={0} />
+            <div className="absolute top-full left-1/2 w-px h-[5.9rem] bg-gray-400 origin-top-left -rotate-[58deg] " />
 
 
           </div>
           <div className="relative">
-            <VisualArrayItem value={2} index={1} />
-            <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-300 origin-top-left rotate-45 " />
+            <VisualArrayItem isComparing value={2} index={1} />
+            <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-400 origin-top-left rotate-45 " />
 
           </div>
           <div className="relative">
-            <VisualArrayItem value={1} index={2} />
-            <div className="absolute top-full left-1/2 w-px h-12 bg-gray-300" />
+            <VisualArrayItem isComparing value={1} index={2} />
+            <div className="absolute top-full left-1/2 w-px h-12 bg-gray-400" />
 
           </div>
           <div className="relative">
-            <VisualArrayItem value={3} index={3} />
-            <div className="absolute top-full left-1/2 w-px h-14.5 bg-gray-300 origin-top-left rotate-32 " />
+            <VisualArrayItem isComparing value={3} index={3} />
+            <div className="absolute top-full left-1/2 w-px h-14.5 bg-gray-400 origin-top-left rotate-32 " />
 
           </div>
         </VisualArrayWrapper>
         <VisualArrayWrapper className="gap-8">
           <div className="flex">
             <div className="relative">
-              <VisualArrayItem value={2} index={1} />
-            <div className="absolute top-full left-1/2 w-px h-20 bg-gray-300 origin-top-left -rotate-53 " />
+              <VisualArrayItem isChecking value={2} index={1} />
+            <div className="absolute top-full left-1/2 w-px h-20 bg-gray-400 origin-top-left -rotate-53 " />
 
             </div>
             <div className="relative">
               <VisualArrayItem value={4} index={0} />
-            <div className="absolute top-full left-1/2 w-px h-30 bg-gray-300 origin-top-left -rotate-[65.5deg] " />
+            <div className="absolute top-full left-1/2 w-px h-30 bg-gray-400 origin-top-left -rotate-[65.5deg] " />
 
             </div>
           </div>
           <div className="flex">
             <div className="relative">
-              <VisualArrayItem value={1} index={2} />
-            <div className="absolute top-full left-1/2 w-px h-31 bg-gray-300 origin-top-left rotate-[67deg] " />
+              <VisualArrayItem isChecking value={1} index={2} />
+            <div className="absolute top-full left-1/2 w-px h-31 bg-gray-400 origin-top-left rotate-[67deg] " />
 
             </div>
             <div className="relative">
               <VisualArrayItem value={3} index={3} />
-            <div className="absolute top-full left-1/2 w-px h-20 bg-gray-300 origin-top-left rotate-52 " />
+            <div className="absolute top-full left-1/2 w-px h-20 bg-gray-400 origin-top-left rotate-52 " />
 
             </div>
           </div>
         </VisualArrayWrapper>
         <VisualArrayWrapper>
-          <VisualArrayItem value={1} index={2} />
-          <VisualArrayItem value={2} index={1} />
-          <VisualArrayItem value={3} index={3} />
-          <VisualArrayItem value={4} index={0} />
+          <VisualArrayItem isSorted value={1} index={2} />
+          <VisualArrayItem isSorted value={2} index={1} />
+          <VisualArrayItem isSorted value={3} index={3} />
+          <VisualArrayItem isSorted value={4} index={0} />
         </VisualArrayWrapper>
       </div>
     </>
