@@ -40,8 +40,8 @@ export function DescriptionDialog({
           <span>Read</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="place-content-start">
-        <DialogHeader className="flex-row items-center">
+      <DialogContent className="place-content-start px-0">
+        <DialogHeader className="flex-row items-center px-4">
           <DialogTitle>{title}</DialogTitle>
          <AlgorithmComplexities
           spaceComplexity={spaceComplexity}
@@ -50,7 +50,7 @@ export function DescriptionDialog({
           timeComplexityDescription={timeComplexityDescription}
         />
         </DialogHeader>
-        <ScrollArea className="max-h-[calc(100dvh-48px)]">
+        <ScrollArea className="max-h-[calc(100dvh-48px)] px-4">
           {children}
         </ScrollArea>
       </DialogContent>

@@ -6,19 +6,19 @@ export const DialogInfo = () => {
   return (
     <div>
       <TypographyP>
-        Bubble sort is a simple sorting algorithm that repeatedly steps through
-        the list, compares adjacent elements, and swaps them if they are in the
-        wrong order.
+        Insertion sort is a simple sorting algorithm that builds the final
+        sorted array (or list) one item at a time.
       </TypographyP>
       <TypographyP>
-        <strong>In essence:</strong> Bubble sort repeatedly compares and swaps
-        adjacent elements until the list is sorted. Larger elements "bubble" to
-        the end of the list.
+        <strong>In essence:</strong> Insertion sort iterates through the input,
+        removing one element per iteration, finding the location it belongs
+        within the sorted list, and inserts it there. It repeats until no input
+        elements remain.
       </TypographyP>
       <div className="grid place-items-center">
         <VisualArrayWrapper className="mt-4 -ml-4">
           <VisualArrayItem value={4} index={0} />
-          <VisualArrayItem value={2} index={1} />
+          <VisualArrayItem value={2} index={1} isComparing />
           <VisualArrayItem value={1} index={2} />
           <VisualArrayItem value={3} index={3} />
         </VisualArrayWrapper>
@@ -29,6 +29,18 @@ export const DialogInfo = () => {
           <VisualArrayItem value={1} index={2} />
           <VisualArrayItem value={3} index={3} />
         </VisualArrayWrapper>
+        <VisualArrayWrapper className="mt-4 -ml-4">
+          <VisualArrayItem value={2} index={1} isChecking />
+          <VisualArrayItem value={4} index={0} />
+          <VisualArrayItem value={1} index={2} />
+          <VisualArrayItem value={3} index={3} />
+        </VisualArrayWrapper>
+        <VisualArrayWrapper className="mt-4 -ml-4">
+          <VisualArrayItem value={2} index={1} />
+          <VisualArrayItem value={4} index={0} />
+          <VisualArrayItem value={1} index={2} isComparing />
+          <VisualArrayItem value={3} index={3} />
+        </VisualArrayWrapper>
         <VisualArrayWrapper className="mt-4">
           <VisualArrayItem value={2} index={1} />
           <VisualArrayItem value={4} index={0} isChecking />
@@ -37,44 +49,32 @@ export const DialogInfo = () => {
           <VisualArrayItem value={3} index={3} />
         </VisualArrayWrapper>
         <VisualArrayWrapper className="mt-4">
-          <VisualArrayItem value={2} index={1} />
+          <VisualArrayItem value={2} index={1} isChecking />
+          <ArrowLeftRight />
+          <VisualArrayItem value={1} index={2} isChecking />
+          <VisualArrayItem value={4} index={0} isComparing />
+          <VisualArrayItem value={3} index={3} />
+        </VisualArrayWrapper>
+        <VisualArrayWrapper className="mt-4 -ml-4">
           <VisualArrayItem value={1} index={2} />
+          <VisualArrayItem value={2} index={1} />
+          <VisualArrayItem value={4} index={0} />
+          <VisualArrayItem value={3} index={3} isComparing />
+        </VisualArrayWrapper>
+        <VisualArrayWrapper className="mt-4">
+          <VisualArrayItem value={1} index={2} />
+          <VisualArrayItem value={2} index={1} />
           <VisualArrayItem value={4} index={0} isChecking />
           <ArrowLeftRight />
           <VisualArrayItem value={3} index={3} isChecking />
         </VisualArrayWrapper>
-        <VisualArrayWrapper className="mt-4 -ml-4">
-          <VisualArrayItem value={2} index={1} />
+        <VisualArrayWrapper className="mt-4">
           <VisualArrayItem value={1} index={2} />
-          <VisualArrayItem value={3} index={3} />
-          <VisualArrayItem value={4} index={0} isSorted />
-        </VisualArrayWrapper>
-        <VisualArrayWrapper className="mt-4 ">
-          <VisualArrayItem value={2} index={1} isChecking />
-          <ArrowLeftRight />
-          <VisualArrayItem value={1} index={2} isChecking />
-          <VisualArrayItem value={3} index={3} />
-          <VisualArrayItem value={4} index={0} isSorted />
-        </VisualArrayWrapper>
-        <VisualArrayWrapper className="mt-4 -ml-4">
-          <VisualArrayItem value={1} index={2}  />
-          <VisualArrayItem value={2} index={1} isComparing />
+          <VisualArrayItem value={2} index={1} />
           <VisualArrayItem value={3} index={3} isComparing />
-          <VisualArrayItem value={4} index={0} isSorted />
+          <VisualArrayItem value={4} index={0}  />
         </VisualArrayWrapper>
-        <VisualArrayWrapper className="mt-4 -ml-4">
-          <VisualArrayItem value={1} index={2}  />
-          <VisualArrayItem value={2} index={1}  />
-          <VisualArrayItem value={3} index={3} isSorted />
-          <VisualArrayItem value={4} index={0} isSorted />
-        </VisualArrayWrapper>
-        <VisualArrayWrapper className="mt-4 -ml-4">
-          <VisualArrayItem value={1} index={2} isComparing />
-          <VisualArrayItem value={2} index={1} isComparing />
-          <VisualArrayItem value={3} index={3} isSorted />
-          <VisualArrayItem value={4} index={0} isSorted />
-        </VisualArrayWrapper>
-        <VisualArrayWrapper className="mt-4 -ml-4">
+        <VisualArrayWrapper className="mt-4">
           <VisualArrayItem value={1} index={2} isSorted />
           <VisualArrayItem value={2} index={1} isSorted />
           <VisualArrayItem value={3} index={3} isSorted />
@@ -86,6 +86,14 @@ export const DialogInfo = () => {
         <li>
           <strong>Simple implementation:</strong> Easy to understand and
           implement.
+        </li>
+        <li>
+          <strong>Efficient for Small Datasets:</strong> Performs well on small
+          lists.
+        </li>
+        <li>
+          <strong>Efficient for Nearly Sorted Data:</strong>Very efficient when
+          the input data is already partially sorted.
         </li>
         <li>
           <strong>Space complexity:</strong> In-place sorting algorithm.
@@ -106,8 +114,8 @@ export const DialogInfo = () => {
           algorithms.
         </li>
         <li>
-          <strong>Limited Practical Use:</strong> Rarely used in practice due
-          to its inefficiency.
+          <strong>Slow Performance:</strong> Generally slower than more advanced
+          sorting algorithms like Merge Sort or Quick Sort.
         </li>
       </TypographyList>
     </div>
