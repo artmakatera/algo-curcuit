@@ -16,19 +16,18 @@ export function AlgorithmComplexities({
 }: AlgorithmComplexityProps) {
   return (
     <div className="flex flex-wrap gap-2">
-      {spaceComplexity && (
-        <AlgorithmComplexity
-          complexity={spaceComplexity}
-          description={spaceComplexityDescription}
-          isSpaceComplexity
-        />
-      )}
-
       {timeComplexity && (
         <AlgorithmComplexity
           key="time-complexity"
           complexity={timeComplexity}
           description={timeComplexityDescription}
+        />
+      )}
+      {spaceComplexity && (
+        <AlgorithmComplexity
+          complexity={spaceComplexity}
+          description={spaceComplexityDescription}
+          isSpaceComplexity
         />
       )}
     </div>

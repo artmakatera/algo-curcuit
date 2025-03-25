@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Complexity } from "@/shared/constants/complexities";
 
 import {
@@ -31,8 +30,8 @@ export function AlgorithmComplexity({
   }
 
   return (
-    <HoverCard>
-      <HoverCardTrigger>{badgeComponent}</HoverCardTrigger>
+    <HoverCard openDelay={0} closeDelay={200}>
+      <HoverCardTrigger tabIndex={0}>{badgeComponent}</HoverCardTrigger>
       <HoverCardContent>{description}</HoverCardContent>
     </HoverCard>
   );
