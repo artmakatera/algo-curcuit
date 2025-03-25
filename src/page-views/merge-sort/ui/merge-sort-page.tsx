@@ -22,6 +22,7 @@ export function MergeSortPage() {
         />
       </div>
       <DescriptionDialog
+        title="Merge Sort"
         spaceComplexity={COMPLEXITIES.O_N}
         timeComplexity={COMPLEXITIES.O_N_LOG_N}
         spaceComplexityDescription={<SpaceComplexityDescription />}

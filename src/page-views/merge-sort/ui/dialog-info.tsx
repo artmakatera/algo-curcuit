@@ -1,5 +1,4 @@
 import { TypographyList, TypographyP } from "@/components/ui/typography";
-import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { VisualArrayItem, VisualArrayWrapper } from "@/features/visual-array";
 
 export function DialogInfo() {

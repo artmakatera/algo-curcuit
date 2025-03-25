@@ -14,6 +14,7 @@ import { BookOpenText } from "lucide-react";
 
 interface DescriptionDialogProps {
   children: React.ReactNode;
+  title: string;
   spaceComplexity?: Complexity;
   timeComplexity?: Complexity;
   timeComplexityDescription?: React.ReactNode;
@@ -21,6 +22,7 @@ interface DescriptionDialogProps {
 }
 
 export function DescriptionDialog({
+  title,
   children,
   timeComplexity,
   spaceComplexity,
@@ -40,7 +42,7 @@ export function DescriptionDialog({
       </DialogTrigger>
       <DialogContent className="place-content-start">
         <DialogHeader className="flex-row items-center">
-          <DialogTitle>Merge Sort</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
          <AlgorithmComplexities
           spaceComplexity={spaceComplexity}
           timeComplexity={timeComplexity}
