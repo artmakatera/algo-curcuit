@@ -5,7 +5,6 @@ import { VisualArrayItem, VisualArrayWrapper } from "@/features/visual-array";
 export function DialogInfo() {
   return (
     <div>
-      
       <TypographyP>
         Merge sort is a classic "divide and conquer" sorting algorithm. It works
         by:
@@ -23,7 +22,6 @@ export function DialogInfo() {
         </li>
       </TypographyList>
 
-
       <TypographyP>
         Merge sort breaks down the problem into smaller, manageable pieces,
         sorts those pieces, and then combines them in a way that results in a
@@ -39,65 +37,53 @@ export function DialogInfo() {
           <div className="relative">
             <VisualArrayItem value={2} index={1} />
             <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-400 origin-top-left rotate-[18deg] " />
-
           </div>
           <div className="relative">
             <VisualArrayItem value={1} index={2} />
             <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-400 origin-top-left rotate-[-18deg] " />
-
           </div>
           <div className="relative">
             <VisualArrayItem value={3} index={3} />
             <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-400 origin-top-left -rotate-45 " />
-
           </div>
         </VisualArrayWrapper>
         <VisualArrayWrapper className="gap-8">
           <div className="relative">
             <VisualArrayItem isComparing value={4} index={0} />
             <div className="absolute top-full left-1/2 w-px h-[5.9rem] bg-gray-400 origin-top-left -rotate-[58deg] " />
-
-
           </div>
           <div className="relative">
             <VisualArrayItem isComparing value={2} index={1} />
             <div className="absolute top-full left-1/2 w-px h-[4.2rem] bg-gray-400 origin-top-left rotate-45 " />
-
           </div>
           <div className="relative">
             <VisualArrayItem isComparing value={1} index={2} />
             <div className="absolute top-full left-1/2 w-px h-12 bg-gray-400" />
-
           </div>
           <div className="relative">
             <VisualArrayItem isComparing value={3} index={3} />
             <div className="absolute top-full left-1/2 w-px h-14.5 bg-gray-400 origin-top-left rotate-32 " />
-
           </div>
         </VisualArrayWrapper>
         <VisualArrayWrapper className="gap-8">
           <div className="flex">
             <div className="relative">
               <VisualArrayItem isChecking value={2} index={1} />
-            <div className="absolute top-full left-1/2 w-px h-20 bg-gray-400 origin-top-left -rotate-53 " />
-
+              <div className="absolute top-full left-1/2 w-px h-20 bg-gray-400 origin-top-left -rotate-53 " />
             </div>
             <div className="relative">
               <VisualArrayItem value={4} index={0} />
-            <div className="absolute top-full left-1/2 w-px h-30 bg-gray-400 origin-top-left -rotate-[65.5deg] " />
-
+              <div className="absolute top-full left-1/2 w-px h-30 bg-gray-400 origin-top-left -rotate-[65.5deg] " />
             </div>
           </div>
           <div className="flex">
             <div className="relative">
               <VisualArrayItem isChecking value={1} index={2} />
-            <div className="absolute top-full left-1/2 w-px h-31 bg-gray-400 origin-top-left rotate-[67deg] " />
-
+              <div className="absolute top-full left-1/2 w-px h-31 bg-gray-400 origin-top-left rotate-[67deg] " />
             </div>
             <div className="relative">
               <VisualArrayItem value={3} index={3} />
-            <div className="absolute top-full left-1/2 w-px h-20 bg-gray-400 origin-top-left rotate-52 " />
-
+              <div className="absolute top-full left-1/2 w-px h-20 bg-gray-400 origin-top-left rotate-52 " />
             </div>
           </div>
         </VisualArrayWrapper>
@@ -108,6 +94,36 @@ export function DialogInfo() {
           <VisualArrayItem isSorted value={4} index={0} />
         </VisualArrayWrapper>
       </div>
+      <TypographyP>Pros: :</TypographyP>
+      <TypographyList>
+        <li>
+          <strong>Stable sorting:</strong> Preserves the relative order of
+          elements with equal values.
+        </li>
+        <li>
+          <strong>Efficient and Consistent Time Complexity:</strong> Guarantees
+          O(n log n) time complexity for all cases (best, average, and worst).
+        </li>
+        <li>
+          <strong>Well-Suited for Large Datasets:</strong> Performs efficiently
+          on large amounts of data.
+        </li>
+      </TypographyList>
+      <TypographyP>
+        Merge sort is a classic "divide and conquer" sorting algorithm. It works
+        by:
+      </TypographyP>
+      <TypographyList>
+        <li>
+          <strong>Extra Space Requirement:</strong> Requires additional memory
+          proportional to the size of the input (O(n)).
+        </li>
+        <li>
+          <strong>Slightly Slower for Small Datasets:</strong> Rhe overhead of
+          the recursive calls and merging process can make it slightly slower
+          than simpler sorting algorithms for very small lists.
+        </li>
+      </TypographyList>
     </div>
   );
 }
