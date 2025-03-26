@@ -6,7 +6,7 @@ export const DialogInfo = () => {
       <TypographyP>
         Binary search is an efficient algorithm for finding a target value
         within a sorted array. However, a rotated sorted array is a sorted array
-        that has been "rotated" by some number of positions. For example, [4, 5,
+        that has been &quot;rotated&quot; by some number of positions. For example, [4, 5,
         6, 7, 0, 1, 2] is a rotated sorted array. The challenge is to find the
         target in this modified array efficiently.
       </TypographyP>
@@ -16,7 +16,7 @@ export const DialogInfo = () => {
         interval is divided. The key idea is to check which half of the array is
         still sorted.
       </TypographyP>
-      <TypographyP>Here's how it works:</TypographyP>
+      <TypographyP>Here&apos;s how it works:</TypographyP>
       <TypographyList>
         <li>
           <strong>Find the Pivot: </strong>
@@ -35,7 +35,7 @@ export const DialogInfo = () => {
             half.
           </TypographyList>
           <TypographyList>
-            f the target is not in the sorted half, search the other half.
+            If the target is not in the sorted half, search the other half.
           </TypographyList>
         </li>
         <li>

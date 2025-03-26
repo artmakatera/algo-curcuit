@@ -14,7 +14,7 @@ export const DialogInfo = () => {
         interval in half. It compares the middle element of the array to the
         target value. If they match, the search is complete. If the target value
         is less than the middle element, the search continues in the left half.
-        If it's greater, the search continues in the right half.
+        If it&apos;s greater, the search continues in the right half.
       </TypographyP>
       <TypographyP>
         For instance find 6:

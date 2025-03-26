@@ -4,7 +4,8 @@ import { COMPLEXITIES } from "@/shared/constants/complexities";
 export function SpaceComplexityDescription() {
   return (
     <div className="text-pretty text-sm">
-      Insertion sort is an "in-place" algorithm, meaning it requires minimal extra memory.
+      Insertion sort is an &quot;in-place&quot; algorithm, meaning it requires minimal
+      extra memory.
     </div>
   );
 }

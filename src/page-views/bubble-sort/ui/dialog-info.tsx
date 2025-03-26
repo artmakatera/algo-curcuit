@@ -1,6 +1,6 @@
 import { TypographyList, TypographyP } from "@/components/ui/typography";
 import { VisualArrayItem, VisualArrayWrapper } from "@/features/visual-array";
-import { ArrowLeft, ArrowLeftRight } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 
 export const DialogInfo = () => {
   return (
@@ -12,7 +12,7 @@ export const DialogInfo = () => {
       </TypographyP>
       <TypographyP>
         <strong>In essence:</strong> Bubble sort repeatedly compares and swaps
-        adjacent elements until the list is sorted. Larger elements "bubble" to
+        adjacent elements until the list is sorted. Larger elements &quot;bubble&quot; to
         the end of the list.
       </TypographyP>
       <div className="grid place-items-center">

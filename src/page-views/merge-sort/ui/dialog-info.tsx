@@ -5,7 +5,7 @@ export function DialogInfo() {
   return (
     <div>
       <TypographyP>
-        Merge sort is a classic "divide and conquer" sorting algorithm. It works
+        Merge sort is a classic &quot;divide and conquer&quot; sorting algorithm. It works
         by:
       </TypographyP>
       <TypographyList>
@@ -109,7 +109,7 @@ export function DialogInfo() {
         </li>
       </TypographyList>
       <TypographyP>
-        Merge sort is a classic "divide and conquer" sorting algorithm. It works
+        Merge sort is a classic &quot;divide and conquer&quot; sorting algorithm. It works
         by:
       </TypographyP>
       <TypographyList>

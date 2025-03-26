@@ -5,7 +5,7 @@ export function SpaceComplexityDescription() {
   return (
     <div className="text-pretty text-sm">
       Merge sort requires extra memory to hold the merged sublists. It is not an
-      "in-place" sorting algorithm.
+      &quot;in-place&quot; sorting algorithm.
     </div>
   );
 }
