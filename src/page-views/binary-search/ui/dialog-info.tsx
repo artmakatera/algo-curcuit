@@ -72,14 +72,7 @@ export const DialogInfo = () => {
         <li>
           <strong>Requires Sorted Data: </strong> Only works on sorted arrays.
         </li>
-        <li>
-          <strong>Slow Performance:</strong> Generally slower than other sorting
-          algorithms.
-        </li>
-        <li>
-          <strong>Limited Practical Use:</strong> Rarely used in practice due to
-          its inefficiency.
-        </li>
+
       </TypographyList>
     </div>
   );
