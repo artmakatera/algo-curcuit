@@ -34,7 +34,7 @@ export function DescriptionDialog({
       <DialogTrigger asChild>
         <Button
           variant="destructive"
-          className="bg-orange-500 hover:bg-orange-600 fixed bottom-4 right-4 cursor-pointer"
+          className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 fixed bottom-4 right-4 cursor-pointer"
         >
           <BookOpenText />
           <span>Read</span>
