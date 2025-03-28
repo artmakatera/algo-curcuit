@@ -1,12 +1,18 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useState } from "react";
 import { motion, MotionProps } from "framer-motion";
 
 export type CollapseDivProps = MotionProps &
   HTMLAttributes<HTMLDivElement> & {
     hasChildren?: boolean;
+    index: number;
   };
 
-export const CollapseDiv = ({ hasChildren, ...props }: CollapseDivProps) => {
+export const CollapseDiv = ({
+  hasChildren,
+  index,
+  ...props
+}: CollapseDivProps) => {
+
   const animationProps = {
     exit: hasChildren
       ? {
@@ -33,5 +39,19 @@ export const CollapseDiv = ({ hasChildren, ...props }: CollapseDivProps) => {
       times: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9, 1],
     },
   };
-  return <motion.div {...animationProps} {...props} />;
+  return (
+    <motion.div
+      {...animationProps}
+      {...props}
+      style={{
+        gridArea: `item${index + 1}`,
+        gridTemplateColumns: "repeat(2, minmax(40px, fit-content(100%)))",
+        alignItems: "start",
+        gridTemplateAreas: `
+                      'header gap'
+                      'item1 item2'
+                    `,
+      }}
+    />
+  );
 };

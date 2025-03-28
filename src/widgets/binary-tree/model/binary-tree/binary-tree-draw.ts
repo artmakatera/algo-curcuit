@@ -1,4 +1,3 @@
-import { tree } from "next/dist/build/templates/app-page";
 import { STEPS } from "../constants";
 import { TreeArrayGroups, TreeArrayItem } from "../types";
 import { BinaryTree, TreeNode } from "./base-binary-tree";

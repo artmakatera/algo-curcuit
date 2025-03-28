@@ -156,6 +156,9 @@
   * {
     @apply border-border;
   }
+  html {
+    interpolate-size: allow-keywords;
+  }
   body {
     @apply bg-background text-foreground;
   }

@@ -8,7 +8,6 @@ import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { AnimatePresence } from "framer-motion";
 import { CollapseDiv } from "./collpase-div";
 import { useRef } from "react";
-import { get } from "http";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -31,6 +30,7 @@ type NodeArrayProps = {
   resultNodes?: TreeNode[];
   queueNodes?: TreeNode[];
   stackNodes?: TreeNode[];
+  zIndex?: number;
 };
 
 export const NodeArray = (props: NodeArrayProps) => {
@@ -75,12 +75,14 @@ function NodeArrayItem({
     resultNodes,
     queueNodes,
     stackNodes,
+    zIndex = 9999,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  if (!item)
-    return <CollapseDiv key={`index-{index}`} className="w-10"></CollapseDiv>;
+  if (!item) {
+    return <CollapseDiv key={`index-{index}`} className="w-10" index={index} />;
+  }
   const { node, isLeft } = item;
 
   const hasChildren = getLen(groups[node.id]) > 0;
@@ -95,6 +97,7 @@ function NodeArrayItem({
 
   return (
     <CollapseDiv
+      index={index}
       key={node.id}
       className={cn(`grid gap-${GAP_SIZE}`)}
       animate={
@@ -106,26 +109,19 @@ function NodeArrayItem({
       }
       hasChildren={hasChildren}
       variants={getSlideToParentVariant(parentRef, wrapperRef, durationMs)}
-      style={{
-        gridArea: `item${index + 1}`,
-        gridTemplateColumns: "repeat(2, minmax(40px, fit-content(100%)))",
-        alignItems: "start",
-        gridTemplateAreas: `
-                    'header gap'
-                    'item1 item2'
-                  `,
-      }}
     >
-      <div
+      <motion.div
+        layout
         className={cn("relative", !isLeft && "grid justify-end")}
         style={{
           gridColumn: isLeft ? "2 / -1" : undefined,
+          zIndex:isMinNode? 9999 :  zIndex,
         }}
       >
         {parentKey !== null && !isMinNode && !isChildAndRemove && (
           <Line
             className={cn(
-              "h-12",
+              "-z-20",
               isLeft ? "bottom-1/2 " : " bottom-1/2",
               hasChildren ? "w-full" : "w-1/2 left-1/2",
               !isLeft && !hasChildren && "w-1/2 left-0",
@@ -133,15 +129,15 @@ function NodeArrayItem({
             )}
             preventAnimation={preventNodeEdgeAnimation}
             isLeft={isLeft}
-            found={getIsCompletedNode(node, resultNodes ||[])}
+            found={getIsCompletedNode(node, resultNodes || [])}
             isQueueLine={getIsQueueNode(node, queueNodes, stackNodes)}
-            
           />
         )}
         <div
           ref={wrapperRef}
+          key="node-wrapper"
           className={cn(
-            "relative w-fit",
+            "relative w-fit z-50",
             hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
           )}
         >
@@ -156,50 +152,54 @@ function NodeArrayItem({
             isMinValueNode={isMinNode}
             preventAnimation={preventNodeEdgeAnimation}
             hasChildren={hasChildren}
-            
           />
         </div>
-      </div>
+      </motion.div>
       <NodeArray
         {...props}
         parentKey={node.id}
         isSingleChildToRemove={isSingleRemove}
         isRightChildToRemove={isNodeToRemove && isMinValueFirstRightChild}
         parentRef={wrapperRef}
+        zIndex={zIndex - 1}
       />
     </CollapseDiv>
   );
 }
 
-function getIsCompletedNode(node: TreeNode,  resultNodes: TreeNode[]) {
-    return resultNodes.some((n) => n.id === node.id);
+function getIsCompletedNode(node: TreeNode, resultNodes: TreeNode[]) {
+  return resultNodes.some((n) => n.id === node.id);
 }
 
-
-function getIsFoundNode(node: TreeNode, foundNode?: TreeNode | null, resultNodes?: TreeNode[]) {
-
+function getIsFoundNode(
+  node: TreeNode,
+  foundNode?: TreeNode | null,
+  resultNodes?: TreeNode[]
+) {
   return foundNode?.id === node.id;
 }
 
-function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null, resultNodes?: TreeNode[]) {
-
+function getIsNodeInserted(
+  node: TreeNode,
+  insertedNode?: TreeNode | null,
+  resultNodes?: TreeNode[]
+) {
   return insertedNode?.id === node.id;
-
 }
 
-function getIsQueueNode(node: TreeNode, queueNodes?: TreeNode[], stackNodes?: TreeNode[]) {
+function getIsQueueNode(
+  node: TreeNode,
+  queueNodes?: TreeNode[],
+  stackNodes?: TreeNode[]
+) {
   if (Array.isArray(queueNodes) && queueNodes.length > 0) {
     return queueNodes.some((n) => n.id === node.id);
   }
-  
-
-
 
   return getIsStackNode(node, stackNodes);
 }
 
 function getIsActiveNodes(node: TreeNode, activeNode: TreeNode | null) {
-
   return activeNode?.id === node.id;
 }
 
@@ -230,12 +230,14 @@ function getSlideToParentVariant(
     slideToParent: {
       x,
       y,
+      zIndex: 9999,
 
       transition: {
         duration: durationMs / 1000,
       },
     },
     singleChildRemove: {
+      zIndex: 9999,
       paddingLeft: currentWidth / 2,
     },
   };

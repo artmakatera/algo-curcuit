@@ -50,7 +50,6 @@ export const Node = ({
   isQueueNode,
   isMinValueNode,
   preventAnimation,
-  isStackNode,
   isCompleted,
 }: NodeItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -87,9 +86,9 @@ export const Node = ({
     >
       <motion.div
         className={cn(
-          "leading-10",
+          "leading-10 z-10",
           `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
-          "bg-green-600  text-center  text-white rounded-full ",
+          "bg-green-600 text-center  text-white rounded-full ",
           active && "bg-blue-600 ",
           isQueueNode && "bg-blue-600 delay-500 transition",
           found && "bg-yellow-500",
