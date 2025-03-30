@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { NodeArrayWrapper } from "./node-array-wrapper";
 import { useRef } from "react";
 import { NodeLineWrapper } from "./NodeLineWrapper";
+import { getIsActiveNodes, getIsCompletedNode, getIsFoundNode, getIsNodeInserted, getIsQueueNode } from "../model/conditional-helpers";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -160,41 +161,6 @@ function NodeArrayItem({
   );
 }
 
-function getIsCompletedNode(node: TreeNode, resultNodes: TreeNode[]) {
-  return resultNodes.some((n) => n.id === node.id);
-}
-
-function getIsFoundNode(node: TreeNode, foundNode?: TreeNode | null) {
-  return foundNode?.id === node.id;
-}
-
-function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null) {
-  return insertedNode?.id === node.id;
-}
-
-function getIsQueueNode(
-  node: TreeNode,
-  queueNodes?: TreeNode[],
-  stackNodes?: TreeNode[]
-) {
-  if (Array.isArray(queueNodes) && queueNodes.length > 0) {
-    return queueNodes.some((n) => n.id === node.id);
-  }
-
-  return getIsStackNode(node, stackNodes);
-}
-
-function getIsActiveNodes(node: TreeNode, activeNode: TreeNode | null) {
-  return activeNode?.id === node.id;
-}
-
-function getIsStackNode(node: TreeNode, stackNodes?: TreeNode[]) {
-  if (Array.isArray(stackNodes) && stackNodes.length > 0) {
-    return stackNodes.some((n) => n.id === node.id);
-  }
-
-  return false;
-}
 
 function getSlideToParentVariant(
   parentRef?: React.RefObject<HTMLDivElement | null>,
