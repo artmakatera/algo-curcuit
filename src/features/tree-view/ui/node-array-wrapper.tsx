@@ -1,17 +1,19 @@
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes } from "react";
+import { GAP_SIZE } from "../constants";
 import { motion, MotionProps } from "framer-motion";
+import { cn } from "@/shared/lib/utils";
 
-export type CollapseDivProps = MotionProps &
+export type NodeArrayWrapperProps = MotionProps &
   HTMLAttributes<HTMLDivElement> & {
     hasChildren?: boolean;
     index: number;
   };
 
-export const CollapseDiv = ({
+export const NodeArrayWrapper = ({
   hasChildren,
   index,
   ...props
-}: CollapseDivProps) => {
+}: NodeArrayWrapperProps) => {
 
   const animationProps = {
     exit: hasChildren
@@ -43,6 +45,7 @@ export const CollapseDiv = ({
     <motion.div
       {...animationProps}
       {...props}
+      className={cn(`grid gap-${GAP_SIZE}`)}
       style={{
         gridArea: `item${index + 1}`,
         gridTemplateColumns: "repeat(2, minmax(40px, fit-content(100%)))",

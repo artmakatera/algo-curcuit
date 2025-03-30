@@ -1,13 +1,13 @@
-import { motion } from "framer-motion";
 import { Node } from "./node";
 import { cn } from "@/shared/lib/utils";
 import { Line } from "./line";
-import { GAP_SIZE } from "../constants";
+
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
 import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { AnimatePresence } from "framer-motion";
-import { CollapseDiv } from "./collpase-div";
+import { NodeArrayWrapper } from "./node-array-wrapper";
 import { useRef } from "react";
+import { NodeLineWrapper } from "./NodeLineWrapper";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
   childrenArr?.filter(Boolean)?.length || 0;
@@ -81,7 +81,9 @@ function NodeArrayItem({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   if (!item) {
-    return <CollapseDiv key={`index-{index}`} className="w-10" index={index} />;
+    return (
+      <NodeArrayWrapper key={`index-{index}`} className="w-10" index={index} />
+    );
   }
   const { node, isLeft } = item;
 
@@ -93,13 +95,11 @@ function NodeArrayItem({
   const isChildAndRemove =
     isSingleChildToRemove || (isRightChildToRemove && !isLeft);
 
-  const isCompleted = getIsNodeInserted(node, insertedNode, resultNodes);
+  const isCompleted = getIsNodeInserted(node, insertedNode);
 
   return (
-    <CollapseDiv
+    <NodeArrayWrapper
       index={index}
-      key={node.id}
-      className={cn(`grid gap-${GAP_SIZE}`)}
       animate={
         isSingleRemove && hasChildren
           ? "singleChildRemove"
@@ -110,14 +110,7 @@ function NodeArrayItem({
       hasChildren={hasChildren}
       variants={getSlideToParentVariant(parentRef, wrapperRef, durationMs)}
     >
-      <motion.div
-        layout
-        className={cn("relative", !isLeft && "grid justify-end")}
-        style={{
-          gridColumn: isLeft ? "2 / -1" : undefined,
-          zIndex:isMinNode? 9999 :  zIndex,
-        }}
-      >
+      <NodeLineWrapper isLeft={isLeft} zIndex={zIndex}>
         {parentKey !== null && !isMinNode && !isChildAndRemove && (
           <Line
             className={cn(
@@ -146,7 +139,7 @@ function NodeArrayItem({
             active={getIsActiveNodes(node, activeNode)}
             isQueueNode={getIsQueueNode(node, queueNodes, stackNodes)}
             inserted={isCompleted}
-            found={getIsFoundNode(node, foundNode, resultNodes)}
+            found={getIsFoundNode(node, foundNode)}
             isCompleted={getIsCompletedNode(node, resultNodes || [])}
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}
@@ -154,7 +147,7 @@ function NodeArrayItem({
             hasChildren={hasChildren}
           />
         </div>
-      </motion.div>
+      </NodeLineWrapper>
       <NodeArray
         {...props}
         parentKey={node.id}
@@ -163,7 +156,7 @@ function NodeArrayItem({
         parentRef={wrapperRef}
         zIndex={zIndex - 1}
       />
-    </CollapseDiv>
+    </NodeArrayWrapper>
   );
 }
 
@@ -171,19 +164,11 @@ function getIsCompletedNode(node: TreeNode, resultNodes: TreeNode[]) {
   return resultNodes.some((n) => n.id === node.id);
 }
 
-function getIsFoundNode(
-  node: TreeNode,
-  foundNode?: TreeNode | null,
-  resultNodes?: TreeNode[]
-) {
+function getIsFoundNode(node: TreeNode, foundNode?: TreeNode | null) {
   return foundNode?.id === node.id;
 }
 
-function getIsNodeInserted(
-  node: TreeNode,
-  insertedNode?: TreeNode | null,
-  resultNodes?: TreeNode[]
-) {
+function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null) {
   return insertedNode?.id === node.id;
 }
 
