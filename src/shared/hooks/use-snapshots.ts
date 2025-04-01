@@ -143,8 +143,6 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
       return;
     }
 
-
-
     setStarted(true);
 
     await visualize();

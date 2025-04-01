@@ -4,7 +4,7 @@ import {
   VisualArrayWrapper,
   VisualArrayWrapperProps,
 } from "@/features/visual-array";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export const MergeBaseArrayWrapper = ({
   children,

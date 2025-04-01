@@ -1,6 +1,6 @@
 import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { RefObject, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { cn } from "@/shared/lib/utils";
 import { NODE_SIZE } from "../constants";
 import { useNodeToRemove } from "../context/node-to-remove-context";

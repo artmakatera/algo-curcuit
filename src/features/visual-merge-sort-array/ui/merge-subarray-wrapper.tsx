@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { cn } from "@/shared/lib/utils";
-import { delay, motion, MotionProps } from "framer-motion";
+import { delay, motion, MotionProps } from "motion/react";
 
 import { VisualArrayWrapperProps } from "@/features/visual-array";
 import { MergeBaseArrayWrapper } from "./merge-base-array-wrapper";

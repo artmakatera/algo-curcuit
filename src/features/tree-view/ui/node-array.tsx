@@ -4,10 +4,10 @@ import { Line } from "./line";
 
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
 import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 import { NodeArrayWrapper } from "./node-array-wrapper";
 import { useRef } from "react";
-import { NodeLineWrapper } from "./NodeLineWrapper";
+import { NodeLineWrapper } from "./node-line-wrapper";
 import { getIsActiveNodes, getIsCompletedNode, getIsFoundNode, getIsNodeInserted, getIsQueueNode } from "../model/conditional-helpers";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>

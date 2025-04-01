@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/shared/lib/utils";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { LINE_SIZE } from "../constants";
 
 type LineProps = {

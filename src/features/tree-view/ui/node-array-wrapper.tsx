@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
 import { GAP_SIZE } from "../constants";
-import { motion, MotionProps } from "framer-motion";
+import { motion, MotionProps } from "motion/react";
 import { cn } from "@/shared/lib/utils";
 
 export type NodeArrayWrapperProps = MotionProps &

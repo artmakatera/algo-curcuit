@@ -1,6 +1,6 @@
 "use client";
 import {  useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 // Components
 import { VisualArrayItem } from "@/features/visual-array";

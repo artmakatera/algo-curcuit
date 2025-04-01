@@ -5,7 +5,7 @@ import {
   MergeArray,
 } from "@/features/visual-merge-sort-array";
 import { StepSnapshot } from "../model/types";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { STEPS } from "../model";
 import { cn } from "@/shared/lib/utils";
 

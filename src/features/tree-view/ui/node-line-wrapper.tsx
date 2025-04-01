@@ -1,5 +1,5 @@
 import { cn } from "@/shared/lib/utils";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 interface NodeLineWrapperProps {
   children: React.ReactNode;
@@ -19,6 +19,9 @@ export function NodeLineWrapper({
       style={{
         gridColumn: isLeft ? "2 / -1" : undefined,
         zIndex,
+      }}
+      transition={{
+        layout: { duration: 0.2, ease: "linear"  }
       }}
     >
       {children}
