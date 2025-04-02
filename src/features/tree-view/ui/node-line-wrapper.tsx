@@ -1,6 +1,5 @@
 import { cn } from "@/shared/lib/utils";
-import { AnimatePresence, motion, MotionProps } from "motion/react";
-import { b } from "vitest/dist/chunks/suite.d.FvehnV49.js";
+import { motion, MotionProps } from "motion/react";
 
 interface NodeLineWrapperProps extends MotionProps {
   id: string;
@@ -27,7 +26,7 @@ export function NodeLineWrapper({
         zIndex: isMinNode ? 9999 : zIndex,
       }}
       transition={{
-        layout: { duration: 0.2, type: "tween", ease: "linear", bounce: 0, stiffness: 200},
+        layout: { duration: 0.15, type: "spring", bounce: 0.5 },
       }}
       {...props}
     >

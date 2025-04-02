@@ -97,8 +97,6 @@ function NodeArrayItem({
     return "normal";
   };
 
-  console.log("getAnimationType",getAnimationType())
-
   return (
     <NodeArrayWrapper
       index={index}
