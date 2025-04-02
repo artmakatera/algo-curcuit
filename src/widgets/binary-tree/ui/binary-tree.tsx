@@ -22,6 +22,8 @@ import {
   getPreventNodeEdgeAnimation,
 } from "../model/snapshot-helpers";
 import { CodeViewers } from "@/components/ui/code-viewers";
+import { AnimatePresence } from "motion/react";
+import { NodeArrayGroup } from "@/features/tree-view";
 
 const tree = new BinaryTreeDraw();
 
@@ -73,10 +75,9 @@ export const BinaryTree = () => {
     }
 
     if (activeType === "find") {
-    return tree.findDraw as unknown as (
-      v: number | null
-    ) => Generator<GenValuePayload, void, unknown>;
-
+      return tree.findDraw as unknown as (
+        v: number | null
+      ) => Generator<GenValuePayload, void, unknown>;
     }
 
     return () => (function* () {})();
@@ -162,7 +163,7 @@ export const BinaryTree = () => {
 
       <div className="m-auto w-fit mt-4">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
-          <NodeArray
+          <NodeArrayGroup
             parentKey={null}
             groups={currentSnapshot.treeView}
             activeNode={activeType === null ? null : currentSnapshot.node}

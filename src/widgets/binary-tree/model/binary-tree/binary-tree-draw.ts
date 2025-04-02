@@ -622,7 +622,7 @@ class BinaryTreeDraw extends BinaryTree {
     let result: TreeNode[] = [];
 
 
-    let currentNode: TreeNode |null = node;
+    let currentNode: TreeNode | null = node;
 
     while (currentNode || stack.length > 0) {
       while (currentNode) {
