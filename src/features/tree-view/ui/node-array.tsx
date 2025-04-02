@@ -46,6 +46,7 @@ function NodeArrayItem({
 }: NodeArrayProps & { item: TreeArrayItem; index: number }) {
   const {
     activeNode,
+    activeType,
     groups,
     parentKey,
     insertedNode,
@@ -105,6 +106,7 @@ function NodeArrayItem({
       animate={getAnimationType()}
     >
       <NodeLineWrapper
+        activeType={activeType}
         isLeft={isLeft}
         isMinNode={isMinNode}
         zIndex={zIndex}

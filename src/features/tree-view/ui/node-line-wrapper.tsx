@@ -7,9 +7,11 @@ interface NodeLineWrapperProps extends MotionProps {
   isLeft?: boolean;
   zIndex?: number;
   isMinNode?: boolean;
+  activeType?: string | null;
 }
 
 export function NodeLineWrapper({
+  activeType,
   children,
   isLeft,
   isMinNode,
@@ -26,7 +28,11 @@ export function NodeLineWrapper({
         zIndex: isMinNode ? 9999 : zIndex,
       }}
       transition={{
-        layout: { duration: 0.15, type: "spring", bounce: 0.5 },
+        layout: {
+          duration: activeType === "delete" ? 0.15 : 0.2,
+          type: "spring",
+          bounce: activeType === "delete" ? 0.5 : null,
+        },
       }}
       {...props}
     >

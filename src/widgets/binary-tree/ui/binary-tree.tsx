@@ -129,7 +129,7 @@ export const BinaryTree = () => {
   }, [stepsSnapshot, visualize]);
 
   return (
-    <div ref={ref} className=" items-center p-2 md:p-4 mx-auto">
+    <div ref={ref} className="p-2 md:p-4 mx-auto">
       <TypographyH1 className="w-max text-center m-auto">
         Binary Search Tree
       </TypographyH1>
@@ -164,6 +164,7 @@ export const BinaryTree = () => {
       <div className="m-auto w-fit mt-4">
         <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
           <NodeArrayGroup
+            activeType={activeType}
             parentKey={null}
             groups={currentSnapshot.treeView}
             activeNode={activeType === null ? null : currentSnapshot.node}

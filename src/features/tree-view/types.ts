@@ -2,6 +2,7 @@ import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
 
 export type NodeArrayProps = {
+  activeType: string | null;
   parentKey: any;
   groups: { [key: string]: TreeArrayItem[] };
   activeNode: TreeNode | null;
