@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/utils";
 import { Line } from "./line";
 
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
-import { motion, LayoutGroup } from "motion/react";
+import { motion, LayoutGroup, delay } from "motion/react";
 import { NodeArrayWrapper } from "./node-array-wrapper";
 import { useRef } from "react";
 import { NodeLineWrapper } from "./node-line-wrapper";
@@ -90,7 +90,7 @@ function NodeArrayItem({
       return "slideToParent";
     }
 
-    if (isMinNode) {
+    if (isNodeToRemove && !node.left && !node.right) {
       return "collapse";
     }
 
@@ -178,6 +178,10 @@ function getSlideToParentVariant(
   const y = parentRect.y - rect.y;
 
   return {
+    collapse: {
+      delay: 0.1,
+      scale: 0,
+    },
     slideToParent: {
       x,
       y,
