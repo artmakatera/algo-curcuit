@@ -14,7 +14,6 @@ import {
   getIsNodeInserted,
   getIsQueueNode,
 } from "../model/conditional-helpers";
-import { layoutNodeArrayProps } from "../model/animation-helpers";
 import { NodeArrayProps } from "../types";
 
 const getLen = (childrenArr: TreeArrayItem[]) =>
@@ -25,7 +24,7 @@ export const NodeArray = (props: NodeArrayProps) => {
 
   return (
     <LayoutGroup>
-      {groups[parentKey]?.map((item, index) => {
+      {groups?.[parentKey]?.map((item, index) => {
         return (
           <NodeArrayItem
             key={item?.node?.id || `index-{index}`}

@@ -240,6 +240,14 @@ class BinaryTreeDraw extends BinaryTree {
         }
         parentNode = currentNode;
         currentNode = currentNode.left;
+        if (currentNode === null) {
+          yield {
+            type: STEPS.notFound,
+            node: null,
+            treeView: { ...this.getNodeGroups() },
+          }
+          return;
+        }
         continue;
       }
 
@@ -249,10 +257,19 @@ class BinaryTreeDraw extends BinaryTree {
           type: STEPS.checkRightNode,
           node: currentNode,
           treeView: { ...this.getNodeGroups() },
-
         }
         parentNode = currentNode;
         currentNode = currentNode.right;
+
+        if (currentNode === null) {
+          yield {
+            type: STEPS.notFound,
+            node: null,
+            treeView: { ...this.getNodeGroups() },
+
+          }
+          return;
+        }
         continue;
       }
 
@@ -262,6 +279,8 @@ class BinaryTreeDraw extends BinaryTree {
         treeView: { ...this.getNodeGroups() },
 
       }
+
+
 
 
       if (currentNode.left === null) {
@@ -420,12 +439,7 @@ class BinaryTreeDraw extends BinaryTree {
       return;
     }
 
-    yield {
-      type: STEPS.notFound,
-      node: null,
-      treeView: { ...this.getNodeGroups() },
 
-    }
   }
 
 
