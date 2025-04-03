@@ -9,7 +9,6 @@ import {
   defaultSnapshot,
 } from "../model/create-step-snapshot";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
-import { NodeArray } from "@/features/tree-view/ui/node-array";
 import { languagesMapSettings } from "../model/languages-map-settings";
 import { LANGUAGES, STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
@@ -22,8 +21,8 @@ import {
   getPreventNodeEdgeAnimation,
 } from "../model/snapshot-helpers";
 import { CodeViewers } from "@/components/ui/code-viewers";
-import { AnimatePresence } from "motion/react";
 import { NodeArrayGroup } from "@/features/tree-view";
+import { debounce } from "@/shared/lib/debounce";
 
 const tree = new BinaryTreeDraw();
 
@@ -115,14 +114,14 @@ export const BinaryTree = () => {
     clearSnapshots();
   };
 
-  const onSubmitValue = (value: number) => {
+  const onSubmitValue = useMemo(() => debounce((value: number) => {
     if (activeType === "insert" && tree.isValueExisted(value)) {
       setError("Value already exists");
       return;
     }
     goToLastStep();
     rebuildSnapshots();
-  };
+  }, 400), [activeType, goToLastStep, rebuildSnapshots]);
 
   useEffect(() => {
     visualize();

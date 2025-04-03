@@ -27,10 +27,6 @@ export const InputCollapsibleControl = ({
     dispatch({ type: type as ActionType, value: Number(value), canClose: false });
   };
 
-  const handleOpen = () => {
-    onTriggerClick(type, value || 0);
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (typeof value !== "number") return;
