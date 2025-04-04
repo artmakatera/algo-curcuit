@@ -63,7 +63,7 @@ function NodeArrayItem({
     queueNodes,
     stackNodes,
     isParentMinNode,
-    zIndex = 9999,
+    zIndex = 999,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);

@@ -4,14 +4,11 @@ import { Input } from "@/components/ui/input";
 
 import { CollapsibleControlProps } from "./types";
 import { ActionType } from "../../model/types";
-import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 
 export const InputCollapsibleControl = ({
   type,
   disabled,
   color,
-  isOpen,
-  onTriggerClick,
   onSubmitValue,
   dispatch,
 }: CollapsibleControlProps) => {
@@ -34,7 +31,6 @@ export const InputCollapsibleControl = ({
   };
 
   return (
-   <TabsContent value={type}>
         <form
           className="flex items-center gap-2 p-2"
           onSubmit={handleSubmit}
@@ -56,6 +52,5 @@ export const InputCollapsibleControl = ({
             Go
           </Button>
         </form>
-    </TabsContent>
   );
 };

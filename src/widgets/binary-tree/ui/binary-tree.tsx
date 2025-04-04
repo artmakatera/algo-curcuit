@@ -28,17 +28,17 @@ const tree = new BinaryTreeDraw();
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 1,
-  10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
-  33, 42, 65, 75, 3, 32, 34,
+  // 10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
+  // 33, 42, 65, 75, 3, 32, 34,
 ];
 
 baseArrayData.forEach((value) => tree.insert(value));
 
 export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
-  const [targetValue, setTargetValue] = useState<number | null>(0);
+  const [targetValue, setTargetValue] = useState<number | null>(1);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
-  const [codeLang, setCodeLang] = useCodeLang();
+  const [codeLang, setCodeLang] = useCodeLang()
 
   const hasCodeLang = codeLang && activeType;
 

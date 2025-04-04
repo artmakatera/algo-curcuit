@@ -13,12 +13,11 @@ export type CollapseType = ActionType;
 export type CollapsibleControlProps = {
   type: CollapseType;
   disabled?: boolean;
-  color: ControlColor;
-  onTriggerClick: (type: CollapseType, value: number) => void;
-  isOpen?: boolean;
+  color?: ControlColor;
   dispatch: Dispatch;
   onSubmitValue: (value: number, type?: ActionType) => void;
+  isOpen?: boolean;
 };
 
-export type ControlsType = { type: CollapseType; color: ControlColor, label: string }[];
+export type ControlsType = { type: CollapseType; color: ControlColor, label: string, Icon: React.ReactNode }[];
 

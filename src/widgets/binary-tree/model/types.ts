@@ -3,7 +3,8 @@ import { STEPS } from "./constants";
 import { TreeNode } from "./binary-tree";
 
 
-export type ActionType = "find" | "insert" | "delete" | "bfs" | "dfs";
+export type ActionType = 
+"find" | "insert" | "delete" | "bfs" | "dfs";
 
 export type DispatchPayload = {
   type: ActionType;
