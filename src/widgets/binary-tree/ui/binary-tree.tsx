@@ -45,7 +45,7 @@ export const BinaryTree = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const genCall = useMemo(() => {
-    if (activeType === "bfs") {
+    if (activeType === ActionType.bfs) {
       return tree.bfs as unknown as () => Generator<
         GenValuePayload,
         void,
@@ -53,7 +53,7 @@ export const BinaryTree = () => {
       >;
     }
 
-    if (activeType === "dfs") {
+    if (activeType === ActionType.dfs) {
       return tree.dfs as unknown as () => Generator<
         GenValuePayload,
         void,
@@ -61,19 +61,19 @@ export const BinaryTree = () => {
       >;
     }
 
-    if (activeType === "insert") {
+    if (activeType === ActionType.insert) {
       return tree.insertDraw as unknown as (
         v: number | null
       ) => Generator<GenValuePayload, void, unknown>;
     }
 
-    if (activeType === "delete") {
+    if (activeType === ActionType.delete) {
       return tree.removeDraw as unknown as (
         v: number | null
       ) => Generator<GenValuePayload, void, unknown>;
     }
 
-    if (activeType === "find") {
+    if (activeType === ActionType.find) {
       return tree.findDraw as unknown as (
         v: number | null
       ) => Generator<GenValuePayload, void, unknown>;

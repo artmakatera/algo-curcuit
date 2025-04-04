@@ -1,6 +1,7 @@
 
 
 import { LANGUAGES } from "../constants";
+import { ActionType } from "../types";
 import jsInsertModel from "./js/insert"
 import jsFindModel from "./js/find"
 import jsRemoveModel from "./js/remove";
@@ -16,28 +17,24 @@ import javaTraverseDfs from "./java/traverse-dfs";
 
 
 export const languagesMapSettings = {
-  insert: {
+  [ActionType.insert]: {
     [LANGUAGES.javascript]: jsInsertModel,
     [LANGUAGES.java]: javaInsertModel,
 
   },
-  find: {
+  [ActionType.find]: {
     [LANGUAGES.javascript]: jsFindModel,
     [LANGUAGES.java]: javaFindModel
   },
-  delete: {
+  [ActionType.delete]: {
     [LANGUAGES.javascript]: jsRemoveModel,
     [LANGUAGES.java]: javaRemoveModel
   },
-  traverse: {
+  [ActionType.bfs]: {
     [LANGUAGES.javascript]: jsTraverse,
     [LANGUAGES.java]: javaTraverse
   },
-  bfs: {
-    [LANGUAGES.javascript]: jsTraverse,
-    [LANGUAGES.java]: javaTraverse
-  },
-  dfs: {
+  [ActionType.dfs]: {
     [LANGUAGES.javascript]: jsTraverseDfs,
     [LANGUAGES.java]: javaTraverseDfs
   }

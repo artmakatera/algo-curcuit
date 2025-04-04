@@ -17,7 +17,14 @@ export type CollapsibleControlProps = {
   dispatch: Dispatch;
   onSubmitValue: (value: number, type?: ActionType) => void;
   isOpen?: boolean;
+  onTypeChange?: (type: CollapseType) => void;
 };
 
-export type ControlsType = { type: CollapseType; color: ControlColor, label: string, Icon: React.ReactNode }[];
+export type ControlsType = {
+  type: CollapseType;
+  color: ControlColor;
+  label: string;
+  Icon: React.ReactNode;
+  tabType?: CollapseType | "traverse";
+}[];
 

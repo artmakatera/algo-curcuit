@@ -3,8 +3,14 @@ import { STEPS } from "./constants";
 import { TreeNode } from "./binary-tree";
 
 
-export type ActionType = 
-"find" | "insert" | "delete" | "bfs" | "dfs";
+export enum ActionType {
+  find = "find",
+  insert = "insert",
+  delete = "delete",
+  bfs = "traverse-bfs",
+  dfs = "traverse-dfs",
+}
+
 
 export type DispatchPayload = {
   type: ActionType;

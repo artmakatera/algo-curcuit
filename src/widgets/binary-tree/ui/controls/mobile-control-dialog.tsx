@@ -7,6 +7,7 @@ import {
 import { ActionType, Dispatch } from "../../model/types";
 import { CONTROLS_BY_TYPE } from "./constants";
 import { InputCollapsibleControl } from "./input-collapsible-control";
+import { CollapsibleControl } from "./collapsible-control";
 
 interface MobileControlDialogProps {
   open: boolean;
@@ -16,6 +17,7 @@ interface MobileControlDialogProps {
   disabled?: boolean;
   onSubmitValue: (value: number, type?: ActionType) => void;
   dispatch: Dispatch;
+  onTypeChange: (type: ActionType) => void;
 }
 
 export const MobileControlDialog = ({
@@ -26,26 +28,25 @@ export const MobileControlDialog = ({
   disabled,
   onSubmitValue,
   dispatch,
+  onTypeChange,
 }: MobileControlDialogProps) => {
   const { color } = CONTROLS_BY_TYPE[type] || {};
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="min-w-screen min-h-screen bg-background/80 place-content-start">
-        {/* Add your mobile control dialog header here */}
-        {/* Add your mobile control dialog content here */}
         <DialogHeader>
           <DialogTitle className="capitalize">{label}</DialogTitle>
         </DialogHeader>
         <div>
-          {/* Add your mobile control buttons here */}
-          <InputCollapsibleControl
+          <CollapsibleControl
             key={type}
             type={type}
             color={color}
             disabled={disabled}
             dispatch={dispatch}
             onSubmitValue={onSubmitValue}
+            onTypeChange={onTypeChange}
           />
         </div>
       </DialogContent>

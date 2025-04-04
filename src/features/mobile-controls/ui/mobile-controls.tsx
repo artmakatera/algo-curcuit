@@ -22,7 +22,7 @@ export const MobileControls = ({ controls, onClick, activeType }: MobileControls
                 Icon={Icon}
                 label={label}
                 onClick={() => onClick(type)}
-                className={cn( "text-muted-foreground" , activeType === type && "text-accent-foreground font-semibold")}
+                className={cn( "text-muted-foreground" , activeType === type && "text-accent-foreground font-bold")}
 
               />
             </li>
