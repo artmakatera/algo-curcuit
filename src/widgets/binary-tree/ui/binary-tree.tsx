@@ -38,7 +38,7 @@ export const BinaryTree = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(1);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
-  const [codeLang, setCodeLang] = useCodeLang()
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const hasCodeLang = codeLang && activeType;
 
@@ -114,14 +114,18 @@ export const BinaryTree = () => {
     clearSnapshots();
   };
 
-  const onSubmitValue = useMemo(() => debounce((value: number) => {
-    if (activeType === "insert" && tree.isValueExisted(value)) {
-      setError("Value already exists");
-      return;
-    }
-    goToLastStep();
-    rebuildSnapshots();
-  }, 400), [activeType, goToLastStep, rebuildSnapshots]);
+  const onSubmitValue = useMemo(
+    () =>
+      debounce((value: number) => {
+        if (activeType === "insert" && tree.isValueExisted(value)) {
+          setError("Value already exists");
+          return;
+        }
+        goToLastStep();
+        rebuildSnapshots();
+      }, 400),
+    [activeType, goToLastStep, rebuildSnapshots]
+  );
 
   useEffect(() => {
     visualize();
@@ -159,36 +163,38 @@ export const BinaryTree = () => {
         <p className="text-center text-red-600 font-bold mt-2">{error}</p>
       )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
-
-      <div className="m-auto w-fit mt-4 max-w-screen overflow-x-auto">
-        <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
-          <NodeArrayGroup
-            activeType={activeType}
-            parentKey={null}
-            groups={currentSnapshot.treeView}
-            activeNode={activeType === null ? null : currentSnapshot.node}
-            insertedNode={currentSnapshot.insertedNode}
-            nodeToRemove={currentSnapshot.nodeToRemove}
-            minValueNode={currentSnapshot.minValueNode}
-            resultNodes={currentSnapshot.result}
-            queueNodes={currentSnapshot.queue}
-            durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
-            isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
-            isMinValueFirstRightChild={
-              currentSnapshot.type === STEPS.minValueFirstRightChild
-            }
-            preventNodeEdgeAnimation={getPreventNodeEdgeAnimation(
-              currentSnapshot.type
-            )}
-            foundNode={
-              currentSnapshot.type === STEPS.foundNode
-                ? currentSnapshot.node
-                : null
-            }
-            stackNodes={currentSnapshot.stack}
-          />
-        </NodeToRemoveProvider>
+      <div className="max-w-screen overflow-x-auto mt-4">
+        <div className="m-auto w-fit">
+          <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
+            <NodeArrayGroup
+              activeType={activeType}
+              parentKey={null}
+              groups={currentSnapshot.treeView}
+              activeNode={activeType === null ? null : currentSnapshot.node}
+              insertedNode={currentSnapshot.insertedNode}
+              nodeToRemove={currentSnapshot.nodeToRemove}
+              minValueNode={currentSnapshot.minValueNode}
+              resultNodes={currentSnapshot.result}
+              queueNodes={currentSnapshot.queue}
+              durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
+              isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
+              isMinValueFirstRightChild={
+                currentSnapshot.type === STEPS.minValueFirstRightChild
+              }
+              preventNodeEdgeAnimation={getPreventNodeEdgeAnimation(
+                currentSnapshot.type
+              )}
+              foundNode={
+                currentSnapshot.type === STEPS.foundNode
+                  ? currentSnapshot.node
+                  : null
+              }
+              stackNodes={currentSnapshot.stack}
+            />
+          </NodeToRemoveProvider>
+        </div>
       </div>
+
       {hasCodeLang && (
         <div className="m-auto max-w-2xl mt-4 hidden sm:block">
           <CodeViewers
