@@ -28,8 +28,8 @@ const tree = new BinaryTreeDraw();
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 1,
-  10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
-  33, 42, 65, 75, 3, 32, 34,
+  // 10, 30, 35, 60, 5, 9, 11, 29, 31, 45, 70, 4, 7, 28,
+  // 33, 42, 65, 75, 3, 32, 34,
 ];
 
 baseArrayData.forEach((value) => tree.insert(value));
