@@ -36,13 +36,14 @@ export const InputCollapsibleControl = ({
           onSubmit={handleSubmit}
         >
           <Input
-            className="w-12 md:w-20"
+            className="w-20"
             value={value}
             onChange={handleChange}
             max={9999}
             min={-999}
             type="number"
             autoFocus
+            inputMode="decimal"
           />
           <Button
             className={`bg-${color}-500 hover:bg-${color}-400 text-white`}

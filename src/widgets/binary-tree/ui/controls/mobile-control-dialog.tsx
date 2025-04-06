@@ -5,14 +5,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ActionType, Dispatch } from "../../model/types";
-import { CONTROLS_BY_TYPE } from "./constants";
+import { CONTROLS_BY_TYPE, getControlByType } from "./constants";
 import { InputCollapsibleControl } from "./input-collapsible-control";
 import { CollapsibleControl } from "./collapsible-control";
 
 interface MobileControlDialogProps {
   open: boolean;
   type: ActionType;
-  label: string;
   onClose: () => void;
   disabled?: boolean;
   onSubmitValue: (value: number, type?: ActionType) => void;
@@ -23,22 +22,20 @@ interface MobileControlDialogProps {
 export const MobileControlDialog = ({
   open,
   type,
-  label,
   onClose,
   disabled,
   onSubmitValue,
   dispatch,
   onTypeChange,
 }: MobileControlDialogProps) => {
-  const { color } = CONTROLS_BY_TYPE[type] || {};
+  const { color, label } = getControlByType(type);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="min-w-screen min-h-screen bg-background/80 place-content-start">
-        <DialogHeader>
-          <DialogTitle className="capitalize">{label}</DialogTitle>
-        </DialogHeader>
-        <div>
+      <DialogContent className="top-0 translate-y-0 h-auto p-0 bg-background/60 items-start">
+      
+        <div className="W-full bg-background p-6">
+          <DialogTitle className="capitalize shadow-2xl mb-6">{label}</DialogTitle>
           <CollapsibleControl
             key={type}
             type={type}

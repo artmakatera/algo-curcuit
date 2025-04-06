@@ -74,7 +74,6 @@ export const Controls = ({
       <MobileControlDialog
         open={openMobileDialog}
         type={activeType as ActionType}
-        label={activeType as string}
         onClose={() => setOpenMobileDialog(false)}
         dispatch={dispatch}
         onSubmitValue={onSubmitValue}

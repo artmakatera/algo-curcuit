@@ -17,7 +17,7 @@ export const HamburgerMenu = () => {
       <PopoverTrigger>
         <HamburgerMenuIcon width={24} height={24} />
       </PopoverTrigger>
-      <PopoverContent className="p-0 pt-2 w-screen sm:w-60 h-screen sm:h-auto">
+      <PopoverContent className="p-0 pt-2 w-screen sm:w-60 h-screen sm:h-auto z-2000">
         <div>
           {pages.map((page) => (
             <Link
