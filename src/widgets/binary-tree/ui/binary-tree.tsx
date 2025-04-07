@@ -132,10 +132,7 @@ export const BinaryTree = () => {
   }, [stepsSnapshot, visualize]);
 
   return (
-    <div ref={ref} className="p-2 md:p-4 mx-auto">
-      <TypographyH1 className="w-max text-center m-auto">
-        Binary Search Tree
-      </TypographyH1>
+    <>
       <div className="flex justify-center items-start mt-8 gap-4">
         <Controls
           dispatch={dispatch}
@@ -205,6 +202,6 @@ export const BinaryTree = () => {
           />
         </div>
       )}
-    </div>
+    </>
   );
 };

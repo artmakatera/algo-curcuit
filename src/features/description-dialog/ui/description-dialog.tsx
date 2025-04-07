@@ -9,6 +9,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlgorithmComplexities } from "@/features/algorithm-complexity";
 import { Complexity } from "@/shared/constants/complexities";
+import { cn } from "@/shared/lib/utils";
 
 import { BookOpenText } from "lucide-react";
 
@@ -19,6 +20,7 @@ interface DescriptionDialogProps {
   timeComplexity?: Complexity;
   timeComplexityDescription?: React.ReactNode;
   spaceComplexityDescription?: React.ReactNode;
+  ButtonProps?: React.ComponentProps<"button">
 }
 
 export function DescriptionDialog({
@@ -28,13 +30,15 @@ export function DescriptionDialog({
   spaceComplexity,
   spaceComplexityDescription,
   timeComplexityDescription,
+  ButtonProps,
 }: DescriptionDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
+          {...ButtonProps}
           variant="destructive"
-          className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 fixed bottom-4 right-4 cursor-pointer"
+          className={cn("bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 fixed bottom-4 right-4 cursor-pointer", ButtonProps?.className)}
         >
           <BookOpenText />
           <span>Read</span>
