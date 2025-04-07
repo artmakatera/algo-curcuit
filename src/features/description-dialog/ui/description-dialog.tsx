@@ -45,7 +45,7 @@ export function DescriptionDialog({
         </Button>
       </DialogTrigger>
       <DialogContent className="place-content-start px-0">
-        <DialogHeader className="flex-row items-center px-4">
+        <DialogHeader className="flex-col items-center px-4">
           <DialogTitle>{title}</DialogTitle>
          <AlgorithmComplexities
           spaceComplexity={spaceComplexity}
