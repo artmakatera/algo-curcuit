@@ -9,3 +9,10 @@ export enum LANGUAGES {
   java = "java",
 
 };
+
+
+export enum STEPS {
+  push = "push",
+  pop = "pop",
+  peek = "peek",
+}

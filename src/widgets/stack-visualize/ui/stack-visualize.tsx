@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { CounterInput } from "@/components/ui/counter-input";
 import { StackView } from "@/features/visual-stack";
 import { useNumberArray } from "@/shared/hooks/use-number-array";
+import TypographyH3 from "@/components/ui/typography/typographyH3";
+import { CodeViewers } from "@/components/ui/code-viewers";
+import { languagesMapSettings } from "../model/languages-map-settings";
+import { LANGUAGES } from "@/widgets/binary-search-visualize";
 
 const defaultArray = [1, 2];
 
@@ -69,6 +73,15 @@ export const StackVisualize = () => {
         </div>
       </div>
       <StackView array={array} showPeek={showPeek} />
+         <div className="mt-12">
+              <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
+              <CodeViewers
+                langMap={languagesMapSettings}
+                language={LANGUAGES.javascript}
+                // onLanguageChange={(lang: string) => {}}
+                step={0}
+              />
+            </div>
     </div>
   );
 };
