@@ -30,5 +30,10 @@ export const pages = [
     link: "/merge-sort",
     title: "Merge Sort",
     description: "Merge sort is an efficient, stable, comparison-based, divide and conquer sorting algorithm."
+  },
+  {
+    link: "/stack",
+    title: "Stack",
+    description: "A stack is a linear data structure that follows the Last In First Out (LIFO) principle, meaning the last element added to the stack will be the first one to be removed."
   }
 ]

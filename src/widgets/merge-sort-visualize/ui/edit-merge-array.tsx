@@ -30,7 +30,7 @@ export const EditMergeArray = ({
           />
         ))}
         <Button
-          className="ml-2 bg-green-500 hover:bg-green-600 "
+          className="ml-2 bg-green-500 hover:bg-green-600  dark:bg-green-600 dark:hover:bg-green-700"
           variant="destructive"
           size="icon"
           title="Add new value"

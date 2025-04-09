@@ -23,8 +23,8 @@ export const EditButton = <E extends MouseEventHandler | undefined>({
       className={cn(
         "ml-2 mb-0.5",
         editMode
-          ? "bg-green-500 hover:bg-green-600"
-          : "bg-orange-500 hover:bg-orange-600"
+          ? "bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+          : "bg-orange-500 hover:bg-orange-600 dark:bg-orange-500 dark:hover:bg-orange-600",
       )}
       variant="destructive"
       size="icon"

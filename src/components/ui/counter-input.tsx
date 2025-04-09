@@ -1,52 +1,58 @@
 "use client";
-import { Input, InputProps } from "./input";
+import { SetStateAction } from "react";
 import { Button } from "./button";
 
 import { Plus, Minus } from "lucide-react";
 
-export interface CounterInputProps extends InputProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+import { cn } from "@/shared/lib/utils";
+
+export interface CounterInputProps {
+  onChange: (s: SetStateAction<number>) => void
+  className?: string;
+  min: number;
+  max: number;
+  value?: number;
+  
 }
 
 export const CounterInput = ({
   className,
   min = 0,
   max = 9999,
-  value,
+  value = 1,
   onChange,
-  ...props
 }: CounterInputProps) => {
-
   const handleIncrement = () => {
     if (value !== undefined && value < max) {
-      onChange({ target: { value: String(+value + 1) } } as React.ChangeEvent<HTMLInputElement>);
+      onChange(value => value + 1); 
     }
   };
 
   const handleDecrement = () => {
     if (value !== undefined && value > min) {
-      onChange({ target: { value: String(+value - 1) } } as React.ChangeEvent<HTMLInputElement>);
+      onChange(value => value - 1);
     }
   };
 
-
   return (
-    <div className="flex items-center gap-2">
-      <Button type="button" variant="outline" size="icon" onClick={handleDecrement}>
+    <div className={cn("inline-flex items-center gap-4", className)}>
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        onClick={handleDecrement}
+      >
         <Minus size={16} />
       </Button>
-      <Input
-        type="number"
-        className={className}
-        min={min}
-        max={max}
-        value={value}
-        onChange={onChange}
-        {...props}
-      />
-      <Button type="button" variant="outline" size="icon" onClick={handleIncrement}>
+      {value}
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        onClick={handleIncrement}
+      >
         <Plus size={16} />
       </Button>
     </div>
   );
-}
+};
