@@ -16,7 +16,7 @@ export function StackPage() {
         />
       </div>
       <DescriptionDialog
-        title="Insertion Sort"
+        title="Stack"
         spaceComplexity={COMPLEXITIES.O_1}
         timeComplexity={COMPLEXITIES.O_1}
       >
