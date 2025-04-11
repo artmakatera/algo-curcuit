@@ -9,11 +9,14 @@ import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewers } from "@/components/ui/code-viewers";
 import { languagesMapSettings } from "../model/languages-map-settings";
 import { LANGUAGES } from "@/widgets/binary-search-visualize";
+import { useCodeLang } from "@/shared/contexts/code-lang";
 
 const defaultArray = [1, 2];
 
 export const StackVisualize = () => {
-  const { array, updateNumber, addNumber, removeNumber } = useNumberArray(
+  const [codeLang, setCodeLang] = useCodeLang();
+
+  const { array, addNumber, removeNumber } = useNumberArray(
     defaultArray,
     0
   );
@@ -77,8 +80,8 @@ export const StackVisualize = () => {
               <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
               <CodeViewers
                 langMap={languagesMapSettings}
-                language={LANGUAGES.javascript}
-                // onLanguageChange={(lang: string) => {}}
+                language={codeLang}
+                onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
                 step={0}
               />
             </div>
