@@ -33,9 +33,9 @@ public class Stack<T> {
 }`
 
 export const highlightLines: { [key in STEPS]?: number[] } = {
-    push: [10, 11],
-    pop: [14, 15, 16, 17],
-    peek: [20, 21, 22, 23],
+    [STEPS.push]: [10, 11, 12],
+    [STEPS.pop]: [14, 15, 16, 17, 18, 19],
+    [STEPS.peek]: [21, 22, 23, 24, 25, 26],
 };
 
 const model = {

@@ -13,7 +13,7 @@ export type CodeViewersProps<T extends string> = Omit<
   "text"
 > & {
   langMap: { [key: string]: LangValue<T> };
-  step: number;
+  step: number | string;
   onLanguageChange?: (language: string) => void;
 };
 
@@ -68,8 +68,8 @@ export const CodeViewers = <T extends string>({
 
 function getHighlightLinesByStep(
   highlightLines: Record<string, number[]>,
-  step: number
+  step: number | string
 ) {
-  const highlightArr = highlightLines[step.toString()] || [];
+  const highlightArr = highlightLines[String(step)] || [];
   return highlightArr.join(",");
 }

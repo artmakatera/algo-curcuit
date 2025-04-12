@@ -37,9 +37,9 @@ const code = `class Stack<T> {
 
 
 export const highlightLines: { [key in STEPS]?: number[] } = {
-    push: [7, 8, 9],
-    pop:[11, 12, 13],
-    peek:[18, 19, 20, 21, 22, 23],
+    [STEPS.push]: [7, 8, 9],
+    [STEPS.pop]:[11, 12, 13, 14, 15, 16],
+    [STEPS.peek]:[18, 19, 20, 21, 22, 23],
 
 };
 

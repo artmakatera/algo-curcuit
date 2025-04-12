@@ -10,7 +10,7 @@ interface StackViewProps {
 export const StackView = ({ array, showPeek }: StackViewProps) => {
   return (
     <StackWrapper>
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {array.map((value, index, arr) => (
           <StackAnimatedItem
             key={index}

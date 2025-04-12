@@ -10,31 +10,29 @@ import { CodeViewers } from "@/components/ui/code-viewers";
 import { languagesMapSettings } from "../model/languages-map-settings";
 import { LANGUAGES } from "@/widgets/binary-search-visualize";
 import { useCodeLang } from "@/shared/contexts/code-lang";
+import { STEPS } from "../model/constants";
 
 const defaultArray = [1, 2];
 
 export const StackVisualize = () => {
   const [codeLang, setCodeLang] = useCodeLang();
 
-  const { array, addNumber, removeNumber } = useNumberArray(
-    defaultArray,
-    0
-  );
-  const [valueToPush, setValueToPush] = useState<number>(1);
-  const [showPeek, setShowPeek] = useState<boolean>(false);
+  const { array, addNumber, removeNumber } = useNumberArray(defaultArray, 0);
+  const [valueToPush, setValueToPush] = useState<number>(3);
+  const [step, setStep] = useState<STEPS>();
 
   const handlePush = async () => {
-    setShowPeek(false);
+    setStep(STEPS.push);
     addNumber(valueToPush);
   };
 
   const handlePop = async () => {
-    setShowPeek(false);
+    setStep(STEPS.pop);
     removeNumber(array.length - 1);
   };
 
   const handlePeek = () => {
-    setShowPeek(true);
+    setStep(STEPS.peek);
   };
 
   return (
@@ -75,16 +73,16 @@ export const StackVisualize = () => {
           </Button>
         </div>
       </div>
-      <StackView array={array} showPeek={showPeek} />
-         <div className="mt-12">
-              <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
-              <CodeViewers
-                langMap={languagesMapSettings}
-                language={codeLang}
-                onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
-                step={0}
-              />
-            </div>
+      <StackView array={array} showPeek={step === STEPS.peek} />
+      <div className="mt-12">
+        <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
+        <CodeViewers
+          langMap={languagesMapSettings}
+          language={codeLang}
+          onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+          step={step as string}
+        />
+      </div>
     </div>
   );
 };
