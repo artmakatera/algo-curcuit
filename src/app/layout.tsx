@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={cn(
           fontSans.className,
-          "min-h-screen bg-background font-sans antialiased flex flex-col",
+          "h-full bg-background font-sans antialiased flex flex-col",
           fontSans.variable
         )}
       >
@@ -44,10 +44,7 @@ export default function RootLayout({
         >
           <CodeLangProvider>
             <Header />
-            <div className="grow shadow-md">{children}</div>
-            <footer className=" p-4 text-center text-sm text-gray-500">
-              All rights reserved © Artem Makatera {new Date().getFullYear()}
-            </footer>
+            <div>{children}</div>
           </CodeLangProvider>
         </ThemeProvider>
       </body>
