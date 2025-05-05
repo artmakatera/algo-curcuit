@@ -1,3 +1,4 @@
+import { link } from "fs";
 
 
 export const pages = [
@@ -35,5 +36,10 @@ export const pages = [
     link: "/stack",
     title: "Stack",
     description: "A stack is a linear data structure that follows the Last In First Out (LIFO) principle, meaning the last element added to the stack will be the first one to be removed."
+  },
+  {
+    link: "/graph",
+    title: "Graph",
+    description: "A graph is a non-linear data structure that consists of nodes and edges. It is used to represent relationships between objects."
   }
 ]

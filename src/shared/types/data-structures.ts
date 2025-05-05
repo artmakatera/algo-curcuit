@@ -1,0 +1,1 @@
+export type AdjacencyMatrix = number[][];
