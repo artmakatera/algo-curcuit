@@ -3,6 +3,7 @@ import { Svg } from "@/components/ui/svg";
 
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import type { SimulationNodeDatum } from "d3";
 
 import { addDefsAndArrowMarker } from "@/shared/lib/d3/marker-helpers";
 import { getGraphLink, getGraphNode } from "../d3-elements";
@@ -16,15 +17,21 @@ function clamp(x: number, lo: number, hi: number) {
 
 interface VisualGraphProps {
   adjacencyMatrix: AdjacencyMatrix;
+  verticesNames: string[];
 }
 
-export const VisualGraph = ({ adjacencyMatrix = [] }: VisualGraphProps) => {
+export const VisualGraph = ({
+  adjacencyMatrix = [],
+  verticesNames = [],
+}: VisualGraphProps) => {
   const ref = useRef(null);
 
   useEffect(() => {
-    const graphData = getGraphFromAdjacencyMatrix(adjacencyMatrix);
+    const graphData = getGraphFromAdjacencyMatrix(
+      adjacencyMatrix,
+      verticesNames
+    );
     const svg = d3.select(ref.current);
-
     const defs = addDefsAndArrowMarker(svg);
     const link = getGraphLink(svg, graphData.links);
     const node = getGraphNode(svg, graphData.nodes);
@@ -32,11 +39,19 @@ export const VisualGraph = ({ adjacencyMatrix = [] }: VisualGraphProps) => {
     const simulation = d3
       .forceSimulation()
       .nodes(graphData.nodes)
-      .force("charge", d3.forceManyBody().distanceMax(50))
+      .force("charge", d3.forceManyBody().distanceMax(70))
       .force("center", d3.forceCenter(300, 100))
       .force(
         "link",
-        d3.forceLink(graphData.links).strength(1).distance(50).iterations(10)
+        d3
+          .forceLink(graphData.links)
+          .id((d) => {
+            return verticesNames[d.index || 0];
+          })
+          .strength(1)
+          .distance(link => 70)
+
+          .iterations(10)
       )
       .on("tick", tick);
 
@@ -58,7 +73,7 @@ export const VisualGraph = ({ adjacencyMatrix = [] }: VisualGraphProps) => {
       simulation.stop();
       defs.remove();
     };
-  }, [adjacencyMatrix]);
+  }, [adjacencyMatrix, verticesNames]);
 
   return <Svg ref={ref} />;
 };

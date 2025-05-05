@@ -17,7 +17,7 @@ export const addArrowMarker = (defs: d3.Selection<SVGDefsElement, unknown, null,
     .attr("markerUnits", "userSpaceOnUse")
     .append("path")
     .attr("d", "M0,0 L10,5 L0,10 Z")
-    .attr("fill", "#000");
+    .attr("class", "d3-svg-marker");
 
 export const addDefsAndArrowMarker = (svg: d3.Selection<null, unknown, null, undefined>) => {
   const defs = addDefs(svg);

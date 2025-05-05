@@ -24,14 +24,14 @@ export const GraphVisualize = () => {
 
   return (
     <div className="flex flex-col px-4 sm:px-24 py-10">
-      <VisualGraph adjacencyMatrix={adjacencyMatrix} />
+      <VisualGraph adjacencyMatrix={adjacencyMatrix} verticesNames={verticesNames} />
       <AdjacencyMatrixTable
         adjacencyMatrix={adjacencyMatrix}
         disableAdd={disableAdd}
         onToggle={toggleEdge}
         onAdd={addVertex}
+        verticesNames={verticesNames}
       />
-      {/* <svg ref={ref} width={width} height={height} /> */}
     </div>
   );
 };

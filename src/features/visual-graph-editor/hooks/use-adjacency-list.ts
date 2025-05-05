@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import type { AdjacencyMatrix } from "@/shared/types/data-structures"
 import { AddGraphVertex, RemoveGraphVertex, UpdateGraphEdge } from "../types";
 
-export const MAX_VERTICES = 26; // A-Z
+export const MAX_VERTICES = 8; // A-Z
 
 const addVertexName = (index: number) => {
   if (index < 0 || index >= MAX_VERTICES) {
