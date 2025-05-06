@@ -16,6 +16,7 @@ export const GraphVisualize = () => {
   const {
     adjacencyMatrix,
     verticesNames,
+    vertices,
     addVertex,
     toggleEdge,
     removeVertex,
@@ -24,13 +25,15 @@ export const GraphVisualize = () => {
 
   return (
     <div className="flex flex-col px-4 sm:px-24 py-10">
-      <VisualGraph adjacencyMatrix={adjacencyMatrix} verticesNames={verticesNames} />
+      <VisualGraph adjacencyMatrix={adjacencyMatrix} vertices={vertices} />
       <AdjacencyMatrixTable
         adjacencyMatrix={adjacencyMatrix}
         disableAdd={disableAdd}
         onToggle={toggleEdge}
         onAdd={addVertex}
         verticesNames={verticesNames}
+        vertices={vertices}
+        onRemove={removeVertex}
       />
     </div>
   );

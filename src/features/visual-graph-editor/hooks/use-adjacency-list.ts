@@ -1,7 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 
-import type { AdjacencyMatrix } from "@/shared/types/data-structures"
+import type { AdjacencyMatrix, VertexBaseData } from "@/shared/types/data-structures"
 import { AddGraphVertex, RemoveGraphVertex, UpdateGraphEdge } from "../types";
+
+// Define the structure for a vertex
 
 export const MAX_VERTICES = 8; // A-Z
 
@@ -13,31 +15,58 @@ const addVertexName = (index: number) => {
 }
 
 export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
+  // Use ref for tracking next available ID - doesn't need to trigger re-renders
+  const nextIdRef = useRef(initialValue.length);
+  
+  // Store vertices as objects with ID and value
+  const [vertices, setVertices] = useState<VertexBaseData[]>(() => 
+    initialValue.map((_, index) => ({
+      id: index,
+      value: addVertexName(index)
+    }))
+  );
+  
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<AdjacencyMatrix>(initialValue);
-  const [verticesNames, setVerticesNames] = useState<(string)[]>(() => initialValue.map((_, index) => addVertexName(index))); // Convert index to letter (A, B, C, ...)
 
   const addVertex: AddGraphVertex = useCallback(() => {
-    if (verticesNames.length >= MAX_VERTICES) {
+    if (vertices.length >= MAX_VERTICES) {
       console.error("Maximum number of vertices reached");
       return;
     }
-    const newVertex = addVertexName(verticesNames.length); 
-    setVerticesNames((prev) => [...prev, newVertex]);
+    
+    // Find first unused letter (A-Z) for the value
+    const usedNames = new Set(vertices.map(v => v.value));
+    let newName = '';
+    for (let i = 0; i < MAX_VERTICES; i++) {
+      const candidateName = addVertexName(i);
+      if (!usedNames.has(candidateName)) {
+        newName = candidateName;
+        break;
+      }
+    }
+    
+    // Create new vertex with unique ID
+    const newVertex: VertexBaseData = {
+      id: nextIdRef.current,
+      value: newName
+    };
+    nextIdRef.current++; // Increment the ID counter
+    
+    setVertices(prev => [...prev, newVertex]);
+    
     setAdjacencyMatrix((prev) => {
       const newAdjacencyMatrix = prev.map((row) => [...row, 0]);
       newAdjacencyMatrix.push(new Array(newAdjacencyMatrix.length + 1).fill(0)); // Add a new row
       return newAdjacencyMatrix;
-    })
-  }, [verticesNames]);
-
+    });
+  }, [vertices]);
 
   const toggleEdge: UpdateGraphEdge = useCallback((from: number, to: number) => {
     setAdjacencyMatrix((prev) => {
       const newAdjacencyMatrix = prev.map((row) => [...row]); // Create a copy of the adjacency list
       newAdjacencyMatrix[from][to] = newAdjacencyMatrix[from][to] === 1 ? 0 : 1; // Toggle the edge
       return newAdjacencyMatrix;
-    }
-    );
+    });
   }, []);
 
   const removeVertex: RemoveGraphVertex = useCallback((index: number) => {
@@ -49,15 +78,19 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
         return acc;
       }, []);
     });
-    setVerticesNames((prev) => prev.filter((_, i) => i !== index)); // Remove the vertex from the list
+    setVertices((prev) => prev.filter((_, i) => i !== index)); // Remove the vertex from the list
   }, []);
+
+  // Derive verticesNames from vertices for backward compatibility
+  const verticesNames = vertices.map(vertex => vertex.value);
 
   return {
     adjacencyMatrix,
     verticesNames,
+    vertices, // Additionally expose the vertices with IDs if needed
     addVertex,
     toggleEdge,
     removeVertex,
-    disableAdd: verticesNames.length >= MAX_VERTICES,
+    disableAdd: vertices.length >= MAX_VERTICES,
   };
 }

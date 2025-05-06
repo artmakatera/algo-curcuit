@@ -8,7 +8,7 @@ import type { SimulationNodeDatum } from "d3";
 import { addDefsAndArrowMarker } from "@/shared/lib/d3/marker-helpers";
 import { getGraphLink, getGraphNode } from "../d3-elements";
 import { Button } from "@/components/ui/button";
-import { AdjacencyMatrix } from "@/shared/types/data-structures";
+import { AdjacencyMatrix, VertexBaseData } from "@/shared/types/data-structures";
 import { getGraphFromAdjacencyMatrix } from "../model/transform-data";
 
 function clamp(x: number, lo: number, hi: number) {
@@ -17,19 +17,19 @@ function clamp(x: number, lo: number, hi: number) {
 
 interface VisualGraphProps {
   adjacencyMatrix: AdjacencyMatrix;
-  verticesNames: string[];
+  vertices: VertexBaseData[];
 }
 
 export const VisualGraph = ({
   adjacencyMatrix = [],
-  verticesNames = [],
+  vertices = [],
 }: VisualGraphProps) => {
   const ref = useRef(null);
 
   useEffect(() => {
     const graphData = getGraphFromAdjacencyMatrix(
       adjacencyMatrix,
-      verticesNames
+      vertices
     );
     const svg = d3.select(ref.current);
     const defs = addDefsAndArrowMarker(svg);
@@ -46,7 +46,7 @@ export const VisualGraph = ({
         d3
           .forceLink(graphData.links)
           .id((d) => {
-            return verticesNames[d.index || 0];
+            return vertices[d.index || 0].id;
           })
           .strength(1)
           .distance(link => 70)
@@ -73,7 +73,7 @@ export const VisualGraph = ({
       simulation.stop();
       defs.remove();
     };
-  }, [adjacencyMatrix, verticesNames]);
+  }, [adjacencyMatrix, vertices]);
 
   return <Svg ref={ref} />;
 };

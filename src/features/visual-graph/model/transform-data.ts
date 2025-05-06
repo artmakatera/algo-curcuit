@@ -1,35 +1,40 @@
 
+import { VertexBaseData } from "@/shared/types/data-structures";
 import {
   GRAPH_CIRCLE_RADIUS,
 } from "../d3-elements";
+import { index } from "d3";
 
 
-const getLinks = (adjacentMatrix: number[][], verticesNames: string[]) => {
+const getLinks = (adjacentMatrix: number[][], vertices: VertexBaseData[]) => {
   const links = [];
   for (let i = 0; i < adjacentMatrix.length; i++) {
     for (let j = 0; j < adjacentMatrix[i].length; j++) {
       if (adjacentMatrix[i][j] === 1) {
-        links.push({ source: verticesNames[i], target: verticesNames[j], id: `${verticesNames[i]}-${verticesNames[j]}` });
+        const source = vertices[i].id;
+        const target = vertices[j].id;
+
+        links.push({ source, target, id: `${source}-${target}` });
       }
     }
   }
   return links;
 };
 
-export const getGraphFromAdjacencyMatrix = (adjacentMatrix: number[][], verticesNames: string[]) => {
-  const nodes = adjacentMatrix.map((row, i) => ({
-    id: i,
-    name: verticesNames[i],
+export const getGraphFromAdjacencyMatrix = (adjacentMatrix: number[][], vertices: VertexBaseData[]) => {
+
+  const nodes = adjacentMatrix.map((_, i) => {
+    const { id, value} = vertices[i];
+    return ({
+    id,
+    name: value,
+    index: i,
     x: (i % 3) * (GRAPH_CIRCLE_RADIUS * 3) + GRAPH_CIRCLE_RADIUS + 5,
     y: Math.floor(i / 3) * (GRAPH_CIRCLE_RADIUS * 3) + GRAPH_CIRCLE_RADIUS + 5,
-  }));
+  })});
 
-  const links = getLinks(adjacentMatrix, verticesNames);
 
-  // const linksCountsByNames = verticesNames.reduce<Record<string, number>>((acc, name, index) => {
-  //   acc[name] = adjacentMatrix[index].filter((value) => value > 0).length;
-  //   return acc;
-  // }, {});
+  const links = getLinks(adjacentMatrix, vertices);
 
   return { nodes, links };
 };
