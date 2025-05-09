@@ -35,7 +35,7 @@ export function DialogInfo() {
           </div>
           <div className="relative">
             <VisualArrayItem value={2} index={1} />
-            <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-400 origin-top-left rotate-[18deg] " />
+            <div className="absolute top-full left-1/2 w-px h-[3.2rem] bg-gray-400 origin-top-left rotate-18 " />
           </div>
           <div className="relative">
             <VisualArrayItem value={1} index={2} />
@@ -49,7 +49,7 @@ export function DialogInfo() {
         <VisualArrayWrapper className="gap-8">
           <div className="relative">
             <VisualArrayItem isComparing value={4} index={0} />
-            <div className="absolute top-full left-1/2 w-px h-[5.9rem] bg-gray-400 origin-top-left -rotate-[58deg] " />
+            <div className="absolute top-full left-1/2 w-px h-[5.9rem] bg-gray-400 origin-top-left -rotate-58 " />
           </div>
           <div className="relative">
             <VisualArrayItem isComparing value={2} index={1} />
@@ -78,7 +78,7 @@ export function DialogInfo() {
           <div className="flex">
             <div className="relative">
               <VisualArrayItem isChecking value={1} index={2} />
-              <div className="absolute top-full left-1/2 w-px h-31 bg-gray-400 origin-top-left rotate-[67deg] " />
+              <div className="absolute top-full left-1/2 w-px h-31 bg-gray-400 origin-top-left rotate-67 " />
             </div>
             <div className="relative">
               <VisualArrayItem value={3} index={3} />

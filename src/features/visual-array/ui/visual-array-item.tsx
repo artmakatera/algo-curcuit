@@ -43,7 +43,7 @@ export const VisualArrayItem = ({
           isSorted && COMPARE_CLASSES.SORTED,
 
           isPivot && "bg-yellow-500 text-white",
-          currentSortItem && "translate-y-[-100%]",
+          currentSortItem && "-translate-y-full",
           className
         )}
         data-testid="visual-array-item"

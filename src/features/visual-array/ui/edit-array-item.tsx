@@ -81,12 +81,12 @@ const EditArrayItem = ({
         )}
       >
         <Button
-          className="absolute top-0 left-0 w-full h-[1px] text-[9px] py-[5px] rounded-none border-bottom-none"
+          className="absolute top-0 left-0 w-full h-px text-[9px] py-[5px] rounded-none border-bottom-none"
           variant="outline"
           data-testid="increment"
           onClick={onAdd}
         >
-          <span className="triangle -mt-[1px]"></span>
+          <span className="triangle -mt-px"></span>
         </Button>
         <Input
           value={isEmptyInput ? "" : value}
@@ -96,7 +96,7 @@ const EditArrayItem = ({
           aria-label="edit array item"
         />
         <Button
-          className="absolute bottom-0 left-0 w-full h-[1px] text-[9px] py-[5px] rounded-none border-bottom-none"
+          className="absolute bottom-0 left-0 w-full h-px text-[9px] py-[5px] rounded-none border-bottom-none"
           variant="outline"
           onClick={onSubtract}
           data-testid="decrement"
