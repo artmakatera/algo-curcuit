@@ -11,7 +11,7 @@ import {
   UpdateGraphEdge,
 } from "../../types";
 import { AdjacencyMatrixTableLinkCell } from "./adjacency-matrix-table-link-cell";
-import { AdjacencyMatrixTableTitleCell } from "./adjacency-matrix-table-title-cell";
+import { AdjacencyTableTitleCell } from "../adjacency-table-title-cell";
 import { getVertexName } from "../../hooks/use-adjacency-list";
 
 interface AdjacencyMatrixTableProps {
@@ -32,7 +32,7 @@ export const AdjacencyMatrixTable = ({
   vertices = [],
 }: AdjacencyMatrixTableProps) => {
   return (
-    <div className=" w-[305px] mx-auto relative pl-8">
+    <div className=" w-[305px] sm:mx-auto pl-2 ">
       <div className="w-fit">
         <table className="border-collapse border border-slate-400 bg-white dark:bg-slate-800 shadow-2xl">
           <caption className="mb-2 text-lg font-semibold text-slate-800 dark:text-slate-200 caption-top">
@@ -40,9 +40,10 @@ export const AdjacencyMatrixTable = ({
           </caption>
           <thead>
             <tr>
-              <AdjacencyMatrixTableTitleCell cellValue={<CornerRightUp />} />
+              <AdjacencyTableTitleCell cellValue={" "} />
+              <AdjacencyTableTitleCell cellValue={<CornerRightUp />} />
               {adjacencyMatrix?.[0]?.map((_, index) => (
-                <AdjacencyMatrixTableTitleCell
+                <AdjacencyTableTitleCell
                   key={index}
                   cellValue={getVertexName(vertices, index)}
                 />
@@ -53,13 +54,24 @@ export const AdjacencyMatrixTable = ({
             {adjacencyMatrix.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {/* Row Header */}
-                <AdjacencyMatrixTableTitleCell
+                <AdjacencyTableTitleCell
+                  className="p-0"
+                  cellValue={
+                    <Button
+                      variant="destructive"
+                      size={"icon"}
+                      className="w-10 h-10 rounded-none"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRemove && onRemove(rowIndex);
+                      }}
+                    >
+                      <Trash size={12} />
+                    </Button>
+                  }
+                />
+                <AdjacencyTableTitleCell
                   cellValue={getVertexName(vertices, rowIndex)}
-                  onRemove={() => {
-                    if (onRemove) {
-                      onRemove(rowIndex);
-                    }
-                  }}
                 />
 
                 {/* Data Cells */}
