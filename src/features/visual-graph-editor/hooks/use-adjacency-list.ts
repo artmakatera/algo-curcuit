@@ -5,7 +5,7 @@ import { AddGraphVertex, RemoveGraphVertex, UpdateGraphEdge } from "../types";
 
 // Define the structure for a vertex
 
-export const MAX_VERTICES = 8; // A-Z
+export const MAX_VERTICES = 7; // A-Z
 
 const addVertexName = (index: number) => {
   if (index < 0 || index >= MAX_VERTICES) {
@@ -81,12 +81,9 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     setVertices((prev) => prev.filter((_, i) => i !== index)); // Remove the vertex from the list
   }, []);
 
-  // Derive verticesNames from vertices for backward compatibility
-  const verticesNames = vertices.map(vertex => vertex.value);
 
   return {
     adjacencyMatrix,
-    verticesNames,
     vertices, // Additionally expose the vertices with IDs if needed
     addVertex,
     toggleEdge,
@@ -94,3 +91,5 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     disableAdd: vertices.length >= MAX_VERTICES,
   };
 }
+
+export const getVertexName = (vertices: VertexBaseData[], index: number) => vertices[index]?.value;

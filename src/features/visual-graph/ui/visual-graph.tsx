@@ -39,7 +39,7 @@ export const VisualGraph = ({
     const simulation = d3
       .forceSimulation()
       .nodes(graphData.nodes)
-      .force("charge", d3.forceManyBody().distanceMax(70))
+      .force("charge", d3.forceManyBody().distanceMax(50))
       .force("center", d3.forceCenter(300, 100))
       .force(
         "link",
@@ -49,10 +49,16 @@ export const VisualGraph = ({
             return vertices[d.index || 0].id;
           })
           .strength(1)
-          .distance(link => 70)
+          .distance(link => {
+            const deltaIndexes = Math.abs((link.source as d3.SimulationNodeDatum).index! - (link.target as d3.SimulationNodeDatum).index!);
+            if (deltaIndexes < 3) {
+              return 50;
+            }
+            return 100})
 
           .iterations(10)
       )
+      .force("collision", d3.forceCollide(20).strength(1))
       .on("tick", tick);
 
     function tick() {

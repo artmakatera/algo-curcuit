@@ -2,7 +2,7 @@
 
 import { VisualGraph } from "@/features/visual-graph";
 
-import { AdjacencyMatrixTable } from "@/features/visual-graph-editor/ui/adjacency-matrix-table/adjacency-table";
+import { AdjacencyMatrixTable } from "@/features/visual-graph-editor/";
 import { useAdjacencyMatrix } from "@/features/visual-graph-editor/hooks/use-adjacency-list";
 
 const matrix = [
@@ -15,7 +15,6 @@ const matrix = [
 export const GraphVisualize = () => {
   const {
     adjacencyMatrix,
-    verticesNames,
     vertices,
     addVertex,
     toggleEdge,
@@ -24,14 +23,13 @@ export const GraphVisualize = () => {
   } = useAdjacencyMatrix(matrix);
 
   return (
-    <div className="flex flex-col px-4 sm:px-24 py-10">
+    <div className="flex flex-col sm:px-24 py-10">
       <VisualGraph adjacencyMatrix={adjacencyMatrix} vertices={vertices} />
       <AdjacencyMatrixTable
         adjacencyMatrix={adjacencyMatrix}
         disableAdd={disableAdd}
         onToggle={toggleEdge}
         onAdd={addVertex}
-        verticesNames={verticesNames}
         vertices={vertices}
         onRemove={removeVertex}
       />

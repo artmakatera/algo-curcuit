@@ -1,0 +1,1 @@
+export { AdjacencyMatrixTable } from "./ui/adjacency-matrix-table/adjacency-matrix-table";
