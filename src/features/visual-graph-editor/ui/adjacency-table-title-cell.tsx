@@ -1,22 +1,30 @@
 import { cn } from "@/shared/lib/utils";
+import { RemoveIconButton } from "./remove-icon-button";
 type AdjacencyTableTitleCellProps = React.HTMLProps<HTMLTableCellElement> & {
   cellValue: React.ReactNode;
+  onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const AdjacencyTableTitleCell = ({
   className,
   cellValue,
+  onRemove,
   ...props
 }: AdjacencyTableTitleCellProps) => {
   return (
     <td
       className={cn(
-        "relative border border-slate-300 bg-muted p-2 text-center font-semibold text-slate-700 dark:text-slate-200 min-w-10",
+        " border border-slate-300 bg-muted p-2 text-center align-middle font-bold min-w-10",
         className
       )}
       {...props}
     >
-      {cellValue}
+      <div className="flex items-center justify-center gap-1">
+      <span>{cellValue}</span>
+      {onRemove && (
+         <RemoveIconButton onClick={onRemove} variant="destructive" />
+      )}
+      </div>
     </td>
   );
 };

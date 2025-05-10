@@ -2,36 +2,86 @@ import { Badge } from "@/components/ui/badge";
 import { VertexBaseData } from "@/shared/types/data-structures";
 import { get } from "http";
 import { getVertexName } from "../../hooks/use-adjacency-list";
+import { Plus, X } from "lucide-react";
+import { RemoveIconButton } from "../remove-icon-button";
+import { UpdateGraphEdge } from "../../types";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 
 interface AdjacencyListLinksCellProps {
   rowIndex: number;
   links: number[];
   vertices: VertexBaseData[];
-  onAdd?: (rowIndex: number, cellIndex: number) => void;
-  onRemove?: (rowIndex: number, cellIndex: number) => void;
+  onToggle?: UpdateGraphEdge;
 }
+
+const getConnectedAndNotIndexes = (links: number[], rowIndex: number) => links.reduce<Record<string, number[]>>((acc, value, index) => {
+  if (value > 0) {
+    acc.connected.push(index);
+  } else if (rowIndex !== index) {
+    acc.toConnect.push(index);
+  }
+
+  return acc;
+}, {
+  connected: [],
+  toConnect:[]
+})
 
 export const AdjacencyListLinksCell = ({
   rowIndex,
   vertices,
   links,
+  onToggle,
 }: AdjacencyListLinksCellProps) => {
+  
+  const { connected, toConnect } = getConnectedAndNotIndexes(links, rowIndex)
   return (
-    <td className=" hover:bg-gray-100 dark:hover:bg-gray-700 border border-slate-300 text-left ">
-      <div>
-        {links.map((col, index) => {
-          if (col < 1) return null;
+    <td className="border border-slate-300 text-left ">
+      <div className="m-1 flex items-center justify-start flex-wrap gap-2">
+        {connected.map(( index) => {
 
           return (
             <Badge
               key={index}
-              className="m-1 min-w-12 text-md bg-muted"
+              className="text-md bg-gray-100 dark:bg-gray-800"
               variant="outline"
             >
               {getVertexName(vertices, index)}
+              <RemoveIconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggle && onToggle(rowIndex, index);
+                }}
+              />
             </Badge>
           );
         })}
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button size="icon" className="size-7" >
+              <Plus />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {toConnect
+            .map((index) => {
+              return (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggle && onToggle(rowIndex, index);
+                  }}
+                >
+                  Connect to {getVertexName(vertices, index)} 
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </td>
   );
