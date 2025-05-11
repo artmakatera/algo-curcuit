@@ -38,7 +38,7 @@ export const AdjacencyListLinksCell = ({
   
   const { connected, toConnect } = getConnectedAndNotIndexes(links, rowIndex)
   return (
-    <td className="border border-slate-300 text-left ">
+    <td className="border text-left bg-background">
       <div className="m-1 flex items-center justify-start flex-wrap gap-2">
         {connected.map(( index) => {
 

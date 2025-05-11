@@ -14,8 +14,8 @@ export const AdjacencyMatrixTable = ({
   vertices = [],
 }: GraphEditorProps) => {
   return (
-    <div className=" w-[305px] sm:mx-auto pl-2 ">
-      <table className="w-[305px] border-collapse border border-slate-400 bg-white dark:bg-slate-800 shadow-2xl">
+    <div className="  sm:mx-auto pl-2 ">
+      <table className="w-full border-collapse border bg-white dark:bg-slate-800 shadow-2xl">
         <thead>
           <tr>
             <AdjacencyTableTitleCell cellValue={<CornerRightUp />} />
@@ -56,9 +56,9 @@ export const AdjacencyMatrixTable = ({
               })}
             </tr>
           ))}
+          <AddRow onClick={onAdd} disabled={disableAdd} />
         </tbody>
       </table>
-      <AddRow onClick={onAdd} disabled={disableAdd} />
     </div>
   );
 };

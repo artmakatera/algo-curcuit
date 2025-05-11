@@ -14,7 +14,7 @@ export const AdjacencyTableTitleCell = ({
   return (
     <td
       className={cn(
-        " border border-slate-300 bg-muted p-2 text-center align-middle font-bold min-w-10",
+        " border bg-muted p-2 text-center align-middle font-bold min-w-10",
         className
       )}
       {...props}

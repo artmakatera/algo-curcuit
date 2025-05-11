@@ -10,15 +10,18 @@ export const AddRow = ({
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   return (
-    <div className="w-full p-2 bg-muted">
+    <tr >
+      <td className="w-full p-2 bg-muted" colSpan={100}>
+
       <Button
-        variant="destructive"
-        className="w-full bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+        className="w-full"
         onClick={onClick}
         disabled={disabled}
-      >
-        Add <Plus />
+        >
+        <Plus />
+        Add 
       </Button>
-    </div>
+        </td>
+    </tr>
   );
 };

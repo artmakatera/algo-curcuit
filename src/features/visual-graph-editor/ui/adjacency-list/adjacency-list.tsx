@@ -15,7 +15,7 @@ export const AdjacencyList = ({
 }: GraphEditorProps) => {
   return (
     <div className="w-[305px] relative sm:mx-auto">
-      <table className="w-full border-collapse border border-slate-400 bg-white dark:bg-slate-800 shadow-2xl">
+      <table className="w-full  bg-white dark:bg-slate-800 shadow-2xl">
         <thead>
           <tr>
             <AdjacencyTableTitleCell cellValue="Vertex" />
@@ -41,9 +41,9 @@ export const AdjacencyList = ({
               />
             </tr>
           ))}
+          <AddRow onClick={onAdd} disabled={disableAdd} />
         </tbody>
       </table>
-      <AddRow onClick={onAdd} disabled={disableAdd} />
     </div>
   );
 };
