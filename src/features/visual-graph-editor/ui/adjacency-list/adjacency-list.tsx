@@ -41,7 +41,7 @@ export const AdjacencyList = ({
               />
             </tr>
           ))}
-          <AddRow onClick={onAdd} disabled={disableAdd} />
+          <AddRow onAdd={onAdd} disabled={disableAdd} length={vertices.length} />
         </tbody>
       </table>
     </div>

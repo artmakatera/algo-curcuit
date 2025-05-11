@@ -7,7 +7,7 @@ import { AddGraphVertex, RemoveGraphVertex, UpdateGraphEdge } from "../types";
 
 export const MAX_VERTICES = 7; // A-Z
 
-const addVertexName = (index: number) => {
+export const addVertexName = (index: number) => {
   if (index < 0 || index >= MAX_VERTICES) {
     throw new Error("Index out of bounds");
   }
@@ -17,43 +17,34 @@ const addVertexName = (index: number) => {
 export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
   // Use ref for tracking next available ID - doesn't need to trigger re-renders
   const nextIdRef = useRef(initialValue.length);
-  
+
   // Store vertices as objects with ID and value
-  const [vertices, setVertices] = useState<VertexBaseData[]>(() => 
+  const [vertices, setVertices] = useState<VertexBaseData[]>(() =>
     initialValue.map((_, index) => ({
       id: index,
       value: addVertexName(index)
     }))
   );
-  
+
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<AdjacencyMatrix>(initialValue);
 
-  const addVertex: AddGraphVertex = useCallback(() => {
+
+
+  const addVertex: AddGraphVertex = useCallback((newName: string) => {
     if (vertices.length >= MAX_VERTICES) {
       console.error("Maximum number of vertices reached");
       return;
     }
-    
-    // Find first unused letter (A-Z) for the value
-    const usedNames = new Set(vertices.map(v => v.value));
-    let newName = '';
-    for (let i = 0; i < MAX_VERTICES; i++) {
-      const candidateName = addVertexName(i);
-      if (!usedNames.has(candidateName)) {
-        newName = candidateName;
-        break;
-      }
-    }
-    
+
     // Create new vertex with unique ID
     const newVertex: VertexBaseData = {
       id: nextIdRef.current,
       value: newName
     };
     nextIdRef.current++; // Increment the ID counter
-    
+
     setVertices(prev => [...prev, newVertex]);
-    
+
     setAdjacencyMatrix((prev) => {
       const newAdjacencyMatrix = prev.map((row) => [...row, 0]);
       newAdjacencyMatrix.push(new Array(newAdjacencyMatrix.length + 1).fill(0)); // Add a new row
@@ -90,6 +81,21 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     removeVertex,
     disableAdd: vertices.length >= MAX_VERTICES,
   };
+}
+
+export const generateNextName = (vertices: VertexBaseData[]) => {
+  let newName = '';
+  for (let i = 0; i < MAX_VERTICES; i++) {
+    const usedNames = new Set(vertices.map(v => v.value));
+
+    const candidateName = addVertexName(i);
+    if (!usedNames.has(candidateName)) {
+      newName = candidateName;
+      break;
+    }
+  }
+
+  return newName;
 }
 
 export const getVertexName = (vertices: VertexBaseData[], index: number) => vertices[index]?.value;

@@ -1,8 +1,7 @@
 import { CollapseType, ControlsProps } from "./types";
 import { ActionType } from "../../model/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { InputCollapsibleControl } from "./input-collapsible-control";
-import { TraverseCollapsibleControl } from "./traverse-collapsible-control";
+
 import { CONTROLS, DEFAULT_TRAVERSE_TYPE } from "./constants";
 import { MobileControls } from "@/features/mobile-controls";
 import { useState } from "react";
