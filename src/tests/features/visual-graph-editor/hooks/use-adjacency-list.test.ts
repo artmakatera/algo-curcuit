@@ -1,9 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useAdjacencyMatrix } from '@/features/visual-graph-editor/hooks/use-adjacency-list';
-import type { AdjacencyMatrix } from '@/shared/types/data-structures';
+import { useAdjacencyMatrix, MAX_VERTICES, addVertexName } from '@/features/visual-graph-editor/hooks/use-adjacency-list';
+import type { AdjacencyMatrix, VertexBaseData } from '@/shared/types/data-structures';
 
-// Interface to match the one in use-adjacency-list.ts
 describe('useAdjacencyMatrix Hook Tests', () => {
   let initialMatrix: AdjacencyMatrix;
 
@@ -36,7 +35,7 @@ describe('useAdjacencyMatrix Hook Tests', () => {
     const { result } = renderHook(() => useAdjacencyMatrix(initialMatrix));
 
     act(() => {
-      result.current.addVertex();
+      result.current.addVertex('C');
     });
 
     expect(result.current.adjacencyMatrix).toEqual([
@@ -57,13 +56,13 @@ describe('useAdjacencyMatrix Hook Tests', () => {
     const { result } = renderHook(() => useAdjacencyMatrix([])); // Start empty
 
     act(() => {
-      result.current.addVertex(); // Add A
+      result.current.addVertex('A'); // Add A
     });
     expect(result.current.adjacencyMatrix).toEqual([[0]]);
     expect(result.current.vertices).toEqual([{ id: 0, value: 'A' }]);
 
     act(() => {
-      result.current.addVertex(); // Add B
+      result.current.addVertex('B'); // Add B
     });
     expect(result.current.adjacencyMatrix).toEqual([
       [0, 0],
@@ -75,7 +74,7 @@ describe('useAdjacencyMatrix Hook Tests', () => {
     ]);
 
     act(() => {
-      result.current.addVertex(); // Add C
+      result.current.addVertex('C'); // Add C
     });
     expect(result.current.adjacencyMatrix).toEqual([
       [0, 0, 0],
@@ -191,7 +190,7 @@ describe('useAdjacencyMatrix Hook Tests', () => {
     
     // Add C
     act(() => {
-      result.current.addVertex();
+      result.current.addVertex('C');
     });
     
     // Remove B
@@ -199,15 +198,15 @@ describe('useAdjacencyMatrix Hook Tests', () => {
       result.current.removeVertex(1);
     });
     
-    // Add a new vertex - should reuse letter B but get a new ID (3)
+    // Add a new vertex - should get a new ID (3) with provided name B
     act(() => {
-      result.current.addVertex();
+      result.current.addVertex('B');
     });
     
     expect(result.current.vertices).toEqual([
       { id: 0, value: 'A' },
       { id: 2, value: 'C' }, // ID remains 2
-      { id: 3, value: 'B' }  // New vertex with ID 3 but reuses letter B
+      { id: 3, value: 'B' }  // New vertex with ID 3 and name B
     ]);
   });
 
@@ -216,7 +215,7 @@ describe('useAdjacencyMatrix Hook Tests', () => {
 
     // Add C
     act(() => {
-      result.current.addVertex();
+      result.current.addVertex('C');
     });
     expect(result.current.vertices).toEqual([
       { id: 0, value: 'A' },
@@ -259,6 +258,55 @@ describe('useAdjacencyMatrix Hook Tests', () => {
     expect(result.current.adjacencyMatrix).toEqual([
       [0, 1], // Edge A->C added
       [0, 0],
+    ]);
+  });
+
+  it('should respect MAX_VERTICES limit and disable add', () => {
+    // Create a matrix with MAX_VERTICES-1 vertices
+    const largeMatrix: AdjacencyMatrix = Array(MAX_VERTICES-1).fill(0).map(() => 
+      Array(MAX_VERTICES-1).fill(0)
+    );
+    
+    const { result } = renderHook(() => useAdjacencyMatrix(largeMatrix));
+    expect(result.current.disableAdd).toBe(false);
+    
+    // Add one more vertex to reach the limit
+    act(() => {
+      result.current.addVertex(addVertexName(MAX_VERTICES-1));
+    });
+    
+    expect(result.current.vertices.length).toBe(MAX_VERTICES);
+    expect(result.current.disableAdd).toBe(true);
+    
+    // Try to add another vertex beyond the limit
+    act(() => {
+      result.current.addVertex('Z');
+    });
+    
+    // Should still have MAX_VERTICES vertices (no change)
+    expect(result.current.vertices.length).toBe(MAX_VERTICES);
+  });
+
+  it('should test adding vertices with symbol property', () => {
+    const { result } = renderHook(() => useAdjacencyMatrix([]));
+    
+    // Add vertex with a symbol
+    act(() => {
+      result.current.addVertex('•');
+    });
+    
+    expect(result.current.vertices).toEqual([
+      { id: 0, value: '•' }
+    ]);
+    
+    // Add another vertex with a different symbol
+    act(() => {
+      result.current.addVertex('★');
+    });
+    
+    expect(result.current.vertices).toEqual([
+      { id: 0, value: '•' },
+      { id: 1, value: '★' }
     ]);
   });
 });

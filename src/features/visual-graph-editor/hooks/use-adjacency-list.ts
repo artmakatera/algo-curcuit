@@ -82,5 +82,3 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     disableAdd: vertices.length >= MAX_VERTICES,
   };
 }
-
-export const getVertexName = (vertices: VertexBaseData[], index: number) => vertices[index]?.value;

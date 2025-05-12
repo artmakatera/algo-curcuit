@@ -1,12 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { VertexBaseData } from "@/shared/types/data-structures";
-import { get } from "http";
-import { getVertexName } from "../../hooks/use-adjacency-list";
 import { Plus, X } from "lucide-react";
 import { RemoveIconButton } from "../remove-icon-button";
 import { UpdateGraphEdge } from "../../types";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { getVertexName, hasGraphEdge } from "../../model/helpers";
 
 
 interface AdjacencyListLinksCellProps {
@@ -17,7 +16,7 @@ interface AdjacencyListLinksCellProps {
 }
 
 const getConnectedAndNotIndexes = (links: number[], rowIndex: number) => links.reduce<Record<string, number[]>>((acc, value, index) => {
-  if (value > 0) {
+  if (hasGraphEdge(value)) {
     acc.connected.push(index);
   } else if (rowIndex !== index) {
     acc.toConnect.push(index);

@@ -3,14 +3,14 @@ import { VertexBaseData } from "@/shared/types/data-structures";
 import {
   GRAPH_CIRCLE_RADIUS,
 } from "../d3-elements";
-import { index } from "d3";
+import { hasGraphEdge } from "@/features/visual-graph-editor";
 
 
 const getLinks = (adjacentMatrix: number[][], vertices: VertexBaseData[]) => {
   const links = [];
   for (let i = 0; i < adjacentMatrix.length; i++) {
     for (let j = 0; j < adjacentMatrix[i].length; j++) {
-      if (adjacentMatrix[i][j] === 1) {
+      if (hasGraphEdge(adjacentMatrix[i][j])) {
         const source = vertices[i].id;
         const target = vertices[j].id;
 

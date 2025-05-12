@@ -2,8 +2,8 @@ import { CornerRightUp } from "lucide-react";
 import { GraphEditorProps } from "../../types";
 import { AdjacencyMatrixTableLinkCell } from "./adjacency-matrix-table-link-cell";
 import { AdjacencyTableTitleCell } from "../adjacency-table-title-cell";
-import { getVertexName } from "../../hooks/use-adjacency-list";
 import { AddRow } from "../add-row";
+import { getVertexName } from "../../model/helpers";
 
 export const AdjacencyMatrixTable = ({
   adjacencyMatrix,

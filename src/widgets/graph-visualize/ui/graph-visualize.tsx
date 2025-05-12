@@ -2,7 +2,7 @@
 
 import { VisualGraph } from "@/features/visual-graph";
 
-import { useAdjacencyMatrix } from "@/features/visual-graph-editor/hooks/use-adjacency-list";
+import { useAdjacencyMatrix } from "@/features/visual-graph-editor";
 import { GraphView } from "./graph-view";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -13,9 +13,8 @@ import { createStepSnapshot as createStepSnapshotThunk } from "../model/create-s
 import { languagesMapSettings } from "../model/dfs/languages-map-settings";
 import { LANGUAGES } from "../model/constants";
 import { StepSnapshotPayload } from "../model/types";
-import { Controls } from "./controls";
+
 import { VisualizeControls } from "@/features/visualizer-player-controls";
-import { EditButton } from "@/features/edit-button";
 import { TargetInput } from "@/components/ui/target-input";
 
 const matrix = [

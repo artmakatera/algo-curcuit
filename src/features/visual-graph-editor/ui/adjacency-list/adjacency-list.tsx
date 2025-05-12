@@ -1,9 +1,9 @@
 import { GraphEditorProps } from "../../types";
 
-import { getVertexName } from "../../hooks/use-adjacency-list";
 import { AdjacencyTableTitleCell } from "../adjacency-table-title-cell";
 import { AdjacencyListLinksCell } from "./adjacency-list-links-cell";
 import { AddRow } from "../add-row";
+import { getVertexName } from "../../model/helpers";
 
 export const AdjacencyList = ({
   adjacencyMatrix,

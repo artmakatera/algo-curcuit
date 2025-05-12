@@ -1,5 +1,6 @@
 import { cn } from "@/shared/lib/utils";
 import { UpdateGraphEdge } from "../../types";
+import { hasGraphEdge } from "../../model/helpers";
 
 interface AdjacencyMatrixTableLinkCellProps extends Omit<React.HTMLProps<HTMLTableCellElement>, "onClick"> {
   rowIndex: number;
@@ -28,7 +29,7 @@ export const AdjacencyMatrixTableLinkCell = ({
       "relative",
       "border p-2 text-center w-10",
       "cursor-pointer",
-      cellValue > 0
+      hasGraphEdge(cellValue)
         ? "bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700"
         : "bg-background hover:bg-gray-100 dark:hover:bg-gray-700",
       disabled &&
