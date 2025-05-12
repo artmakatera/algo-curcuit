@@ -83,19 +83,4 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
   };
 }
 
-export const generateNextName = (vertices: VertexBaseData[]) => {
-  let newName = '';
-  for (let i = 0; i < MAX_VERTICES; i++) {
-    const usedNames = new Set(vertices.map(v => v.value));
-
-    const candidateName = addVertexName(i);
-    if (!usedNames.has(candidateName)) {
-      newName = candidateName;
-      break;
-    }
-  }
-
-  return newName;
-}
-
 export const getVertexName = (vertices: VertexBaseData[], index: number) => vertices[index]?.value;

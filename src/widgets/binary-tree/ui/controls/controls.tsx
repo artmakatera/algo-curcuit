@@ -3,7 +3,7 @@ import { ActionType } from "../../model/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import { CONTROLS, DEFAULT_TRAVERSE_TYPE } from "./constants";
-import { MobileControls } from "@/features/mobile-controls";
+import { ControlPanel } from "@/features/control-panel";
 import { useState } from "react";
 import { MobileControlDialog } from "./mobile-control-dialog";
 import { CollapsibleControl } from "./collapsible-control";
@@ -65,10 +65,11 @@ export const Controls = ({
           </TabsContent>
         ))}
       </Tabs>
-      <MobileControls
+      <ControlPanel
         activeType={activeType}
         controls={CONTROLS}
         onClick={handleMobileDialogOpen}
+        className="lg:hidden"
       />
       <MobileControlDialog
         open={openMobileDialog}

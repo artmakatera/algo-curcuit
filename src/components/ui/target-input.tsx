@@ -6,13 +6,14 @@ type TargetInput = {
   value: number | "";
   onChange: (v: string) => void;
   disabled?: boolean;
+  label?: string;
 };
 
-export function TargetInput({ value, onChange, disabled }: TargetInput) {
+export function TargetInput({ value, onChange, disabled, label = "Target" }: TargetInput) {
   return (
     <div className="grid w-24 gap-1.5">
       <Label className="font-bold" id="target">
-        Target
+        {label}
       </Label>
       <Input
         type="number"

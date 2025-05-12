@@ -3,7 +3,6 @@ import { Plus } from "lucide-react";
 import React from "react";
 import { AddGraphVertex } from "../types";
 import { Input } from "@/components/ui/input";
-import { VertexBaseData } from "@/shared/types/data-structures";
 import { addVertexName } from "../hooks/use-adjacency-list";
 
 export const AddRow = ({

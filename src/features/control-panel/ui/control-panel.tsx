@@ -1,7 +1,7 @@
 import { cn } from "@/shared/lib/utils";
-import { MobileControl } from "./mobile-control";
+import { ControlItem } from "./control-item";
 
-export interface MobileControlsProps {
+export interface ControlPanelProps {
   onClick: (type: string) => void;
   controls: {
     type: string;
@@ -9,16 +9,19 @@ export interface MobileControlsProps {
     Icon: React.ReactNode;
   }[];
   activeType?: string | null;
+  className?: string;
 }
 
-export const MobileControls = ({ controls, onClick, activeType }: MobileControlsProps) => {
+export const ControlPanel = ({ controls, onClick, activeType, className }: ControlPanelProps) => {
   return (
-    <nav className="fixed left-0 bottom-0 w-full bg-background border-t border-background-300 lg:hidden">
+    <nav className={cn("fixed left-0 bottom-0 w-full bg-background border-t border-background-300",
+    "lg:backdrop-blur-sm lg:max-w-xl lg:left-1/2 lg:bottom-6 lg:-translate-x-1/2 lg:rounded-lg lg:shadow-lg",
+    className)}>
       <ul className="flex gap-2 max-w-2xl mx-auto p-1">
         {controls.map(({ type, label, Icon }) => {
           return (
             <li className="flex-1" key={type}>
-              <MobileControl
+              <ControlItem
                 Icon={Icon}
                 label={label}
                 onClick={() => onClick(type)}
