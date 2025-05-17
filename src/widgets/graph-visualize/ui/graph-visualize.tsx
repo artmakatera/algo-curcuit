@@ -114,7 +114,14 @@ export const GraphVisualize = () => {
           onChangeSpeed={onChangeSpeed}
         />
       </div>
-      <VisualGraph adjacencyMatrix={adjacencyMatrix} vertices={vertices} />
+      <VisualGraph
+        adjacencyMatrix={adjacencyMatrix}
+        vertices={vertices}
+        highlightedNode={currentSnapshot?.checkingIndex}
+        awaitingNodes={currentSnapshot?.stack}
+        resultNodes={currentSnapshot?.result}
+
+      />
       <GraphView
         adjacencyMatrix={adjacencyMatrix}
         disableAdd={disableAdd}
@@ -123,14 +130,7 @@ export const GraphVisualize = () => {
         vertices={vertices}
         onRemove={removeVertex}
       />
-      {/* <AdjacencyMatrixTable
-        adjacencyMatrix={adjacencyMatrix}
-        disableAdd={disableAdd}
-        onToggle={toggleEdge}
-        onAdd={addVertex}
-        vertices={vertices}
-        onRemove={removeVertex}
-      /> */}
+
     </div>
   );
 };

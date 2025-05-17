@@ -296,10 +296,3 @@ article p {
   @apply leading-9;
 }
 
-.d3-svg-link {
-  @apply stroke-foreground;
-}
-
-.d3-svg-arrow {
-  @apply fill-foreground;
-}

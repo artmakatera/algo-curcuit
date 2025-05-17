@@ -1,17 +1,23 @@
 
-import * as d3 from "d3";
+import {
+  transition,
+  type Selection
+} from "d3";
 
-type GraphNode = {
+export type GraphNode = {
   name: string;
   id?: number;
   x?: number;
   y?: number;
+  isHighlighted: boolean;
+  isAwaiting: boolean;
+  isResult: boolean;
 }
 
 export const GRAPH_CIRCLE_RADIUS = 16;
 
-export const getGraphNode = (svg: d3.Selection<null, unknown, null, undefined>, nodeData: GraphNode[]) => {
-  const t = d3.transition()
+export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nodeData: GraphNode[]) => {
+  const t = transition()
     .duration(1000)
   const node = svg
     .selectAll("g")
@@ -25,7 +31,8 @@ export const getGraphNode = (svg: d3.Selection<null, unknown, null, undefined>, 
         node
           .append("circle")
           .attr("stroke-width", 1.5)
-          .classed("fill-green-500 stroke-black stroke-width-[1.5]", true)
+          .attr("class", "fill-green-500 stroke-black stroke-width-[1.5]")
+
           .attr("r", 0)
           .transition(t)
           .attr("r", GRAPH_CIRCLE_RADIUS)
@@ -41,16 +48,17 @@ export const getGraphNode = (svg: d3.Selection<null, unknown, null, undefined>, 
           .attr("transform", "scale(1)")
           .text((d) => d.name);
 
-
-
         return node
-
-
       },
       (update) => {
+        console.log("update", update)
         return update
+          .classed("[&_circle]:stroke-red-500", (d) => d.isHighlighted)
+          .classed("[&_circle]:fill-blue-500", (d) => d.isAwaiting)
+          .classed("[&_circle]:fill-yellow-500", (d) => d.isResult)
       },
-      (exit) => exit.remove()
+      (exit) => exit
+        .remove()
     )
 
 

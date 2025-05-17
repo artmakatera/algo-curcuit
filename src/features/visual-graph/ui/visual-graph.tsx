@@ -1,67 +1,89 @@
 "use client";
 import { Svg } from "@/components/ui/svg";
 
-import { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-import type { SimulationNodeDatum } from "d3";
+import { useEffect, useRef } from "react";
+import {
+  select,
+  forceCenter,
+  forceCollide,
+  forceSimulation,
+  forceManyBody,
+  forceLink,
+  type SimulationNodeDatum,
+} from "d3";
 
 import { addDefsAndArrowMarker } from "@/shared/lib/d3/marker-helpers";
-import { getGraphLink, getGraphNode } from "../d3-elements";
-import { Button } from "@/components/ui/button";
-import { AdjacencyMatrix, VertexBaseData } from "@/shared/types/data-structures";
+import { getGraphLink, getGraphNode, GraphNode } from "../d3-elements";
+import {
+  AdjacencyMatrix,
+  VertexBaseData,
+} from "@/shared/types/data-structures";
 import { getGraphFromAdjacencyMatrix } from "../model/transform-data";
 
-function clamp(x: number, lo: number, hi: number) {
-  return x < lo ? lo : x > hi ? hi : x;
-}
+// function clamp(x: number, lo: number, hi: number) {
+//   return x < lo ? lo : x > hi ? hi : x;
+// }
 
 interface VisualGraphProps {
   adjacencyMatrix: AdjacencyMatrix;
   vertices: VertexBaseData[];
+  highlightedNode?: number | null;
+  awaitingNodes?: number[];
+  resultNodes?: number[];
 }
 
 export const VisualGraph = ({
   adjacencyMatrix = [],
   vertices = [],
+  highlightedNode,
+  awaitingNodes,
+  resultNodes,
 }: VisualGraphProps) => {
   const ref = useRef(null);
 
   useEffect(() => {
-    const graphData = getGraphFromAdjacencyMatrix(
-      adjacencyMatrix,
-      vertices
-    );
-    const svg = d3.select(ref.current);
+    const graphData = getGraphFromAdjacencyMatrix(adjacencyMatrix, vertices, {
+      highlightedNode,
+      awaitingNodes,
+      resultNodes,
+    });
+    const svg = select(ref.current);
     const defs = addDefsAndArrowMarker(svg);
     const link = getGraphLink(svg, graphData.links);
     const node = getGraphNode(svg, graphData.nodes);
+    const isTraversing =
+      typeof highlightedNode === "number" || awaitingNodes?.length || resultNodes?.length;
 
-    const simulation = d3
-      .forceSimulation()
+    const simulation = forceSimulation()
       .nodes(graphData.nodes)
-      .force("charge", d3.forceManyBody().distanceMax(50))
-      .force("center", d3.forceCenter(300, 100))
+      .force("charge", forceManyBody().distanceMax(50))
+      .force("center", forceCenter(300, 100))
       .force(
         "link",
-        d3
-          .forceLink(graphData.links)
+        forceLink(graphData.links)
           .id((d) => {
             return vertices[d.index || 0].id;
           })
           .strength(1)
-          .distance(link => {
-            const deltaIndexes = Math.abs((link.source as d3.SimulationNodeDatum).index! - (link.target as d3.SimulationNodeDatum).index!);
-            if (deltaIndexes < 3) {
-              return 50;
-            }
-            return 100})
-
+          .distance((link) => {
+            const deltaIndexes = Math.abs(
+              (link.source as SimulationNodeDatum).index! -
+                (link.target as SimulationNodeDatum).index!
+            );
+            // if (deltaIndexes < 3) {
+            //   return 50;
+            // }
+            return 100;
+          })
           .iterations(10)
       )
-      .force("collision", d3.forceCollide(20).strength(1))
+      .force("collision", forceCollide(20).strength(1))
       .on("tick", tick);
 
     function tick() {
+      if (isTraversing) {
+        return;
+      }
       link
         // @ts-ignore
         .attr("x1", (d) => d.source.x)
@@ -79,7 +101,7 @@ export const VisualGraph = ({
       simulation.stop();
       defs.remove();
     };
-  }, [adjacencyMatrix, vertices]);
+  }, [adjacencyMatrix, vertices, highlightedNode, awaitingNodes, resultNodes]);
 
   return <Svg ref={ref} />;
 };
