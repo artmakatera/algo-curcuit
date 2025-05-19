@@ -9,6 +9,7 @@ export interface StepSnapshotPayload extends BaseSnapshot {
   visited: boolean[],
   result: number[],
   checkingIndex?: number | null,
+  fromIndexToCheck?: number | null,
 }
 
 

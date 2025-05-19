@@ -7,8 +7,8 @@ import {
 export type GraphNode = {
   name: string;
   id?: number;
-  x?: number;
-  y?: number;
+  x?: number | string;
+  y?: number | string;
   isHighlighted: boolean;
   isAwaiting: boolean;
   isResult: boolean;

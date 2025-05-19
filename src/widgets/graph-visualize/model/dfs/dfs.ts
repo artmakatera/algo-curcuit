@@ -7,13 +7,15 @@ export function* dfs(matrix: AdjacencyMatrix,
   startIndex: number): Generator<StepSnapshotPayload,
     number[],
     unknown> {
+  let fromIndexToCheck: number | null = null;
   yield {
     type: STEPS.start,
     stack: [],
     queue: [],
     visited: [],
     result: [],
-    checkingIndex: null
+    checkingIndex: null,
+    fromIndexToCheck
   };
 
   const stack: number[] = [];
@@ -28,20 +30,14 @@ export function* dfs(matrix: AdjacencyMatrix,
     queue: [],
     visited: [...visited],
     result: [...result],
+    fromIndexToCheck,
     checkingIndex: startIndex
   };
 
-
   while (stack.length > 0) {
     const currentNode = stack.pop()!;
-    yield {
-      type: STEPS.removeFromStack,
-      stack: [...stack],
-      queue: [],
-      visited: [...visited],
-      checkingIndex: currentNode,
-      result: [...result],
-    };
+
+    fromIndexToCheck = currentNode;
     result.push(currentNode);
     yield {
       type: STEPS.addToResult,
@@ -49,7 +45,8 @@ export function* dfs(matrix: AdjacencyMatrix,
       queue: [],
       visited: [...visited],
       result: [...result],
-      checkingIndex: currentNode,
+      fromIndexToCheck,
+      checkingIndex: null,
     };
 
     for (let i = 0; i < matrix[currentNode].length; i++) {
@@ -62,6 +59,7 @@ export function* dfs(matrix: AdjacencyMatrix,
         queue: [],
         visited: [...visited],
         result: [...result],
+        fromIndexToCheck,
         checkingIndex: i
       };
       if (!visited[i]) {
@@ -73,7 +71,8 @@ export function* dfs(matrix: AdjacencyMatrix,
           queue: [],
           visited: [...visited],
           result: [...result],
-          checkingIndex: i
+          checkingIndex: i,
+          fromIndexToCheck
         };
       }
 

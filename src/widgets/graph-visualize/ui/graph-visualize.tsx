@@ -117,6 +117,7 @@ export const GraphVisualize = () => {
       <VisualGraph
         adjacencyMatrix={adjacencyMatrix}
         vertices={vertices}
+        sourceHighlightedNode={currentSnapshot?.fromIndexToCheck}
         highlightedNode={currentSnapshot?.checkingIndex}
         awaitingNodes={currentSnapshot?.stack}
         resultNodes={currentSnapshot?.result}
