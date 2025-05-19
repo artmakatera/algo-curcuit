@@ -7,6 +7,8 @@ import { AddGraphVertex, RemoveGraphVertex, UpdateGraphEdge } from "../types";
 
 export const MAX_VERTICES = 7; // A-Z
 
+
+
 export const addVertexName = (index: number) => {
   if (index < 0 || index >= MAX_VERTICES) {
     throw new Error("Index out of bounds");
@@ -30,11 +32,13 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
 
 
 
-  const addVertex: AddGraphVertex = useCallback((newName: string) => {
+  const addVertex: AddGraphVertex = useCallback((name) => {
     if (vertices.length >= MAX_VERTICES) {
       console.error("Maximum number of vertices reached");
       return;
     }
+
+    const newName = name || generateNextName(vertices);
 
     // Create new vertex with unique ID
     const newVertex: VertexBaseData = {
@@ -81,4 +85,20 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     removeVertex,
     disableAdd: vertices.length >= MAX_VERTICES,
   };
+}
+
+
+export function generateNextName(vertices: VertexBaseData[]) {
+  let newName = '';
+  for (let i = 0; i < MAX_VERTICES; i++) {
+    const usedNames = new Set(vertices.map(v => v.value));
+
+    const candidateName = addVertexName(i);
+    if (!usedNames.has(candidateName)) {
+      newName = candidateName;
+      break;
+    }
+  }
+
+  return newName;
 }
