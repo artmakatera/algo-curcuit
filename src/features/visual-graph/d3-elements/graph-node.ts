@@ -53,6 +53,7 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
       (update) => {
         console.log("update", update)
         return update
+          .attr("class","[&_circle]:transition-[stroke] [&_circle]:duration-600 [&_circle]:delay-500")
           .classed("[&_circle]:stroke-red-500", (d) => d.isHighlighted)
           .classed("[&_circle]:fill-blue-500", (d) => d.isAwaiting)
           .classed("[&_circle]:fill-yellow-500", (d) => d.isResult)
