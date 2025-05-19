@@ -83,9 +83,9 @@ export const VisualGraph = ({
               (link.source as SimulationNodeDatum).index! -
                 (link.target as SimulationNodeDatum).index!
             );
-            // if (deltaIndexes < 3) {
-            //   return 50;
-            // }
+            if (deltaIndexes < 3) {
+              return 50;
+            }
             return 100;
           })
           .iterations(10)

@@ -15,13 +15,15 @@ import { LANGUAGES } from "../model/constants";
 import { StepSnapshotPayload } from "../model/types";
 
 import { VisualizeControls } from "@/features/visualizer-player-controls";
-import { TargetInput } from "@/components/ui/target-input";
+import StartFromSelect from "./start-from-select";
 
 const matrix = [
-  [0, 1, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 1, 0, 0],
+  [0, 1, 0, 0, 0, 0],
+  [0, 0, 1, 1, 0, 0],
+  [0, 0, 0, 1, 0, 0],
+  [0, 0, 0, 0, 1, 0],
+  [0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0],
 ];
 
 export const GraphVisualize = () => {
@@ -78,7 +80,7 @@ export const GraphVisualize = () => {
     defaultDelay: "750",
     defaultSnapshots: defaultSnapshots,
     genCall,
-    genCallArgs: [adjacencyMatrix, 0],
+    genCallArgs: [adjacencyMatrix, startFrom],
     createStepSnapshot,
   });
 
@@ -88,17 +90,15 @@ export const GraphVisualize = () => {
 
   useEffect(() => {
     reset();
-  }, [adjacencyMatrix]);
+  }, [adjacencyMatrix, startFrom]);
 
   return (
     <div className="flex flex-col sm:px-24 py-10">
-      {JSON.stringify(currentSnapshot, null, 2)}
-
       <div className="mb-12 flex gap-4 mx-auto max-w-xl items-end">
-        <TargetInput
+        <StartFromSelect
           value={startFrom}
           onChange={(value) => setStartFrom(+value)}
-          label="Start from:"
+          vertices={vertices}
         />
 
         <VisualizeControls
@@ -121,7 +121,6 @@ export const GraphVisualize = () => {
         highlightedNode={currentSnapshot?.checkingIndex}
         awaitingNodes={currentSnapshot?.stack}
         resultNodes={currentSnapshot?.result}
-
       />
       <GraphView
         adjacencyMatrix={adjacencyMatrix}
@@ -131,7 +130,6 @@ export const GraphVisualize = () => {
         vertices={vertices}
         onRemove={removeVertex}
       />
-
     </div>
   );
 };

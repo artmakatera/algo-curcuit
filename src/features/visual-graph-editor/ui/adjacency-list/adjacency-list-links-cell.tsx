@@ -59,7 +59,7 @@ export const AdjacencyListLinksCell = ({
         })}
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button size="icon" className="size-7" >
               <Plus />
             </Button>
