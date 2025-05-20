@@ -2,17 +2,33 @@ import { LANGUAGES, STEPS } from "../../constants";
 
 
 
-const code = `class InsertionSort {
-    public int[] sortArray(int[] nums) {
-        for(int i = 1; i < nums.length; i++) {
-            for(int j = i; j > 0 && nums[j] < nums[j-1]; j--) {
-                   int temp = nums[j];
-                    nums[j] = nums[j - 1];
-                    nums[j - 1] = temp;
+const code = `import java.util.*;
+
+class DepthFirstSearch {
+    public List<Integer> dfs(List<List<Integer>> graph, int start) {
+        Stack<Integer> stack = new Stack<>();
+        Set<Integer> visited = new HashSet<>();
+        List<Integer> result = new ArrayList<>();
+        
+        // Add the start node to the stack
+        stack.push(start);
+        visited.add(start);
+        
+        while (!stack.isEmpty()) {
+            // Get the next vertex from the stack
+            Integer vertex = stack.pop();
+            result.add(vertex);
+            
+            // Process all neighbors
+            for (Integer neighbor : graph.get(vertex)) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    stack.push(neighbor);
+                }
             }
         }
-
-        return nums; 
+        
+        return result;
     }
 }`
 
@@ -20,12 +36,12 @@ const code = `class InsertionSort {
 
 
 export const highlightLines: { [key in keyof typeof STEPS]?: number[] }  = {
-  // [STEPS.started]: [3, 9],
-  // [STEPS.compare]: [4, 8],
-  // [STEPS.swap]: [4, 5, 6, 7, 8],
-  // [STEPS.sortedIndex]: [11],
-  // [STEPS.end]: [11]
-
+  [STEPS.start]: [3, 29, 4, 28],
+  [STEPS.addStartNode]: [3, 29, 4, 28, 5, 6, 7, 9, 10, 11],
+  [STEPS.addToResult]: [3, 29, 4, 28, 13, 25, 14, 15, 16],
+  [STEPS.checkIfVisited]: [3, 29, 4, 28, 13, 25, 19 ,20, 23, 24],
+  [STEPS.addToStack]: [3, 29, 4, 28, 13, 25, 19 ,20, 23, 24, 21, 22],
+  [STEPS.end]: [3, 29, 4, 28, 27],
 };
 
 

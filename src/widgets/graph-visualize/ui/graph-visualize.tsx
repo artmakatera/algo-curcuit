@@ -16,6 +16,9 @@ import { StepSnapshotPayload } from "../model/types";
 
 import { VisualizeControls } from "@/features/visualizer-player-controls";
 import StartFromSelect from "./start-from-select";
+import { useCodeLang } from "@/shared/contexts/code-lang";
+import TypographyH3 from "@/components/ui/typography/typographyH3";
+import { CodeViewers } from "@/components/ui/code-viewers";
 
 const matrix = [
   [0, 1, 0, 0, 0, 0],
@@ -28,6 +31,8 @@ const matrix = [
 
 export const GraphVisualize = () => {
   const [startFrom, setStartFrom] = useState<number>(0);
+    const [codeLang, setCodeLang] = useCodeLang();
+  
 
   const {
     adjacencyMatrix,
@@ -122,14 +127,23 @@ export const GraphVisualize = () => {
         awaitingNodes={currentSnapshot?.stack}
         resultNodes={currentSnapshot?.result}
       />
-      <GraphView
+      <div className="mt-12">
+        <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
+        <CodeViewers
+          langMap={languagesMapSettings}
+          language={codeLang}
+          onLanguageChange={(lang: string) => setCodeLang(lang)}
+          step={currentSnapshot.type}
+        />
+      </div>
+      {/* <GraphView
         adjacencyMatrix={adjacencyMatrix}
         disableAdd={disableAdd}
         onToggle={toggleEdge}
         onAdd={addVertex}
         vertices={vertices}
         onRemove={removeVertex}
-      />
+      /> */}
     </div>
   );
 };

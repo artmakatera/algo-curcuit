@@ -62,7 +62,6 @@ export const VisualGraph = ({
     const link = getGraphLink(svg, graphData.links);
     const node = getGraphNode(svg, graphData.nodes);
     const isTraversing =
-      typeof highlightedNode === "number" ||
       awaitingNodes?.length ||
       resultNodes?.length;
 

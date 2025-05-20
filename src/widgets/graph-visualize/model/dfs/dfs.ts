@@ -14,7 +14,7 @@ export function* dfs(matrix: AdjacencyMatrix,
     queue: [],
     visited: [],
     result: [],
-    checkingIndex: null,
+    checkingIndex: startIndex,
     fromIndexToCheck
   };
 
