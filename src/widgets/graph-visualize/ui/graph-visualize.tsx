@@ -20,6 +20,7 @@ import { useCodeLang } from "@/shared/contexts/code-lang";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewers } from "@/components/ui/code-viewers";
 import { ToggleMenu } from "@/components/ui/toggle-menu";
+import { Controls } from "./controls";
 
 const matrix = [
   [0, 1, 0, 0, 0, 0],
@@ -31,6 +32,7 @@ const matrix = [
 ];
 
 export const GraphVisualize = () => {
+
   const [startFrom, setStartFrom] = useState<number>(0);
   const [codeLang, setCodeLang] = useCodeLang();
   const [mode, setMode] = useState<Mode>("edit");
@@ -42,6 +44,10 @@ export const GraphVisualize = () => {
     toggleEdge,
     removeVertex,
     disableAdd,
+    isUndirected,
+    setIsUndirected,
+    isLoop,
+    setIsLoop,
   } = useAdjacencyMatrix(matrix);
 
   const genCall = useMemo(() => {
@@ -66,12 +72,10 @@ export const GraphVisualize = () => {
 
   const {
     currentSnapshot,
-    stepsSnapshot,
     hasPrevSnapshot,
     hasNextSnapshot,
     handlePreviousStep,
     handleNextStep,
-    goToLastStep,
     rebuildSnapshots: reset,
     visualize,
     isPlaying,
@@ -105,33 +109,36 @@ export const GraphVisualize = () => {
         value={mode}
         onValueChange={(value) => {
           setMode(value as Mode);
-          clearSnapshots();
+          if (value === "edit") {
+            clearSnapshots();
+          } else {
+            setStartFrom(0);
+            reset();
+          }
         }}
       />
 
-        {mode === "dfs" && (
-        <div className="m-6 flex flex-wrap gap-4 mx-auto max-w-xl items-end justify-center">
-          <StartFromSelect
-            value={startFrom}
-            onChange={(value) => setStartFrom(+value)}
-            vertices={vertices}
-          />
+        <Controls
+          isEditMode={mode === "edit"}
+          startFrom={startFrom}
+          setStartFrom={setStartFrom}
+          vertices={vertices}
+          onPlay={handlePlay}
+          onReset={reset}
+          onPreviousStep={handlePreviousStep}
+          onNextStep={handleNextStep}
+          isPlaying={isPlaying}
+          isResetDisabled={isPlaying}
+          isPreviousStepDisabled={!hasPrevSnapshot}
+          isNextStepDisabled={!hasNextSnapshot}
+          speed={delayRef.current}
+          onChangeSpeed={onChangeSpeed}
+          isLoop={isLoop}
+          setIsLoop={setIsLoop}
+          isUndirected={isUndirected}
+          setIsUndirected={setIsUndirected}
+        />
 
-          <VisualizeControls
-            onPlay={handlePlay}
-            onReset={reset}
-            onPreviousStep={handlePreviousStep}
-            onNextStep={handleNextStep}
-            isPlaying={isPlaying}
-            isResetDisabled={isPlaying}
-            isPreviousStepDisabled={!hasPrevSnapshot}
-            isNextStepDisabled={!hasNextSnapshot}
-            speed={delayRef.current}
-            onChangeSpeed={onChangeSpeed}
-          />
-        </div>
-      )}
-      
       <VisualGraph
         key="visual-graph"
         adjacencyMatrix={adjacencyMatrix}
@@ -140,26 +147,32 @@ export const GraphVisualize = () => {
         highlightedNode={currentSnapshot?.checkingIndex}
         awaitingNodes={currentSnapshot?.stack}
         resultNodes={currentSnapshot?.result}
+        isUndirected={isUndirected}
+        isLoop={isLoop}
       />
 
-     {mode === "edit" && <GraphView
-        adjacencyMatrix={adjacencyMatrix}
-        disableAdd={disableAdd}
-        onToggle={toggleEdge}
-        onAdd={addVertex}
-        vertices={vertices}
-        onRemove={removeVertex}
-      />}
-    
-      {mode === "dfs" && <div className="mt-12 self-center">
-        <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
-        <CodeViewers
-          langMap={languagesMapSettings}
-          language={codeLang}
-          onLanguageChange={(lang: string) => setCodeLang(lang)}
-          step={currentSnapshot.type}
+      {mode === "edit" && (
+        <GraphView
+          adjacencyMatrix={adjacencyMatrix}
+          disableAdd={disableAdd}
+          onToggle={toggleEdge}
+          onAdd={addVertex}
+          vertices={vertices}
+          onRemove={removeVertex}
         />
-      </div>}
+      )}
+
+      {mode === "dfs" && (
+        <div className="mt-12 self-center">
+          <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
+          <CodeViewers
+            langMap={languagesMapSettings}
+            language={codeLang}
+            onLanguageChange={(lang: string) => setCodeLang(lang)}
+            step={currentSnapshot.type}
+          />
+        </div>
+      )}
     </div>
   );
 };

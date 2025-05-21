@@ -29,8 +29,8 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
   );
 
   const [adjacencyMatrix, setAdjacencyMatrix] = useState<AdjacencyMatrix>(initialValue);
-
-
+  const [isUndirected, setIsUndirected] = useState(false);
+  const [isLoop, setIsLoop] = useState(false);
 
   const addVertex: AddGraphVertex = useCallback((name) => {
     if (vertices.length >= MAX_VERTICES) {
@@ -56,13 +56,18 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     });
   }, [vertices]);
 
+
   const toggleEdge: UpdateGraphEdge = useCallback((from: number, to: number) => {
     setAdjacencyMatrix((prev) => {
       const newAdjacencyMatrix = prev.map((row) => [...row]); // Create a copy of the adjacency list
-      newAdjacencyMatrix[from][to] = newAdjacencyMatrix[from][to] === 1 ? 0 : 1; // Toggle the edge
+      const prevValue = newAdjacencyMatrix[from][to];
+      newAdjacencyMatrix[from][to] = prevValue === 1 ? 0 : 1; // Toggle the edge
+      if (isUndirected) {
+        newAdjacencyMatrix[to][from] = prevValue === 1 ? 0 : 1; // Toggle the reverse edge
+      }
       return newAdjacencyMatrix;
     });
-  }, []);
+  }, [isUndirected]);
 
   const removeVertex: RemoveGraphVertex = useCallback((index: number) => {
     setAdjacencyMatrix((prev) => {
@@ -76,6 +81,28 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     setVertices((prev) => prev.filter((_, i) => i !== index)); // Remove the vertex from the list
   }, []);
 
+  const onUndirectedChange = useCallback((value: boolean) => {
+    setIsUndirected(value);
+      setAdjacencyMatrix((prev) => {
+        const newAdjacencyMatrix = prev.map((row) => [...row]); // Create a copy of the adjacency list
+        const updatedRowCols = new Set<string>();
+        for (let i = 0; i < prev.length; i++) {
+          for (let j = 0; j < prev[i].length; j++) {
+            if (prev[i][j] === 1 && !updatedRowCols.has(`${i}-${j}`)) {
+              newAdjacencyMatrix[j][i] = value ? 1 : 0; // Add the reverse edge
+              updatedRowCols.add(`${j}-${i}`); // Mark the reverse edge as updated
+            }
+          }
+        }
+        return newAdjacencyMatrix;
+      }
+      );
+  }, []);
+
+  const onLoopChange = useCallback((value: boolean) => {
+    setIsLoop(value);
+  }, []);
+
 
   return {
     adjacencyMatrix,
@@ -84,6 +111,10 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
     toggleEdge,
     removeVertex,
     disableAdd: vertices.length >= MAX_VERTICES,
+    isUndirected,
+    isLoop,
+    setIsUndirected: onUndirectedChange,
+    setIsLoop: onLoopChange,
   };
 }
 

@@ -18,7 +18,7 @@ const GRAPH_VIEWS = [
 
 export const GraphView = (props: GraphEditorProps) => {
   return (
-    <Tabs defaultValue="list" className="w-fit max-w-xl mx-auto">
+    <Tabs defaultValue="matrix" className="w-fit max-w-xl mx-auto">
       <TabsList className="mx-auto">
         {GRAPH_VIEWS.map(({ type, label }) => {
           return (

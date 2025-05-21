@@ -11,7 +11,7 @@ import SpeedSelect from "./speed-select";
 import { Button } from "@/components/ui/button";
 import { memo } from "react";
 
-type ControlsProps = {
+export interface VisualizeControlsProps {
   onPlay?: () => void;
   onReset?: () => void;
   onPreviousStep?: () => void;
@@ -36,7 +36,7 @@ export const VisualizeControls = memo(
     isNextStepDisabled,
     speed,
     onChangeSpeed,
-  }: ControlsProps) => {
+  }: VisualizeControlsProps) => {
     return (
       <div className="flex gap-2">
         {onPreviousStep && (

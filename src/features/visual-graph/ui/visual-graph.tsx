@@ -38,6 +38,8 @@ interface VisualGraphProps {
   sourceHighlightedNode?: number | null;
   awaitingNodes?: number[];
   resultNodes?: number[];
+  isUndirected?: boolean;
+  isLoop?: boolean;
 }
 
 export const VisualGraph = ({
@@ -47,6 +49,8 @@ export const VisualGraph = ({
   sourceHighlightedNode,
   awaitingNodes,
   resultNodes,
+  isUndirected,
+  isLoop,
 }: VisualGraphProps) => {
   const ref = useRef(null);
 
@@ -58,8 +62,9 @@ export const VisualGraph = ({
       sourceHighlightedNodeIndex: sourceHighlightedNode,
     });
     const svg = select(ref.current);
-    const defs = addDefsAndArrowMarker(svg);
+    const defs = addDefsAndArrowMarker(svg, isUndirected);
     const link = getGraphLink(svg, graphData.links);
+    
     const node = getGraphNode(svg, graphData.nodes);
     const isTraversing =
       awaitingNodes?.length ||
@@ -73,7 +78,6 @@ export const VisualGraph = ({
         "link",
         forceLink(graphData.links as SimulationLinkDatum<SimulationNodeDatum>[])
           .id((d) => {
-            console.log("link id", d);
             return vertices[d.index || 0].id;
           })
           .strength(1)
@@ -122,6 +126,8 @@ export const VisualGraph = ({
     awaitingNodes,
     resultNodes,
     sourceHighlightedNode,
+    isUndirected,
+    isLoop,
   ]);
 
   return <Svg ref={ref} />;

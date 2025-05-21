@@ -4,7 +4,7 @@ const ARROW_MARKER_ID = "d3-line-arrow";
 
 const addDefs = (svg: Selection<null, unknown, null, undefined>) => svg.append("defs");
 
-export const addArrowMarker = (defs: Selection<SVGDefsElement, unknown, null, undefined>) =>{
+export const addArrowMarker = (defs: Selection<SVGDefsElement, unknown, null, undefined>) => {
   defs
     .append("marker")
     .attr("id", ARROW_MARKER_ID)
@@ -25,8 +25,10 @@ export const addArrowMarker = (defs: Selection<SVGDefsElement, unknown, null, un
 }
 
 
-export const addDefsAndArrowMarker = (svg: Selection<null, unknown, null, undefined>) => {
+export const addDefsAndArrowMarker = (svg: Selection<null, unknown, null, undefined>, hideArrows?: boolean) => {
   const defs = addDefs(svg);
-  addArrowMarker(defs);
+  if (!hideArrows) {
+    addArrowMarker(defs);
+  }
   return defs;
 }
