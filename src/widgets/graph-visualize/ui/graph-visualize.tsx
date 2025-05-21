@@ -99,7 +99,7 @@ export const GraphVisualize = () => {
   }, [adjacencyMatrix, startFrom]);
 
   return (
-    <div className="flex flex-col sm:px-24 py-10">
+    <div className="flex flex-col px-2 sm:px-24 py-10">
       <ToggleMenu
         menuItems={MODES}
         value={mode}
@@ -110,7 +110,7 @@ export const GraphVisualize = () => {
       />
 
         {mode === "dfs" && (
-        <div className="m-6 flex flex-wrap gap-4 mx-auto max-w-xl items-end">
+        <div className="m-6 flex flex-wrap gap-4 mx-auto max-w-xl items-end justify-center">
           <StartFromSelect
             value={startFrom}
             onChange={(value) => setStartFrom(+value)}
@@ -151,7 +151,7 @@ export const GraphVisualize = () => {
         onRemove={removeVertex}
       />}
     
-      {mode === "dfs" && <div className="mt-12">
+      {mode === "dfs" && <div className="mt-12 self-center">
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
         <CodeViewers
           langMap={languagesMapSettings}

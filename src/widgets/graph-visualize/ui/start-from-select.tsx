@@ -1,3 +1,4 @@
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -11,26 +12,33 @@ type StartFromSelectProps = {
   value?: number;
   onChange: (value: string) => void;
   vertices?: VertexBaseData[];
+  label?: string;
 };
 
 const StartFromSelect = ({
   value = 0,
   onChange,
   vertices = [],
+  label = "Start From:",
 }: StartFromSelectProps) => {
   return (
-    <Select onValueChange={onChange} defaultValue={String(value)}>
-      <SelectTrigger data-testid="start-from-select" className="w-[80px]">
-        <SelectValue placeholder="Start From" />
-      </SelectTrigger>
-      <SelectContent>
-        {vertices.map(({ value, id }, index) => (
-          <SelectItem key={id} value={String(index)}>
-            {value}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="grid  gap-1.5 grow max-w-3xs">
+      <Label className="font-bold text-xs">
+        {label}
+      </Label>
+      <Select onValueChange={onChange} defaultValue={String(value)}>
+        <SelectTrigger data-testid="start-from-select" className="min-w-[100px] w-full">
+          <SelectValue placeholder="Start From" />
+        </SelectTrigger>
+        <SelectContent>
+          {vertices.map(({ value, id }, index) => (
+            <SelectItem key={id} value={String(index)}>
+              {value}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 };
 
