@@ -1,6 +1,4 @@
-
-
-
+import { Edit, GitBranch, Search } from "lucide-react";
 
 export const STEPS = {
   start: "start",
@@ -14,11 +12,15 @@ export const STEPS = {
   end: "end",
 } as const;
 
-
-
-
 export const LANGUAGES = {
   javascript: "javascript",
   java: "java",
 } as const;
 
+export const MODES = [
+  { value: "edit", label: "Edit", icon: <Edit className="h-4 w-4" /> },
+  { value: "dfs", label: "Traverse DFS", icon: <GitBranch className="h-4 w-4" /> },
+  { value: "bfs", label: "Traverse BFS", icon: <Search className="h-4 w-4" /> },
+];
+
+export type Mode = (typeof MODES)[number]["value"];

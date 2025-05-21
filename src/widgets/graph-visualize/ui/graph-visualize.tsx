@@ -11,7 +11,7 @@ import { defaultSnapshots } from "../model/create-step-snapshot";
 import { AdjacencyMatrix } from "@/shared/types/data-structures";
 import { createStepSnapshot as createStepSnapshotThunk } from "../model/create-step-snapshot";
 import { languagesMapSettings } from "../model/dfs/languages-map-settings";
-import { LANGUAGES } from "../model/constants";
+import { LANGUAGES, Mode, MODES } from "../model/constants";
 import { StepSnapshotPayload } from "../model/types";
 
 import { VisualizeControls } from "@/features/visualizer-player-controls";
@@ -19,6 +19,7 @@ import StartFromSelect from "./start-from-select";
 import { useCodeLang } from "@/shared/contexts/code-lang";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewers } from "@/components/ui/code-viewers";
+import { ToggleMenu } from "@/components/ui/toggle-menu";
 
 const matrix = [
   [0, 1, 0, 0, 0, 0],
@@ -32,6 +33,7 @@ const matrix = [
 export const GraphVisualize = () => {
   const [startFrom, setStartFrom] = useState<number>(0);
   const [codeLang, setCodeLang] = useCodeLang();
+  const [mode, setMode] = useState<Mode>("edit");
 
   const {
     adjacencyMatrix,
@@ -98,7 +100,40 @@ export const GraphVisualize = () => {
 
   return (
     <div className="flex flex-col sm:px-24 py-10">
+      <ToggleMenu
+        menuItems={MODES}
+        value={mode}
+        onValueChange={(value) => {
+          setMode(value as Mode);
+          clearSnapshots();
+        }}
+      />
+
+        {mode === "dfs" && (
+        <div className="m-6 flex flex-wrap gap-4 mx-auto max-w-xl items-end">
+          <StartFromSelect
+            value={startFrom}
+            onChange={(value) => setStartFrom(+value)}
+            vertices={vertices}
+          />
+
+          <VisualizeControls
+            onPlay={handlePlay}
+            onReset={reset}
+            onPreviousStep={handlePreviousStep}
+            onNextStep={handleNextStep}
+            isPlaying={isPlaying}
+            isResetDisabled={isPlaying}
+            isPreviousStepDisabled={!hasPrevSnapshot}
+            isNextStepDisabled={!hasNextSnapshot}
+            speed={delayRef.current}
+            onChangeSpeed={onChangeSpeed}
+          />
+        </div>
+      )}
+      
       <VisualGraph
+        key="visual-graph"
         adjacencyMatrix={adjacencyMatrix}
         vertices={vertices}
         sourceHighlightedNode={currentSnapshot?.fromIndexToCheck}
@@ -106,36 +141,17 @@ export const GraphVisualize = () => {
         awaitingNodes={currentSnapshot?.stack}
         resultNodes={currentSnapshot?.result}
       />
-      <div className="mb-12 flex gap-4 mx-auto max-w-xl items-end">
-        <StartFromSelect
-          value={startFrom}
-          onChange={(value) => setStartFrom(+value)}
-          vertices={vertices}
-        />
 
-        <VisualizeControls
-          onPlay={handlePlay}
-          onReset={reset}
-          onPreviousStep={handlePreviousStep}
-          onNextStep={handleNextStep}
-          isPlaying={isPlaying}
-          isResetDisabled={isPlaying}
-          isPreviousStepDisabled={!hasPrevSnapshot}
-          isNextStepDisabled={!hasNextSnapshot}
-          speed={delayRef.current}
-          onChangeSpeed={onChangeSpeed}
-        />
-      </div>
-
-      <GraphView
+     {mode === "edit" && <GraphView
         adjacencyMatrix={adjacencyMatrix}
         disableAdd={disableAdd}
         onToggle={toggleEdge}
         onAdd={addVertex}
         vertices={vertices}
         onRemove={removeVertex}
-      />
-      <div className="mt-12">
+      />}
+    
+      {mode === "dfs" && <div className="mt-12">
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
         <CodeViewers
           langMap={languagesMapSettings}
@@ -143,7 +159,7 @@ export const GraphVisualize = () => {
           onLanguageChange={(lang: string) => setCodeLang(lang)}
           step={currentSnapshot.type}
         />
-      </div>
+      </div>}
     </div>
   );
 };
