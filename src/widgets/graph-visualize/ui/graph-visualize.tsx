@@ -31,8 +31,7 @@ const matrix = [
 
 export const GraphVisualize = () => {
   const [startFrom, setStartFrom] = useState<number>(0);
-    const [codeLang, setCodeLang] = useCodeLang();
-  
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const {
     adjacencyMatrix,
@@ -99,6 +98,14 @@ export const GraphVisualize = () => {
 
   return (
     <div className="flex flex-col sm:px-24 py-10">
+      <VisualGraph
+        adjacencyMatrix={adjacencyMatrix}
+        vertices={vertices}
+        sourceHighlightedNode={currentSnapshot?.fromIndexToCheck}
+        highlightedNode={currentSnapshot?.checkingIndex}
+        awaitingNodes={currentSnapshot?.stack}
+        resultNodes={currentSnapshot?.result}
+      />
       <div className="mb-12 flex gap-4 mx-auto max-w-xl items-end">
         <StartFromSelect
           value={startFrom}
@@ -119,13 +126,14 @@ export const GraphVisualize = () => {
           onChangeSpeed={onChangeSpeed}
         />
       </div>
-      <VisualGraph
+
+      <GraphView
         adjacencyMatrix={adjacencyMatrix}
+        disableAdd={disableAdd}
+        onToggle={toggleEdge}
+        onAdd={addVertex}
         vertices={vertices}
-        sourceHighlightedNode={currentSnapshot?.fromIndexToCheck}
-        highlightedNode={currentSnapshot?.checkingIndex}
-        awaitingNodes={currentSnapshot?.stack}
-        resultNodes={currentSnapshot?.result}
+        onRemove={removeVertex}
       />
       <div className="mt-12">
         <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
@@ -136,14 +144,6 @@ export const GraphVisualize = () => {
           step={currentSnapshot.type}
         />
       </div>
-      {/* <GraphView
-        adjacencyMatrix={adjacencyMatrix}
-        disableAdd={disableAdd}
-        onToggle={toggleEdge}
-        onAdd={addVertex}
-        vertices={vertices}
-        onRemove={removeVertex}
-      /> */}
     </div>
   );
 };
