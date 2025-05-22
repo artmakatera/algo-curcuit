@@ -43,7 +43,7 @@ function calculateNodeCoordinates(index: number): { x: number, y: number } {
   const spacing = GRAPH_CIRCLE_RADIUS * 3;
   const nodesPerRow = 3; // Number of nodes per row in the grid
   const padding = 5;
-  
+
   return {
     x: (index % nodesPerRow) * spacing + GRAPH_CIRCLE_RADIUS + padding,
     y: Math.floor(index / nodesPerRow) * spacing + GRAPH_CIRCLE_RADIUS + padding
@@ -58,15 +58,15 @@ function generateGraphLinks(
   vertices: VertexBaseData[],
   visualizationContext: LinkVisualizationContext
 ): LinkData[] {
-  const { 
-    highlightedNodeIndex, 
-    sourceHighlightedNodeIndex, 
-    awaitingNodesSet, 
-    resultNodesSet 
+  const {
+    highlightedNodeIndex,
+    sourceHighlightedNodeIndex,
+    awaitingNodesSet,
+    resultNodesSet
   } = visualizationContext;
-  
+
   const links: LinkData[] = [];
-  
+
   // Iterate through the adjacency matrix to find edges
   for (let sourceIndex = 0; sourceIndex < adjacencyMatrix.length; sourceIndex++) {
     for (let targetIndex = 0; targetIndex < adjacencyMatrix[sourceIndex].length; targetIndex++) {
@@ -75,15 +75,15 @@ function generateGraphLinks(
         const sourceId = vertices[sourceIndex].id;
         const targetId = vertices[targetIndex].id;
         if (sourceId === targetId) continue; // Skip self-loops
-        
+
         // Determine link visualization states
-        const isHighlighted = 
+        const isHighlighted =
           highlightedNodeIndex === targetIndex && sourceHighlightedNodeIndex === sourceIndex;
-        const isAwaiting = 
+        const isAwaiting =
           awaitingNodesSet.has(targetIndex) && resultNodesSet.has(sourceIndex);
-        const isResult = 
+        const isResult =
           resultNodesSet.has(targetIndex) && resultNodesSet.has(sourceIndex);
-        
+
         links.push({
           source: sourceId,
           target: targetId,
@@ -95,7 +95,7 @@ function generateGraphLinks(
       }
     }
   }
-  
+
   return links;
 }
 
@@ -112,23 +112,23 @@ function generateGraphNodes(
     resultNodesSet: Set<number>;
   }
 ): GraphNode[] {
-  const { 
-    highlightedNodeIndex, 
-    sourceHighlightedNodeIndex, 
-    awaitingNodesSet, 
-    resultNodesSet 
+  const {
+    highlightedNodeIndex,
+    sourceHighlightedNodeIndex,
+    awaitingNodesSet,
+    resultNodesSet
   } = visualizationContext;
-  
+
   return adjacencyMatrix.map((nodeLinks, index) => {
     const { id, value } = vertices[index];
     const { x, y } = calculateNodeCoordinates(index);
-    
+
     // Determine node visualization states
-    const isHighlighted = 
+    const isHighlighted =
       highlightedNodeIndex === index || sourceHighlightedNodeIndex === index;
     const isAwaiting = awaitingNodesSet.has(index);
     const isResult = resultNodesSet.has(index);
-    
+
     return {
       id,
       name: value,
@@ -138,7 +138,9 @@ function generateGraphNodes(
       isHighlighted,
       isAwaiting,
       isResult,
-      isLooped: nodeLinks[index] === 1, // Self-loop check
+      isLooped: nodeLinks[index] === 1, // Self-loop check,
+      loopCheck: sourceHighlightedNodeIndex === index && highlightedNodeIndex === index,
+      loopResult: (isResult && sourceHighlightedNodeIndex !== index) || (sourceHighlightedNodeIndex === index && (highlightedNodeIndex ?? -1) > index),
     };
   });
 }
@@ -156,27 +158,27 @@ export function transformAdjacencyMatrixToGraph(
   vertices: VertexBaseData[],
   options: GraphVisualizationOptions = {}
 ): GraphVisualizationData {
-  const { 
+  const {
     highlightedNodeIndex: highlightedNode = null,
     sourceHighlightedNodeIndex: sourceHighlightedNode = null,
     awaitingNodeIndices: awaitingNodes = [],
-    resultNodeIndices: resultNodes = [] 
+    resultNodeIndices: resultNodes = []
   } = options;
-  
+
   // Create sets for efficient lookups
   const awaitingNodesSet = new Set<number>(awaitingNodes);
   const resultNodesSet = new Set<number>(resultNodes);
-  
+
   const visualizationContext = {
     highlightedNodeIndex: highlightedNode,
     sourceHighlightedNodeIndex: sourceHighlightedNode,
     awaitingNodesSet,
     resultNodesSet
   };
-  
+
   // Generate nodes and links
   const nodes = generateGraphNodes(vertices, adjacencyMatrix, visualizationContext);
   const links = generateGraphLinks(adjacencyMatrix, vertices, visualizationContext);
-  
+
   return { nodes, links };
 }

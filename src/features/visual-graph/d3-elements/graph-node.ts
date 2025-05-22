@@ -14,7 +14,9 @@ export type GraphNode = {
   isHighlighted: boolean;
   isAwaiting: boolean;
   isResult: boolean;
-  isLooped?: boolean;
+  isLooped: boolean;
+  loopCheck: boolean;
+  loopResult: boolean;
 }
 
 export const GRAPH_CIRCLE_RADIUS = 16;
@@ -71,7 +73,7 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
         node
           .append("path")
           .attr("d", () => getLoopPath())
-          .attr("class", "stroke-foreground stroke-[1.5px] fill-none opacity-0 transition-opacity duration-500")
+          .attr("class", "graph-loop-path stroke-foreground stroke-[1.5px] fill-none opacity-0 transition-opacity duration-500")
           .attr("transform", "scale(0.4)")
           .transition(t)
           .attr("transform", "scale(1)")
@@ -85,7 +87,7 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
               L ${x} ${-y - 7}å
                Z`
           })
-          .attr("class", "fill-foreground opacity-0 transition-opacity duration-500")
+          .attr("class", "graph-loop-arrow fill-foreground opacity-0 transition-opacity duration-500")
           .attr("transform", "scale(0.4)")
           .transition(t)
           .attr("transform", "scale(1)")
@@ -99,7 +101,9 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
           .classed("[&_circle]:stroke-red-500", (d) => d.isHighlighted)
           .classed("[&_circle]:fill-blue-500", (d) => d.isAwaiting)
           .classed("[&_circle]:fill-yellow-500", (d) => d.isResult)
-          .classed("[&_path]:opacity-100", (d) => !!d.isLooped)
+          .classed("[&_path]:opacity-100", (d) => d.isLooped)
+          .classed("[&_.graph-loop-arrow]:fill-blue-500 [&_.graph-loop-path]:stroke-blue-500", (d) => d.loopCheck)
+          .classed("[&_.graph-loop-arrow]:fill-yellow-500 [&_.graph-loop-path]:stroke-yellow-500", (d) => d.loopResult)
       },
       (exit) => exit
         .remove()
