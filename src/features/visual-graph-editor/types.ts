@@ -12,5 +12,6 @@ export interface GraphEditorProps {
   onToggle?: UpdateGraphEdge;
   onRemove?: RemoveGraphVertex;
   disableAdd?: boolean;
+  disableLoop?: boolean;
   vertices?: VertexBaseData[];
 }

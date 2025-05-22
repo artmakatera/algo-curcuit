@@ -12,6 +12,7 @@ export const AdjacencyMatrixTable = ({
   onToggle,
   onRemove,
   vertices = [],
+  disableLoop,
 }: GraphEditorProps) => {
   return (
     <div className="  sm:mx-auto pl-2 ">
@@ -42,7 +43,7 @@ export const AdjacencyMatrixTable = ({
 
               {/* Data Cells */}
               {row.map((cell, cellIndex) => {
-                const isDisabled = cellIndex === rowIndex;
+                const isDisabled = cellIndex === rowIndex && disableLoop;
                 return (
                   <AdjacencyMatrixTableLinkCell
                     key={cellIndex}

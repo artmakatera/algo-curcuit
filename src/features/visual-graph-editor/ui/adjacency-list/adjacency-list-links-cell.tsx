@@ -13,12 +13,13 @@ interface AdjacencyListLinksCellProps {
   links: number[];
   vertices: VertexBaseData[];
   onToggle?: UpdateGraphEdge;
+  disableLoop?: boolean;
 }
 
-const getConnectedAndNotIndexes = (links: number[], rowIndex: number) => links.reduce<Record<string, number[]>>((acc, value, index) => {
+const getConnectedAndNotIndexes = (links: number[], rowIndex: number, disableLoop?: boolean) => links.reduce<Record<string, number[]>>((acc, value, index) => {
   if (hasGraphEdge(value)) {
     acc.connected.push(index);
-  } else if (rowIndex !== index) {
+  } else if (rowIndex !== index || !disableLoop) {
     acc.toConnect.push(index);
   }
 
@@ -33,9 +34,10 @@ export const AdjacencyListLinksCell = ({
   vertices,
   links,
   onToggle,
+  disableLoop,
 }: AdjacencyListLinksCellProps) => {
   
-  const { connected, toConnect } = getConnectedAndNotIndexes(links, rowIndex)
+  const { connected, toConnect } = getConnectedAndNotIndexes(links, rowIndex, disableLoop)
   return (
     <td className="border text-left bg-background">
       <div className="m-1 flex items-center justify-start flex-wrap gap-2">

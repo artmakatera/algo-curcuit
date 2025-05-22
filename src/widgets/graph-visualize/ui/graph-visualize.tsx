@@ -14,8 +14,6 @@ import { languagesMapSettings } from "../model/dfs/languages-map-settings";
 import { LANGUAGES, Mode, MODES } from "../model/constants";
 import { StepSnapshotPayload } from "../model/types";
 
-import { VisualizeControls } from "@/features/visualizer-player-controls";
-import StartFromSelect from "./start-from-select";
 import { useCodeLang } from "@/shared/contexts/code-lang";
 import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewers } from "@/components/ui/code-viewers";
@@ -159,6 +157,7 @@ export const GraphVisualize = () => {
           onAdd={addVertex}
           vertices={vertices}
           onRemove={removeVertex}
+          disableLoop={!isLoop}
         />
       )}
 

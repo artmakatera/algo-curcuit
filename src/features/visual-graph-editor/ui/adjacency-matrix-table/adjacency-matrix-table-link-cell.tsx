@@ -6,7 +6,7 @@ interface AdjacencyMatrixTableLinkCellProps extends Omit<React.HTMLProps<HTMLTab
   rowIndex: number;
   cellIndex: number;
   cellValue: number;
-  disabled: boolean;
+  disabled?: boolean;
   onClick?: UpdateGraphEdge;
 }
 

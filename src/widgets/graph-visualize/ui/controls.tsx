@@ -40,10 +40,10 @@ export const Controls = ({
           <Switch id="is-undirected-graph" checked={isUndirected} onCheckedChange={setIsUndirected} />
           <Label htmlFor="is-undirected-graph">Undirected</Label>
         </div>
-        {/* <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <Switch id="is-loop-graph" checked={isLoop} onCheckedChange={setIsLoop} />
-          <Label htmlFor="is-loop-graph">Loop</Label>
-        </div> */}
+          <Label htmlFor="is-loop-graph">Allow Loop</Label>
+        </div>
       </div>
     );
   }

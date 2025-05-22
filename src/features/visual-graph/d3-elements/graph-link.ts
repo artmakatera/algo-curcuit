@@ -13,7 +13,6 @@ export type LinkData = {
 };
 
 export const getGraphLink = (svg: d3.Selection<null, unknown, null, undefined>, data: LinkData[]) => {
-  console.log("getGraphLink", data)
   return svg
     .selectAll(".link")
     .data(data, (d: any, i) => {

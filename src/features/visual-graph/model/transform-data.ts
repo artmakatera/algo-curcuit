@@ -74,6 +74,7 @@ function generateGraphLinks(
       if (hasGraphEdge(adjacencyMatrix[sourceIndex][targetIndex])) {
         const sourceId = vertices[sourceIndex].id;
         const targetId = vertices[targetIndex].id;
+        if (sourceId === targetId) continue; // Skip self-loops
         
         // Determine link visualization states
         const isHighlighted = 
@@ -118,7 +119,7 @@ function generateGraphNodes(
     resultNodesSet 
   } = visualizationContext;
   
-  return adjacencyMatrix.map((_, index) => {
+  return adjacencyMatrix.map((nodeLinks, index) => {
     const { id, value } = vertices[index];
     const { x, y } = calculateNodeCoordinates(index);
     
@@ -137,6 +138,7 @@ function generateGraphNodes(
       isHighlighted,
       isAwaiting,
       isResult,
+      isLooped: nodeLinks[index] === 1, // Self-loop check
     };
   });
 }

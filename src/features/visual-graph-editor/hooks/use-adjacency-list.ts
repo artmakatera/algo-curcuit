@@ -101,6 +101,13 @@ export const useAdjacencyMatrix = (initialValue: AdjacencyMatrix) => {
 
   const onLoopChange = useCallback((value: boolean) => {
     setIsLoop(value);
+    setAdjacencyMatrix((prev) => {
+      const newAdjacencyMatrix = prev.map((row) => [...row]); // Create a copy of the adjacency list
+      for (let i = 0; i < prev.length; i++) {
+        newAdjacencyMatrix[i][i] = 0; // Remove self-loop
+      }
+      return newAdjacencyMatrix;
+    });
   }, []);
 
 

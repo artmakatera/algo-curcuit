@@ -12,6 +12,7 @@ export const AdjacencyList = ({
   onToggle,
   onRemove,
   vertices = [],
+  disableLoop,
 }: GraphEditorProps) => {
   return (
     <div className="w-[305px] relative sm:mx-auto">
@@ -38,6 +39,7 @@ export const AdjacencyList = ({
                 rowIndex={rowIndex}
                 vertices={vertices}
                 onToggle={onToggle}
+                disableLoop={disableLoop}
               />
             </tr>
           ))}
