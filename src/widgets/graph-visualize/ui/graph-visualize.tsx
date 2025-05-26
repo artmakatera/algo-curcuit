@@ -7,10 +7,12 @@ import { GraphView } from "./graph-view";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { dfs } from "../model/dfs/dfs";
+import { bfs } from "../model/bfs/bfs"; // Import BFS function
 import { defaultSnapshots } from "../model/create-step-snapshot";
 import { AdjacencyMatrix } from "@/shared/types/data-structures";
 import { createStepSnapshot as createStepSnapshotThunk } from "../model/create-step-snapshot";
-import { languagesMapSettings } from "../model/dfs/languages-map-settings";
+import { languagesMapSettings as dfsLanguagesMapSettings } from "../model/dfs/languages-map-settings";
+import { languagesMapSettings as bfsLanguagesMapSettings } from "../model/bfs/languages-map-settings"; // Import BFS language settings
 import { LANGUAGES, Mode, MODES } from "../model/constants";
 import { StepSnapshotPayload } from "../model/types";
 
@@ -30,7 +32,6 @@ const matrix = [
 ];
 
 export const GraphVisualize = () => {
-
   const [startFrom, setStartFrom] = useState<number>(0);
   const [codeLang, setCodeLang] = useCodeLang();
   const [mode, setMode] = useState<Mode>("edit");
@@ -49,23 +50,29 @@ export const GraphVisualize = () => {
   } = useAdjacencyMatrix(matrix);
 
   const genCall = useMemo(() => {
-    // if (activeType === ActionType.bfs) {
-    //   return tree.bfs as unknown as () => Generator<
-    //     GenValuePayload,
-    //     void,
-    //     unknown
-    //   >;
-    // }
+    if (mode === "bfs") {
+      return bfs as unknown as () => Generator<
+        StepSnapshotPayload,
+        void,
+        unknown
+      >;
+    }
     return dfs as unknown as () => Generator<
       StepSnapshotPayload,
       void,
       unknown
     >;
-  }, []);
+  }, [mode]);
+
+  // Select language settings based on the current mode
+  const currentLanguageSettings = useMemo(() => {
+    return mode === "bfs" ? bfsLanguagesMapSettings : dfsLanguagesMapSettings;
+  }, [mode]);
 
   const createStepSnapshot = useMemo(
-    () => createStepSnapshotThunk(languagesMapSettings, LANGUAGES.javascript),
-    [languagesMapSettings, createStepSnapshotThunk]
+    () =>
+      createStepSnapshotThunk(currentLanguageSettings, LANGUAGES.javascript),
+    [currentLanguageSettings, createStepSnapshotThunk]
   );
 
   const {
@@ -97,8 +104,12 @@ export const GraphVisualize = () => {
   }, [visualize]);
 
   useEffect(() => {
-    reset();
-  }, [adjacencyMatrix, startFrom]);
+    if (mode === "edit") {
+      clearSnapshots();
+    } else {
+      reset();
+    }
+  }, [adjacencyMatrix, startFrom, mode]);
 
   return (
     <div className="flex flex-col px-2 sm:px-24 py-10">
@@ -107,35 +118,29 @@ export const GraphVisualize = () => {
         value={mode}
         onValueChange={(value) => {
           setMode(value as Mode);
-          if (value === "edit") {
-            clearSnapshots();
-          } else {
-            setStartFrom(0);
-            reset();
-          }
         }}
       />
 
-        <Controls
-          isEditMode={mode === "edit"}
-          startFrom={startFrom}
-          setStartFrom={setStartFrom}
-          vertices={vertices}
-          onPlay={handlePlay}
-          onReset={reset}
-          onPreviousStep={handlePreviousStep}
-          onNextStep={handleNextStep}
-          isPlaying={isPlaying}
-          isResetDisabled={isPlaying}
-          isPreviousStepDisabled={!hasPrevSnapshot}
-          isNextStepDisabled={!hasNextSnapshot}
-          speed={delayRef.current}
-          onChangeSpeed={onChangeSpeed}
-          isLoop={isLoop}
-          setIsLoop={setIsLoop}
-          isUndirected={isUndirected}
-          setIsUndirected={setIsUndirected}
-        />
+      <Controls
+        isEditMode={mode === "edit"}
+        startFrom={startFrom}
+        setStartFrom={setStartFrom}
+        vertices={vertices}
+        onPlay={handlePlay}
+        onReset={reset}
+        onPreviousStep={handlePreviousStep}
+        onNextStep={handleNextStep}
+        isPlaying={isPlaying}
+        isResetDisabled={isPlaying}
+        isPreviousStepDisabled={!hasPrevSnapshot}
+        isNextStepDisabled={!hasNextSnapshot}
+        speed={delayRef.current}
+        onChangeSpeed={onChangeSpeed}
+        isLoop={isLoop}
+        setIsLoop={setIsLoop}
+        isUndirected={isUndirected}
+        setIsUndirected={setIsUndirected}
+      />
 
       <VisualGraph
         key="visual-graph"
@@ -143,7 +148,9 @@ export const GraphVisualize = () => {
         vertices={vertices}
         sourceHighlightedNode={currentSnapshot?.fromIndexToCheck}
         highlightedNode={currentSnapshot?.checkingIndex}
-        awaitingNodes={currentSnapshot?.stack}
+        awaitingNodes={
+          mode === "bfs" ? currentSnapshot?.queue : currentSnapshot?.stack
+        }
         resultNodes={currentSnapshot?.result}
         isUndirected={isUndirected}
         isLoop={isLoop}
@@ -161,11 +168,11 @@ export const GraphVisualize = () => {
         />
       )}
 
-      {mode === "dfs" && (
+      {(mode === "dfs" || mode === "bfs") && (
         <div className="mt-12 self-center">
           <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
           <CodeViewers
-            langMap={languagesMapSettings}
+            langMap={currentLanguageSettings}
             language={codeLang}
             onLanguageChange={(lang: string) => setCodeLang(lang)}
             step={currentSnapshot.type}

@@ -8,7 +8,7 @@ import { StepSnapshot, StepSnapshotPayload } from "./types";
 
 
 export const createStepSnapshot = (languagesMapSettings: typeof baseObject, codeLang: keyof typeof baseObject = LANGUAGES.javascript) => (payload: StepSnapshotPayload): StepSnapshot => {
-  const { type, stack, visited,checkingIndex, result, fromIndexToCheck } = payload;
+  const { type, stack, visited, checkingIndex, result, fromIndexToCheck, queue } = payload;
   return {
     type,
     stack,
@@ -16,6 +16,7 @@ export const createStepSnapshot = (languagesMapSettings: typeof baseObject, code
     result,
     checkingIndex,
     fromIndexToCheck,
+    queue,
     highlightLines: languagesMapSettings[codeLang]?.highlightLines[type] || [],
   };
 };

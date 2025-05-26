@@ -20,7 +20,7 @@ export const LANGUAGES = {
 export const MODES = [
   { value: "edit", label: "Edit", icon: <Edit className="h-4 w-4" /> },
   { value: "dfs", label: "DFS", icon: <GitBranch className="h-4 w-4" /> },
-  // { value: "bfs", label: "BFS", icon: <Search className="h-4 w-4" /> },
+  { value: "bfs", label: "BFS", icon: <Search className="h-4 w-4" /> },
 ];
 
 export type Mode = (typeof MODES)[number]["value"];
