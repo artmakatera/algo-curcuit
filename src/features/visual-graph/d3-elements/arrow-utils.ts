@@ -2,6 +2,8 @@
  * Utility functions for creating Safari-compatible arrows in D3 graphs
  */
 
+import { GRAPH_CIRCLE_RADIUS } from "./constants";
+
 /**
  * Creates an SVG path string for an arrow at the end of a line
  * @param x1 - Start x coordinate
@@ -12,17 +14,34 @@
  * @param nodeRadius - Distance from target node center to arrow tip (default: 25)
  * @returns SVG path string for the arrow
  */
-export const createArrowPath = (
-  x1: number, 
-  y1: number, 
-  x2: number, 
-  y2: number, 
-  arrowSize: number = 8,
-  nodeRadius: number = 16
-): string => {
-  const angle = Math.atan2(y2 - y1, x2 - x1);
+interface ArrowPathParams {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  arrowSize?: number;
+  nodeRadius?: number;
+  startArrow?: boolean; // Optional, not used in this function but can be extended
+}
+
+export const createArrowPath = ({
+  x1,
+  y1,
+  x2,
+  y2,
+  arrowSize = 8,
+  nodeRadius = GRAPH_CIRCLE_RADIUS,
+  startArrow = false, // Optional, not used in this function but can be extended
+}: ArrowPathParams): string => {
+  let angle = Math.atan2(y2 - y1, x2 - x1);
   const arrowLength = arrowSize;
-  
+
+  if (startArrow) {
+    [x1, y1, x2, y2] = [x2, y2, x1, y1];
+    angle += Math.PI; // Adjust angle for start arrow
+    
+  }
+
   // Calculate arrow tip position (slightly before the actual end to account for node radius)
   const tipX = x2 - Math.cos(angle) * nodeRadius;
   const tipY = y2 - Math.sin(angle) * nodeRadius;

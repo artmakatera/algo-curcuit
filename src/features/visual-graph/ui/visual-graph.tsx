@@ -10,7 +10,6 @@ import {
   forceManyBody,
   forceLink,
   type SimulationNodeDatum,
-  filter,
   SimulationLinkDatum,
 } from "d3";
 
@@ -18,14 +17,18 @@ import {
   getGraphLink,
   getGraphNode,
   GraphNode,
-  LinkData,
+  createArrowPath,
+  GRAPH_LINK_LINE_CLASSNAME,
+  GRAPH_LINK_GROUP_CLASSNAME,
+  GRAPH_LINK_END_ARROW_CLASSNAME,
 } from "../d3-elements";
 import {
   AdjacencyMatrix,
   VertexBaseData,
 } from "@/shared/types/data-structures";
 import { transformAdjacencyMatrixToGraph } from "../model/transform-data";
-import { createArrowPath } from "@/shared/lib/d3/arrow-utils";
+
+
 
 // function clamp(x: number, lo: number, hi: number) {
 //   return x < lo ? lo : x > hi ? hi : x;
@@ -106,17 +109,24 @@ export const VisualGraph = ({
         
         if (source.x !== undefined && source.y !== undefined && 
             target.x !== undefined && target.y !== undefined) {
-          
           // Update line position
-          group.select(".link-line")
+          group.select(`.${GRAPH_LINK_LINE_CLASSNAME}`)
             .attr("x1", source.x)
             .attr("y1", source.y)
             .attr("x2", target.x)
             .attr("y2", target.y);
+            
           
           // Update arrow position and shape
-          group.select(".link-arrow")
-            .attr("d", createArrowPath(Number(source.x), Number(source.y), Number(target.x), Number(target.y)))
+          group.select(`.${GRAPH_LINK_END_ARROW_CLASSNAME}`)
+            .attr("d", createArrowPath(
+              {
+                x1: +source.x,
+                y1: +source.y,
+                x2: +target.x,
+                y2: +target.y,
+              }
+            ))
         }
       });
 
