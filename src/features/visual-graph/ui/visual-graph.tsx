@@ -21,6 +21,7 @@ import {
   GRAPH_LINK_LINE_CLASSNAME,
   GRAPH_LINK_GROUP_CLASSNAME,
   GRAPH_LINK_END_ARROW_CLASSNAME,
+  GRAPH_LINK_START_ARROW_CLASSNAME,
 } from "../d3-elements";
 import {
   AdjacencyMatrix,
@@ -63,6 +64,7 @@ export const VisualGraph = ({
       awaitingNodeIndices: awaitingNodes,
       resultNodeIndices: resultNodes,
       sourceHighlightedNodeIndex: sourceHighlightedNode,
+      hasArrows: !isUndirected,
     });
     const svg = select(ref.current);
     const link = getGraphLink(svg, graphData.links);
@@ -127,8 +129,20 @@ export const VisualGraph = ({
                 y2: +target.y,
               }
             ))
+
+            group.select(`.${GRAPH_LINK_START_ARROW_CLASSNAME}`)
+              .attr("d", createArrowPath(
+                {
+                  x1: +source.x,
+                  y1: +source.y,
+                  x2: +target.x,
+                  y2: +target.y,
+                  startArrow: true,
+                }
+              ));
         }
       });
+
 
       node.attr("transform", (d) => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
     }

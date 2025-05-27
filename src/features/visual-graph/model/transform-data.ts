@@ -2,6 +2,7 @@ import { AdjacencyMatrix, VertexBaseData } from "@/shared/types/data-structures"
 import { GRAPH_CIRCLE_RADIUS, GraphNode } from "../d3-elements";
 import { hasGraphEdge } from "@/features/visual-graph-editor";
 import { LinkData } from "../d3-elements/graph-link";
+import clsx from "clsx";
 
 /**
  * Options for node visualization states
@@ -15,6 +16,7 @@ interface GraphVisualizationOptions {
   awaitingNodeIndices?: number[];
   /** Indices of nodes that are part of the result (e.g., part of the path found) */
   resultNodeIndices?: number[];
+  hasArrows?: boolean; // Whether to show arrows on links
 }
 
 /**
@@ -25,6 +27,8 @@ interface LinkVisualizationContext {
   sourceHighlightedNodeIndex?: number | null;
   awaitingNodesSet: Set<number>;
   resultNodesSet: Set<number>;
+  hasArrows?: boolean; // Whether to show arrows on links
+
 }
 
 /**
@@ -62,10 +66,11 @@ function generateGraphLinks(
     highlightedNodeIndex,
     sourceHighlightedNodeIndex,
     awaitingNodesSet,
-    resultNodesSet
+    resultNodesSet,
+    hasArrows = true
   } = visualizationContext;
 
-  const links: LinkData[] = [];
+  const linksMap = new Map<string, LinkData>();
 
   // Iterate through the adjacency matrix to find edges
   for (let sourceIndex = 0; sourceIndex < adjacencyMatrix.length; sourceIndex++) {
@@ -76,6 +81,13 @@ function generateGraphLinks(
         const targetId = vertices[targetIndex].id;
         if (sourceId === targetId) continue; // Skip self-loops
 
+        const existedLinkId = createLinkId(targetId, sourceId);
+        if (linksMap.has(existedLinkId)) {
+          const existingLink = linksMap.get(existedLinkId)!;
+          existingLink.startArrow = hasArrows;
+          continue;
+        }
+
         // Determine link visualization states
         const isHighlighted =
           highlightedNodeIndex === targetIndex && sourceHighlightedNodeIndex === sourceIndex;
@@ -83,11 +95,13 @@ function generateGraphLinks(
           awaitingNodesSet.has(targetIndex) && resultNodesSet.has(sourceIndex);
         const isResult =
           resultNodesSet.has(targetIndex) && resultNodesSet.has(sourceIndex);
-
-        links.push({
+        const linkId = createLinkId(sourceId, targetId);
+        linksMap.set(linkId, {
           source: sourceId,
           target: targetId,
-          id: `${sourceId}-${targetId}`,
+          id: linkId,
+          endArrow: hasArrows,
+          startArrow: false,
           isHighlighted,
           isAwaiting,
           isResult,
@@ -96,7 +110,7 @@ function generateGraphLinks(
     }
   }
 
-  return links;
+  return Array.from(linksMap.values());
 }
 
 /**
@@ -162,7 +176,9 @@ export function transformAdjacencyMatrixToGraph(
     highlightedNodeIndex: highlightedNode = null,
     sourceHighlightedNodeIndex: sourceHighlightedNode = null,
     awaitingNodeIndices: awaitingNodes = [],
-    resultNodeIndices: resultNodes = []
+    resultNodeIndices: resultNodes = [],
+  hasArrows = true
+
   } = options;
 
   // Create sets for efficient lookups
@@ -173,7 +189,8 @@ export function transformAdjacencyMatrixToGraph(
     highlightedNodeIndex: highlightedNode,
     sourceHighlightedNodeIndex: sourceHighlightedNode,
     awaitingNodesSet,
-    resultNodesSet
+    resultNodesSet,
+    hasArrows
   };
 
   // Generate nodes and links
@@ -181,4 +198,9 @@ export function transformAdjacencyMatrixToGraph(
   const links = generateGraphLinks(adjacencyMatrix, vertices, visualizationContext);
 
   return { nodes, links };
+}
+
+
+function createLinkId(source: number, target: number): string {
+  return `${source}-${target}`;
 }
