@@ -25,12 +25,13 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
   const t = transition()
     .duration(1000)
   const node = svg
-    .selectAll("g")
+    .selectAll(".graph-vertex-node")
     .data(nodeData, (d: any, i) => d.id)
     .join(
       (enter) => {
         const node = enter
           .append("g")
+          .attr("class", "graph-vertex-node")
           .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
 
         node
@@ -97,7 +98,7 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
       },
       (update) => {
         return update
-          .attr("class", "[&_circle]:transition-[stroke] [&_circle]:duration-600 [&_circle]:delay-500")
+          .attr("class", "graph-vertex-node [&_circle]:transition-[stroke] [&_circle]:duration-600 [&_circle]:delay-500")
           .classed("[&_circle]:stroke-red-500", (d) => d.isHighlighted)
           .classed("[&_circle]:fill-blue-500", (d) => d.isAwaiting)
           .classed("[&_circle]:fill-yellow-500", (d) => d.isResult)

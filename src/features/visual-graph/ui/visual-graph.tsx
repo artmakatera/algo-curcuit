@@ -14,7 +14,6 @@ import {
   SimulationLinkDatum,
 } from "d3";
 
-import { addDefsAndArrowMarker } from "@/shared/lib/d3/marker-helpers";
 import {
   getGraphLink,
   getGraphNode,
@@ -26,6 +25,7 @@ import {
   VertexBaseData,
 } from "@/shared/types/data-structures";
 import { transformAdjacencyMatrixToGraph } from "../model/transform-data";
+import { createArrowPath } from "@/shared/lib/d3/arrow-utils";
 
 // function clamp(x: number, lo: number, hi: number) {
 //   return x < lo ? lo : x > hi ? hi : x;
@@ -62,7 +62,6 @@ export const VisualGraph = ({
       sourceHighlightedNodeIndex: sourceHighlightedNode,
     });
     const svg = select(ref.current);
-    const defs = addDefsAndArrowMarker(svg, isUndirected);
     const link = getGraphLink(svg, graphData.links);
     
     const node = getGraphNode(svg, graphData.nodes);
@@ -97,27 +96,35 @@ export const VisualGraph = ({
       .on("tick", tick);
 
     function tick() {
-      const updateCoordinates =
-        (directionKey: "source" | "target", coord: "x" | "y") =>
-        (d: LinkData) => {
-          const node = d[directionKey] as GraphNode;
-          return node[coord] ?? 0;
-        };
-
       if (isTraversing) return;
 
-      link
-        .attr("x1", updateCoordinates("source", "x"))
-        .attr("y1", updateCoordinates("source", "y"))
-        .attr("x2", updateCoordinates("target", "x"))
-        .attr("y2", updateCoordinates("target", "y"));
+      // Update link groups with new positions for both lines and arrows
+      link.each(function(d: any) {
+        const group = select(this);
+        const source = d.source as GraphNode;
+        const target = d.target as GraphNode;
+        
+        if (source.x !== undefined && source.y !== undefined && 
+            target.x !== undefined && target.y !== undefined) {
+          
+          // Update line position
+          group.select(".link-line")
+            .attr("x1", source.x)
+            .attr("y1", source.y)
+            .attr("x2", target.x)
+            .attr("y2", target.y);
+          
+          // Update arrow position and shape
+          group.select(".link-arrow")
+            .attr("d", createArrowPath(Number(source.x), Number(source.y), Number(target.x), Number(target.y)))
+        }
+      });
 
       node.attr("transform", (d) => `translate(${d.x ?? 0}, ${d.y ?? 0})`);
     }
 
     return () => {
       simulation.stop();
-      defs.remove();
     };
   }, [
     adjacencyMatrix,
