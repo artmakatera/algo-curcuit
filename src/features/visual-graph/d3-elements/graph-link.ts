@@ -45,7 +45,7 @@ export const getGraphLink = (svg: d3.Selection<null, unknown, null, undefined>, 
           .attr("opacity", 0)
           .transition(transition().delay(1000).duration(200))
           .attr("opacity", d => d.startArrow ? 1 : 0)
-          .attr("class", cn(GRAPH_LINK_START_ARROW_CLASSNAME, "fill-foreground transition-fill duration-500"));
+          .attr("class", cn(GRAPH_LINK_START_ARROW_CLASSNAME, "fill-foreground transition-[fill] duration-500"));
 
         // Add the end arrow
         group
@@ -53,7 +53,7 @@ export const getGraphLink = (svg: d3.Selection<null, unknown, null, undefined>, 
           .attr("opacity", 0)
           .transition(transition().delay(1000).duration(200))
           .attr("opacity", d => d.endArrow ? 1 : 0)
-          .attr("class", cn(GRAPH_LINK_END_ARROW_CLASSNAME, "fill-foreground transition-fill duration-500"));
+          .attr("class", cn(GRAPH_LINK_END_ARROW_CLASSNAME, "fill-foreground transition-[fill] duration-500"));
 
         return group;
       },
