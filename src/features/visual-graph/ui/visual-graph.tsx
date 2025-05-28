@@ -84,16 +84,14 @@ export const VisualGraph = ({
           .id((d) => {
             return vertices[d.index || 0].id;
           })
-          .strength(1)
+          .strength(0.5)
           .distance((link) => {
             const deltaIndexes = Math.abs(
               (link.source as SimulationNodeDatum).index! -
                 (link.target as SimulationNodeDatum).index!
             );
-            if (deltaIndexes < 3) {
-              return 50;
-            }
-            return 100;
+            
+            return 80
           })
           .iterations(10)
       )
