@@ -1,10 +1,15 @@
 
 
 import { cn } from "@/shared/lib/utils";
-import { transition, easeLinear } from "d3";
+import { transition, easeLinear, type Selection } from "d3";
 import { GraphNode } from "./graph-node";
-
-import { GRAPH_LINK_GROUP_CLASSNAME, GRAPH_LINK_END_ARROW_CLASSNAME, GRAPH_LINK_LINE_CLASSNAME, GRAPH_VERTEX_CLASSNAME, GRAPH_LINK_START_ARROW_CLASSNAME } from "./constants";
+import {
+  GRAPH_LINK_GROUP_CLASSNAME,
+  GRAPH_LINK_END_ARROW_CLASSNAME,
+  GRAPH_LINK_LINE_CLASSNAME,
+  GRAPH_VERTEX_CLASSNAME,
+  GRAPH_LINK_START_ARROW_CLASSNAME
+} from "./constants";
 
 export type LinkData = {
   source: number | string | GraphNode;
@@ -17,8 +22,35 @@ export type LinkData = {
   startArrow?: boolean;
 };
 
-export const getGraphLink = (svg: d3.Selection<null, unknown, null, undefined>, data: LinkData[]) => {
-  // Create a group for each link to contain both line and arrow
+/**
+ * Animation timing constants
+ */
+const ANIMATION_TIMING = {
+  LINE_DELAY: 500,
+  LINE_DURATION: 500,
+  ARROW_DELAY: 1000,
+  ARROW_DURATION: 200,
+} as const;
+
+/**
+ * CSS classes for different link states
+ */
+const STATE_CLASSES = {
+  highlighted: {
+    stroke: "stroke-red-500",
+    fill: "fill-red-500",
+  },
+  awaiting: {
+    stroke: "stroke-blue-500",
+    fill: "fill-blue-500",
+  },
+  result: {
+    stroke: "stroke-yellow-500",
+    fill: "fill-yellow-500",
+  },
+} as const;
+
+export const getGraphLink = (svg: Selection<null, unknown, null, undefined>, data: LinkData[]) => {
   const linkGroups = svg
     .selectAll(`.${GRAPH_LINK_GROUP_CLASSNAME}`)
     .data(data, (d: any) => d.id)
@@ -28,54 +60,68 @@ export const getGraphLink = (svg: d3.Selection<null, unknown, null, undefined>, 
           .insert("g", `.${GRAPH_VERTEX_CLASSNAME}`)
           .attr("class", GRAPH_LINK_GROUP_CLASSNAME);
 
-        // Add the line
+        // Create and animate the line
         const line = group
           .append("line")
           .attr("class", cn(GRAPH_LINK_LINE_CLASSNAME, "stroke-foreground transition-stroke duration-500"))
           .attr("stroke-width", 1.5);
-        // Animate the line drawing
+
         line
           .attr("stroke-dasharray", "0, 100")
-          .transition(transition().delay(500).duration(500).ease(easeLinear))
+          .transition(transition()
+            .delay(ANIMATION_TIMING.LINE_DELAY)
+            .duration(ANIMATION_TIMING.LINE_DURATION)
+            .ease(easeLinear)
+          )
           .attr("stroke-dasharray", "100, 100");
 
-        // Add the start arrow
+        // Create and animate start arrow
         group
           .append("path")
           .attr("opacity", 0)
-          .transition(transition().delay(1000).duration(200))
+          .transition(transition()
+            .delay(ANIMATION_TIMING.ARROW_DELAY)
+            .duration(ANIMATION_TIMING.ARROW_DURATION)
+          )
           .attr("opacity", d => d.startArrow ? 1 : 0)
-          .attr("class", cn(GRAPH_LINK_START_ARROW_CLASSNAME, "fill-foreground transition-[fill] duration-500"));
+          .attr("class", cn(GRAPH_LINK_START_ARROW_CLASSNAME, "fill-foreground transition-[fill] duration-500"))
 
-        // Add the end arrow
+        // Create and animate end arrow
         group
           .append("path")
           .attr("opacity", 0)
-          .transition(transition().delay(1000).duration(200))
+          .transition(transition()
+            .delay(ANIMATION_TIMING.ARROW_DELAY)
+            .duration(ANIMATION_TIMING.ARROW_DURATION)
+          )
           .attr("opacity", d => d.endArrow ? 1 : 0)
-          .attr("class", cn(GRAPH_LINK_END_ARROW_CLASSNAME, "fill-foreground transition-[fill] duration-500"));
+          .attr("class", cn(GRAPH_LINK_END_ARROW_CLASSNAME, "fill-foreground transition-[fill] duration-500"))
 
         return group;
       },
       (update) => {
         // Update line colors based on state
-        update.select(`.${GRAPH_LINK_LINE_CLASSNAME}`)
-          .classed("stroke-red-500", d => !!d.isHighlighted)
-          .classed("stroke-blue-500", d => !!d.isAwaiting)
-          .classed("stroke-yellow-500", d => !!d.isResult);
+        const lineSelection = update.select(`.${GRAPH_LINK_LINE_CLASSNAME}`);
+        lineSelection
+          .classed(STATE_CLASSES.highlighted.stroke, d => !!d.isHighlighted)
+          .classed(STATE_CLASSES.awaiting.stroke, d => !!d.isAwaiting)
+          .classed(STATE_CLASSES.result.stroke, d => !!d.isResult);
 
-        // Update arrow colors to match line
-        update.select(`.${GRAPH_LINK_END_ARROW_CLASSNAME}`)
+        // Update end arrow colors and visibility
+        const endArrowSelection = update.select(`.${GRAPH_LINK_END_ARROW_CLASSNAME}`);
+        endArrowSelection
           .attr("opacity", d => d.endArrow ? 1 : 0)
-          .classed("fill-red-500", d => !!d.isHighlighted)
-          .classed("fill-blue-500", d => !!d.isAwaiting)
-          .classed("fill-yellow-500", d => !!d.isResult);
+          .classed(STATE_CLASSES.highlighted.fill, d => !!d.isHighlighted)
+          .classed(STATE_CLASSES.awaiting.fill, d => !!d.isAwaiting)
+          .classed(STATE_CLASSES.result.fill, d => !!d.isResult);
 
-        update.select(`.${GRAPH_LINK_START_ARROW_CLASSNAME}`)
+        // Update start arrow colors and visibility
+        const startArrowSelection = update.select(`.${GRAPH_LINK_START_ARROW_CLASSNAME}`);
+        startArrowSelection
           .attr("opacity", d => d.startArrow ? 1 : 0)
-          .classed("fill-red-500", d => !!d.isHighlighted)
-          .classed("fill-blue-500", d => !!d.isAwaiting)
-          .classed("fill-yellow-500", d => !!d.isResult);
+          .classed(STATE_CLASSES.highlighted.fill, d => !!d.isHighlighted)
+          .classed(STATE_CLASSES.awaiting.fill, d => !!d.isAwaiting)
+          .classed(STATE_CLASSES.result.fill, d => !!d.isResult);
 
         return update;
       },
@@ -83,4 +129,4 @@ export const getGraphLink = (svg: d3.Selection<null, unknown, null, undefined>, 
     );
 
   return linkGroups;
-}
+};

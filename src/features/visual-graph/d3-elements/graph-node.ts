@@ -55,9 +55,9 @@ const getLoopArrowPath = () => {
           Z`;
 };
 
-const t = transition().duration(1000);
 
 export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nodeData: GraphNode[]) => {
+  const t = transition().duration(1000);
 
   const node = svg
     .selectAll(`.${GRAPH_VERTEX_CLASSNAME}`)
