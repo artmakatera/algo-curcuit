@@ -112,7 +112,7 @@ export const GraphVisualize = () => {
   }, [adjacencyMatrix, startFrom, mode]);
 
   return (
-    <div className="flex flex-col px-2 sm:px-24 py-10">
+    <div className="flex flex-col px-2 md:px-24 py-10">
       <ToggleMenu
         menuItems={MODES}
         value={mode}

@@ -296,3 +296,11 @@ article p {
   @apply leading-9;
 }
 
+.scrollbar-hide-custom::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide-custom {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
