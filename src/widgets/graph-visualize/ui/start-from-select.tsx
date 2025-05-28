@@ -27,7 +27,7 @@ const StartFromSelect = ({
         {label}
       </Label>
       <Select onValueChange={onChange} defaultValue={String(value)}>
-        <SelectTrigger data-testid="start-from-select" className="min-w-[100px] w-full">
+        <SelectTrigger data-testid="start-from-select" className="min-w-[80px] w-full">
           <SelectValue placeholder="Start From" />
         </SelectTrigger>
         <SelectContent>
