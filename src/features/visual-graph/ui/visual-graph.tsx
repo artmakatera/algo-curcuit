@@ -77,7 +77,7 @@ export const VisualGraph = ({
 
     const simulation = forceSimulation()
       .nodes(graphData.nodes as SimulationNodeDatum[])
-      .force("charge", forceManyBody().distanceMax(50))
+      .force("charge", forceManyBody().distanceMax(GRAPH_CIRCLE_RADIUS * 3))
       .force("center", forceCenter(300, 150))
       .force(
         "link",
@@ -91,7 +91,7 @@ export const VisualGraph = ({
           })
           .iterations(10)
       )
-      .force("collision", forceCollide(20).strength(1))
+      .force("collision", forceCollide(GRAPH_CIRCLE_RADIUS + 2).strength(1))
       .on("tick", tick);
 
     function tick() {
