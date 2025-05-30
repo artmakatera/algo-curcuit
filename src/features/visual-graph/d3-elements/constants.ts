@@ -1,4 +1,4 @@
-export const GRAPH_CIRCLE_RADIUS = 20;
+export const GRAPH_CIRCLE_RADIUS = 22;
 
 export const GRAPH_VERTEX_CLASSNAME = "graph-vertex-node";
 export const GRAPH_LINK_GROUP_CLASSNAME = "graph-vertex-link-group";
