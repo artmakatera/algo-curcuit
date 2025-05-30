@@ -84,7 +84,7 @@ export const getGraphNode = (svg: Selection<null, unknown, null, undefined>, nod
           .attr("text-anchor", "middle")
           .attr("dy", "0.2em")
           .attr("fill", "white")
-          .style("font-size", 14)
+          .style("font-size", GRAPH_CIRCLE_RADIUS)
           .attr("transform", "scale(0.4)")
           .transition(t)
           .attr("transform", "scale(1)")

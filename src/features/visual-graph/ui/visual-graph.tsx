@@ -22,6 +22,7 @@ import {
   GRAPH_LINK_GROUP_CLASSNAME,
   GRAPH_LINK_END_ARROW_CLASSNAME,
   GRAPH_LINK_START_ARROW_CLASSNAME,
+  GRAPH_CIRCLE_RADIUS,
 } from "../d3-elements";
 import {
   AdjacencyMatrix,
@@ -77,7 +78,7 @@ export const VisualGraph = ({
     const simulation = forceSimulation()
       .nodes(graphData.nodes as SimulationNodeDatum[])
       .force("charge", forceManyBody().distanceMax(50))
-      .force("center", forceCenter(300, 100))
+      .force("center", forceCenter(300, 150))
       .force(
         "link",
         forceLink(graphData.links as SimulationLinkDatum<SimulationNodeDatum>[])
@@ -85,13 +86,8 @@ export const VisualGraph = ({
             return vertices[d.index || 0].id;
           })
           .strength(0.5)
-          .distance((link) => {
-            const deltaIndexes = Math.abs(
-              (link.source as SimulationNodeDatum).index! -
-                (link.target as SimulationNodeDatum).index!
-            );
-            
-            return 80
+          .distance(() => {
+            return GRAPH_CIRCLE_RADIUS * 4;
           })
           .iterations(10)
       )
