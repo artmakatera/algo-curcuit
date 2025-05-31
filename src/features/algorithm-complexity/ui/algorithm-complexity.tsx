@@ -11,17 +11,24 @@ interface AlgorithmComplexityProps {
   complexity: Complexity;
   description?: React.ReactNode;
   isSpaceComplexity?: boolean;
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    badgeLabel?: string;
+  
 }
 
 export function AlgorithmComplexity({
   complexity,
   description,
   isSpaceComplexity,
+  badgeLabel,
+  icon: Icon,
 }: AlgorithmComplexityProps) {
   const badgeComponent = (
     <ComplexityBadge
       complexity={complexity}
       isSpaceComplexity={isSpaceComplexity}
+      icon={Icon}
+      label={badgeLabel}
     />
   );
 

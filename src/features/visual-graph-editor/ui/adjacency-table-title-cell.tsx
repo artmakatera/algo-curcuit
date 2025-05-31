@@ -20,10 +20,10 @@ export const AdjacencyTableTitleCell = ({
       {...props}
     >
       <div className="flex items-center justify-center gap-1">
-      <span>{cellValue}</span>
-      {onRemove && (
-         <RemoveIconButton onClick={onRemove} variant="destructive" />
-      )}
+        <span>{cellValue}</span>
+        {onRemove && (
+          <RemoveIconButton onClick={onRemove} variant="destructive" />
+        )}
       </div>
     </td>
   );

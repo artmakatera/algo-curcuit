@@ -48,7 +48,7 @@ export const Controls = ({
     );
   }
   return (
-    <div className={wrapperClassName}>
+    <div className={cn(wrapperClassName, "mt-1")}>
       <StartFromSelect
         value={startFrom}
         onChange={(value) => setStartFrom(+value)}

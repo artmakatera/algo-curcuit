@@ -21,6 +21,7 @@ import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { CodeViewers } from "@/components/ui/code-viewers";
 import { ToggleMenu } from "@/components/ui/toggle-menu";
 import { Controls } from "./controls";
+import { GraphAlgorithmComplexities } from "./algorithm-complexities";
 
 const matrix = [
   [0, 1, 0, 0, 0, 0],
@@ -120,6 +121,8 @@ export const GraphVisualize = () => {
           setMode(value as Mode);
         }}
       />
+
+        <GraphAlgorithmComplexities tabMode={mode} />
 
       <Controls
         isEditMode={mode === "edit"}

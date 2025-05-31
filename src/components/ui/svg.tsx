@@ -15,7 +15,7 @@ export const Svg: React.FC<SvgProps> = ({
 
   
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-xl mx-auto">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox={viewBox}
