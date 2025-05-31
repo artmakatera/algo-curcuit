@@ -25,7 +25,7 @@ export const DialogInfo = () => {
           <div>
             <h4 className="font-medium mb-2">2. Adjacency Matrix</h4>
             <TypographyP className="text-sm">
-              A 2D matrix where matrix[i][j] = 1 if there's an edge between nodes i and j.
+              A 2D matrix where matrix[i][j] = 1 if there&apos;s an edge between nodes i and j.
               Fast edge lookup but uses O(V²) space regardless of edge count.
             </TypographyP>
           </div>
