@@ -6,14 +6,14 @@ import { ActionType } from "../../model/types";
 export const DEFAULT_TRAVERSE_TYPE = ActionType.bfs;
 
 export const CONTROLS: ControlsType = [
-  { label: "find", type: ActionType.find, color: "blue", Icon: <Search /> },
-  { label: "delete", type: ActionType.delete, color: "red", Icon: <Trash2 /> },
-  { label: "Add", type: ActionType.insert, color: "orange", Icon: <Plus /> },
+  { label: "find", type: ActionType.find, color: "blue", Icon: <Search className="h-4 w-4" /> },
+  { label: "delete", type: ActionType.delete, color: "red", Icon: <Trash2 className="h-4 w-4" /> },
+  { label: "Add", type: ActionType.insert, color: "orange", Icon: <Plus className="h-4 w-4" /> },
   {
     label: "Traverse",
     type: DEFAULT_TRAVERSE_TYPE,
     color: "blue",
-    Icon: <Combine />,
+    Icon: <Combine className="h-4 w-4" />,
     tabType: "traverse",
   },
 ];

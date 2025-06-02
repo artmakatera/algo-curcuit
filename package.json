@@ -39,7 +39,8 @@
     "styled-jsx": "^5.1.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.6",

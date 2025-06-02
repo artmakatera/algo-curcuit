@@ -5,6 +5,15 @@ export type ControlsProps = {
   disabled?: boolean;
   activeType: CollapseType | null;
   onSubmitValue: (value: number, type?: ActionType) => void;
+  onPreviousStep?: () => void;
+  onNextStep?: () => void;
+  isPlaying?: boolean;
+  hasPrevSnapshot?: boolean;
+  hasNextSnapshot?: boolean;
+  isResetDisabled?: boolean;
+  speed?: string;
+  onChangeSpeed?: (speed: string) => void;
+
 };
 
 export type ControlColor = "blue" | "orange" | "red";

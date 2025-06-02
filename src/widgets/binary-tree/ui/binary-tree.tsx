@@ -42,8 +42,6 @@ export const BinaryTree = () => {
 
   const hasCodeLang = codeLang && activeType;
 
-  const ref = useRef<HTMLDivElement>(null);
-
   const genCall = useMemo(() => {
     if (activeType === ActionType.bfs) {
       return tree.bfs as unknown as () => Generator<
@@ -139,21 +137,15 @@ export const BinaryTree = () => {
           disabled={isPlaying}
           activeType={activeType}
           onSubmitValue={onSubmitValue}
+          onPreviousStep={handlePreviousStep}
+          onNextStep={handleNextStep}
+          hasPrevSnapshot={hasPrevSnapshot}
+          hasNextSnapshot={hasNextSnapshot}
+          isPlaying={isPlaying}
+          isResetDisabled={stepsSnapshot.length === 0}
+          speed={delayRef.current || "750"}
+          onChangeSpeed={onChangeSpeed}
         />
-        {activeType && (
-          <div className="hidden sm:block">
-            <VisualizeControls
-              onPreviousStep={handlePreviousStep}
-              onNextStep={handleNextStep}
-              isPlaying={isPlaying}
-              isResetDisabled={isPlaying}
-              isPreviousStepDisabled={!hasPrevSnapshot}
-              isNextStepDisabled={!hasNextSnapshot}
-              speed={delayRef.current}
-              onChangeSpeed={onChangeSpeed}
-            />
-          </div>
-        )}
       </div>
 
       {error && (

@@ -29,9 +29,7 @@ export const BinaryTreePage = () => {
         timeComplexity={COMPLEXITIES.O_LOG_N}
         spaceComplexityDescription={<SpaceComplexityDescription />}
         timeComplexityDescription={<TimeComplexityDescription />}
-        ButtonProps={{
-          className: "bottom-24 lg:bottom-4",
-        }}
+     
       >
         <DialogInfo />
       </DescriptionDialog>

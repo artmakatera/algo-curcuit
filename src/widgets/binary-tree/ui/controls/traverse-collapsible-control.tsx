@@ -10,7 +10,6 @@ import {
 import { DEFAULT_TRAVERSE_TYPE, TRAVERSE_OPTIONS } from "./constants";
 
 export const TraverseCollapsibleControl = ({
-  type,
   disabled,
   color,
   onSubmitValue,

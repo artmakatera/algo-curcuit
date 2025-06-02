@@ -1,4 +1,6 @@
 
+import { v4 as uuid } from "uuid";
+
 export class TreeNode {
   value: number;
   left: TreeNode | null;
@@ -9,8 +11,7 @@ export class TreeNode {
     this.value = value;
     this.left = null;
     this.right = null;
-    // ts-ignore
-    this.id = globalThis.crypto.randomUUID()
+    this.id = uuid()
   }
 
 }

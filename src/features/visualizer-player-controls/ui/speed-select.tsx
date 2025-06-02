@@ -22,7 +22,7 @@ type SpeedSelectProps = {
 const SpeedSelect = ({ value = "1500", onChange }: SpeedSelectProps) => {
   return (
     <Select onValueChange={onChange} defaultValue={value}>
-      <SelectTrigger data-testid="speed-select" className="w-[80px]">
+      <SelectTrigger data-testid="speed-select" className="w-[68px] sm:w-[80px]">
         <SelectValue placeholder="Speed" />
       </SelectTrigger>
       <SelectContent>
