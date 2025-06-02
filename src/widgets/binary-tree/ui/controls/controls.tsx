@@ -1,6 +1,6 @@
 import { CollapseType, ControlsProps } from "./types";
 import { ActionType } from "../../model/types";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ToggleMenu } from "@/components/ui/toggle-menu";
 
 import { CONTROLS, DEFAULT_TRAVERSE_TYPE } from "./constants";
 import { ControlPanel } from "@/features/control-panel";
@@ -16,11 +16,23 @@ export const Controls = ({
   onSubmitValue: onSubmitValueProp,
 }: ControlsProps) => {
   const [openMobileDialog, setOpenMobileDialog] = useState(false);
+  const [currentActiveType, setCurrentActiveType] = useState<string>(
+    isTraverseType(activeType) ? DEFAULT_TRAVERSE_TYPE : (activeType as string) || CONTROLS[0].type
+  );
+
+  // Transform CONTROLS to ToggleMenu format
+  const menuItems = CONTROLS.map((control) => ({
+    label: control.label,
+    value: control.type,
+    icon: control.Icon,
+  }));
+
   const toggleActiveType = (type: CollapseType, value: number) => {
     dispatch({ type: type as ActionType, value, canClose: true });
   };
 
   const handleValueChange = (type: string) => {
+    setCurrentActiveType(type);
     toggleActiveType(type as ActionType, 1);
     dispatch({ type: type as ActionType, value: 1, canClose: false });
   };
@@ -35,37 +47,29 @@ export const Controls = ({
     setOpenMobileDialog(false);
   };
 
+  // Find the current control based on active type
+  const currentControl = CONTROLS.find(control => control.type === currentActiveType) || CONTROLS[0];
+
   return (
-    <div>
-      <Tabs
-        className="w-full scale-75 sm:scale-100 hidden lg:block"
-        onValueChange={handleValueChange}
-        value={isTraverseType(activeType) ? DEFAULT_TRAVERSE_TYPE : activeType as string}
-      >
-        <TabsList>
-          {CONTROLS.map(({ type, label }) => {
-            return (
-              <TabsTrigger className="capitalize" key={type} value={type}>
-                {label}
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
-        {CONTROLS.map(({ type, color }) => (
-          <TabsContent key={type} value={type}>
-            <CollapsibleControl
-              key={type}
-              type={type}
-              color={color}
-              disabled={disabled}
-              dispatch={dispatch}
-              onSubmitValue={onSubmitValue}
-              onTypeChange={handleValueChange}
-            />
-          </TabsContent>
-        ))}
-      </Tabs>
-      <ControlPanel
+    <div className="w-full max-w-2xl mx-auto ">
+      
+        <ToggleMenu
+          value={currentActiveType}
+          onValueChange={handleValueChange}
+          menuItems={menuItems}
+        />
+        <div className="p-4">
+          <CollapsibleControl
+            key={currentControl.type}
+            type={currentControl.type}
+            color={currentControl.color}
+            disabled={disabled}
+            dispatch={dispatch}
+            onSubmitValue={onSubmitValue}
+            onTypeChange={handleValueChange}
+          />
+      </div>
+      {/* <ControlPanel
         activeType={activeType}
         controls={CONTROLS}
         onClick={handleMobileDialogOpen}
@@ -79,7 +83,7 @@ export const Controls = ({
         onSubmitValue={onSubmitValue}
         disabled={disabled}
         onTypeChange={handleValueChange}
-      />
+      /> */}
     </div>
   );
 };

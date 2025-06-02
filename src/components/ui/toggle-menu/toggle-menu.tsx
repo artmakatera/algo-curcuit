@@ -22,7 +22,7 @@ export const ToggleMenu = ({
               pressed={value === item.value}
               onPressedChange={() => onValueChange(item.value)}
               aria-label={item.label}
-              className={`flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground`}
+              className={`flex items-center gap-2 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground capitalize`}
             >
               {item.icon}
               {item.label}
