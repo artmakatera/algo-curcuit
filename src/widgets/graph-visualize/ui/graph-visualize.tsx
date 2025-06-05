@@ -172,7 +172,7 @@ export const GraphVisualize = () => {
       )}
 
       {(mode === "dfs" || mode === "bfs") && (
-        <div className="mt-12 self-center">
+        <div className="mt-12 self-center max-w-full">
           <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
           <CodeViewers
             langMap={currentLanguageSettings}

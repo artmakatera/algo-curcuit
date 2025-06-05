@@ -4,7 +4,7 @@ import { ToggleMenuItem } from "./types";
 
 export interface ToggleMenuProps {
   className?: string;
-  value: string;
+  value: string | null;
   onValueChange: (value: string) => void;
   menuItems: ToggleMenuItem[];
 }
