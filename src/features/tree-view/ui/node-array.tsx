@@ -63,6 +63,7 @@ function NodeArrayItem({
     queueNodes,
     stackNodes,
     isParentMinNode,
+    isResultReversed,
     zIndex = 999,
   } = props;
 
@@ -127,6 +128,7 @@ function NodeArrayItem({
               isLeft={isLeft}
               found={getIsCompletedNode(node, resultNodes || [])}
               isQueueLine={getIsQueueNode(node, queueNodes, stackNodes)}
+              isResultReversed={isResultReversed}
             />
           )}
         <motion.div

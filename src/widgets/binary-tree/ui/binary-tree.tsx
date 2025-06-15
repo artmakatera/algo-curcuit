@@ -39,6 +39,7 @@ export const BinaryTree = () => {
   const [codeLang, setCodeLang] = useCodeLang();
 
   const hasCodeLang = codeLang && activeType;
+  const isResultReversed = activeType === ActionType.inOrder;
 
   const genCall = useMemo(() => {
     if (activeType === ActionType.inOrder) {
@@ -172,6 +173,7 @@ export const BinaryTree = () => {
               queueNodes={currentSnapshot.queue}
               durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
               isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
+              isResultReversed={isResultReversed}
               isMinValueFirstRightChild={
                 currentSnapshot.type === STEPS.minValueFirstRightChild
               }

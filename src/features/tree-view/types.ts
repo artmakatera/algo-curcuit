@@ -22,4 +22,5 @@ export type NodeArrayProps = {
   stackNodes?: TreeNode[];
   zIndex?: number;
   isParentMinNode?: boolean;
+  isResultReversed?: boolean;
 };

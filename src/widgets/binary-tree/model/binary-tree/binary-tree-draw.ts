@@ -39,9 +39,6 @@ class BinaryTreeDraw extends BinaryTreeEditView {
       return [];
     }
 
-
-
-
     let queue: TreeNode[] = [node];
     let result: TreeNode[] = [];
 
@@ -253,7 +250,6 @@ class BinaryTreeDraw extends BinaryTreeEditView {
       stack: [...stack],
       result: [...result],
     };
-
 
     return result;
 
