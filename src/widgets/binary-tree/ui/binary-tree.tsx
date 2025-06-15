@@ -1,7 +1,6 @@
 "use client";
 import { BinaryTreeDraw } from "../model/binary-tree";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { TypographyH1 } from "@/components/ui/typography";
+import { useEffect, useMemo, useState } from "react";
 import { Controls } from "./controls";
 import { ActionType, Dispatch, GenValuePayload } from "../model/types";
 import {
@@ -13,7 +12,6 @@ import { languagesMapSettings } from "../model/languages-map-settings";
 import { LANGUAGES, STEPS } from "../model/constants";
 import { NotFoundTitle } from "@/components/ui/not-found-title";
 import { NodeToRemoveProvider } from "../../../features/tree-view/context/node-to-remove-context";
-import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { useCodeLang } from "@/shared/contexts/code-lang";
 
 import {

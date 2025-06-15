@@ -29,11 +29,3 @@ export const TRAVERSE_OPTIONS = [
   },
 ];
 
-export const CONTROLS_BY_TYPE: Record<string, ControlsType[number]> =
-  CONTROLS.reduce((acc, control) => {
-    acc[control.type] = control;
-    return acc;
-  }, {} as Record<string, ControlsType[number]>);
-
-export const getControlByType = (type: ActionType) =>
-  CONTROLS_BY_TYPE[type] || CONTROLS_BY_TYPE[DEFAULT_TRAVERSE_TYPE];

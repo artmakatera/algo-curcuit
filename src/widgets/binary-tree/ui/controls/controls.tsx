@@ -53,7 +53,7 @@ export const Controls = ({
     <div className="w-full max-w-2xl mx-auto flex flex-col items-center">
       <ToggleMenu
         className="-mx-2"
-        value={activeType}
+        value={getToggleType(activeType)}
         onValueChange={handleValueChange}
         menuItems={menuItems}
       />
@@ -83,3 +83,10 @@ export const Controls = ({
     </div>
   );
 };
+
+
+function getToggleType(activeType: string | null): ActionType | null {
+  if (!activeType) return null;
+  if (activeType.includes("traverse")) return ActionType.bfs;
+  return activeType as ActionType;
+}
