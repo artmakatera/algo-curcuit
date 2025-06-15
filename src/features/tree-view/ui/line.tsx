@@ -121,7 +121,7 @@ export const Line = ({
         )}
         {found && (
           <motion.line
-            {...getAnimationProps(isLeft, preventAnimation, true)}
+            {...getAnimationProps(isLeft, preventAnimation)}
             transition={{ duration: preventAnimation ? 0 : 0.5 }}
             className={cn("stroke-yellow-500 dark:stroke-yellow-500")}
             strokeWidth="1"

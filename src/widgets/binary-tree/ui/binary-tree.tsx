@@ -41,6 +41,13 @@ export const BinaryTree = () => {
   const hasCodeLang = codeLang && activeType;
 
   const genCall = useMemo(() => {
+    if (activeType === ActionType.inOrder) {
+      return tree.inOrder as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
     if (activeType === ActionType.bfs) {
       return tree.bfs as unknown as () => Generator<
         GenValuePayload,

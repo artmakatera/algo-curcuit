@@ -9,6 +9,7 @@ export enum ActionType {
   delete = "delete",
   bfs = "traverse-bfs",
   dfs = "traverse-dfs",
+  inOrder = "traverse-in-order",
 }
 
 

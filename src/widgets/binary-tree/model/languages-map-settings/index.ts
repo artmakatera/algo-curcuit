@@ -37,6 +37,10 @@ export const languagesMapSettings = {
   [ActionType.dfs]: {
     [LANGUAGES.javascript]: jsTraverseDfs,
     [LANGUAGES.java]: javaTraverseDfs
+  },
+  [ActionType.inOrder]: {
+    [LANGUAGES.javascript]: jsTraverseDfs,
+    [LANGUAGES.java]: javaTraverseDfs
   }
 }
 

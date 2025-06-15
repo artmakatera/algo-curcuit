@@ -27,5 +27,9 @@ export const TRAVERSE_OPTIONS = [
     label: "Preorder",
     value: ActionType.dfs,
   },
+  {
+    label: "Inorder",
+    value: ActionType.inOrder,
+  },
 ];
 
