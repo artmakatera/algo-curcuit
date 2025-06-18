@@ -9,7 +9,7 @@ export const code = `public class BinaryTree {
     root = null;
   }
 
-  public List<Integer> onOrder() {
+  public List<Integer> inOrder() {
     List<Integer> result = new ArrayList<>();
     Stack<Node> stack = new Stack<>();
     Node current = root;
