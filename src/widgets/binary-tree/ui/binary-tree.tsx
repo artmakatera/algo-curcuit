@@ -39,8 +39,23 @@ export const BinaryTree = () => {
   const [codeLang, setCodeLang] = useCodeLang();
 
   const hasCodeLang = codeLang && activeType;
+  const isResultReversed = activeType === ActionType.inOrder;
 
   const genCall = useMemo(() => {
+    if (activeType === ActionType.postOrder) {
+      return tree.postOrder as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
+    if (activeType === ActionType.inOrder) {
+      return tree.inOrder as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
     if (activeType === ActionType.bfs) {
       return tree.bfs as unknown as () => Generator<
         GenValuePayload,
@@ -165,6 +180,7 @@ export const BinaryTree = () => {
               queueNodes={currentSnapshot.queue}
               durationMs={delayRef.current ? parseInt(delayRef.current) : 750}
               isRemoveSingleChild={getIsRemoveSingleChild(currentSnapshot.type)}
+              isResultReversed={isResultReversed}
               isMinValueFirstRightChild={
                 currentSnapshot.type === STEPS.minValueFirstRightChild
               }
