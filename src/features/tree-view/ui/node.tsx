@@ -88,13 +88,14 @@ export const Node = ({
         className={cn(
           "leading-10 z-10",
           `w-${NODE_SIZE} h-${NODE_SIZE} leading-${NODE_SIZE}`,
-          "bg-green-600 text-center  text-white rounded-full ",
-          active && "bg-blue-600 ",
+          "bg-green-600 text-center text-white rounded-full",
+          "box-border border-black dark:border-white border-1 transition-none",
+          active && "bg-blue-600 border-orange-500",
           isQueueNode && "bg-blue-600 delay-500 transition",
           found && "bg-yellow-500",
           isCompleted && "bg-yellow-500 delay-500 transition",
           inserted && "bg-orange-600",
-          isNodeToRemove && "bg-red-600",
+          isNodeToRemove && "bg-red-600 border-red-600",
         )}
         ref={ref}
         initial={{ scale: preventAnimation ? 1 : 0 }}

@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/utils";
 import { Line } from "./line";
 
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
-import { motion, LayoutGroup, delay } from "motion/react";
+import { motion, LayoutGroup } from "motion/react";
 import { NodeArrayWrapper } from "./node-array-wrapper";
 import { useRef } from "react";
 import { NodeLineWrapper } from "./node-line-wrapper";

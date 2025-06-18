@@ -109,7 +109,7 @@ export const Line = ({
           className={cn("stroke-black dark:stroke-white")}
           strokeWidth="1"
         />
-        {isQueueLine && (
+        {(isQueueLine || found) && (
           <motion.line
             {...getAnimationProps(isLeft, preventAnimation)}
             transition={{ duration: preventAnimation ? 0 : 0.5 }}
@@ -117,18 +117,18 @@ export const Line = ({
             x2={"100%"}
             y1={isLeft ? "100%" : 0}
             y2={isLeft ? 0 : "100%"}
-            className={cn("stroke-blue-600 dark:stroke-blue-600")}
+            className={cn("stroke-orange-500 stroke-2")}
             strokeWidth="1"
           />
         )}
-        {found && (
+        {/* {found && (
           <motion.line
             {...getAnimationProps(isLeft, preventAnimation, isResultReversed)}
             transition={{ duration: preventAnimation ? 0 : 0.5 }}
             className={cn("stroke-yellow-500 dark:stroke-yellow-500")}
             strokeWidth="1"
           />
-        )}
+        )} */}
       </svg>
     </div>
   );
