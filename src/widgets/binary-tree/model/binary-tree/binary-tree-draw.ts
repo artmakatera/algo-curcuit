@@ -215,12 +215,20 @@ class BinaryTreeDraw extends BinaryTreeEditView {
 
     let currentNode: TreeNode | null = node;
 
+    yield {
+      type: STEPS.start,
+      node: currentNode,
+      treeView: treeView,
+      stack: [...stack],
+      result: [...result],
+    }
+
     while (currentNode || stack.length > 0) {
       while (currentNode) {
         stack.push(currentNode);
         yield {
-          type: STEPS.addRightToStack,
-          node: null,
+          type: STEPS.addToStack,
+          node: currentNode,
           treeView: treeView,
           stack: [...stack],
           result: [...result],
@@ -232,7 +240,7 @@ class BinaryTreeDraw extends BinaryTreeEditView {
       result.push(currentNode);
       yield {
         type: STEPS.popFromStack,
-        node: null,
+        node: currentNode,
         treeView: treeView,
         stack: [...stack],
         result: [...result],
@@ -245,7 +253,7 @@ class BinaryTreeDraw extends BinaryTreeEditView {
 
     yield {
       type: STEPS.endTraverse,
-      node: null,
+      node: currentNode,
       treeView: treeView,
       stack: [...stack],
       result: [...result],
