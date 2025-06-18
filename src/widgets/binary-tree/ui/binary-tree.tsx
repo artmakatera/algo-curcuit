@@ -42,6 +42,13 @@ export const BinaryTree = () => {
   const isResultReversed = activeType === ActionType.inOrder;
 
   const genCall = useMemo(() => {
+    if (activeType === ActionType.postOrder) {
+      return tree.postOrder as unknown as () => Generator<
+        GenValuePayload,
+        void,
+        unknown
+      >;
+    }
     if (activeType === ActionType.inOrder) {
       return tree.inOrder as unknown as () => Generator<
         GenValuePayload,

@@ -10,6 +10,8 @@ export enum ActionType {
   bfs = "traverse-bfs",
   dfs = "traverse-dfs",
   inOrder = "traverse-in-order",
+
+  postOrder = "traverse-post-order",
 }
 
 

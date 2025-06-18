@@ -11,6 +11,7 @@ class BinaryTreeDraw extends BinaryTreeEditView {
     this.bfs = this.bfs.bind(this);
     this.dfs = this.dfs.bind(this);
     this.inOrder = this.inOrder.bind(this);
+    this.postOrder = this.postOrder.bind(this);
   }
 
 
@@ -255,6 +256,82 @@ class BinaryTreeDraw extends BinaryTreeEditView {
       type: STEPS.endTraverse,
       node: currentNode,
       treeView: treeView,
+      stack: [...stack],
+      result: [...result],
+    };
+
+    return result;
+
+  }
+
+  *postOrder() {
+    const node = this.root;
+     if (!node) {
+        yield {
+          type: STEPS.earlyEndTraverse,
+          node: null,
+          treeView: this.getNodeGroups(),
+          stack: [],
+          result: []
+        }
+      return [];
+    }
+
+    let currentNode: TreeNode | null = node;
+    let previousNode: TreeNode | null = null;
+    const result: TreeNode[] = [];
+    const stack: TreeNode[] = [];
+
+    yield {
+      type: STEPS.start,
+      node: currentNode,
+      treeView: this.getNodeGroups(),
+      stack: [...stack],
+      result: [...result],
+    }
+
+    while (currentNode || stack.length > 0) {
+        if (currentNode) {
+            stack.push(currentNode);
+            currentNode = currentNode.left;
+            yield {
+                type: STEPS.addToStack,
+                node: currentNode,
+                treeView: this.getNodeGroups(),
+                stack: [...stack],
+                result: [...result],
+            }
+            continue;
+        }
+
+        const peekNode = stack[stack.length - 1]
+
+        if (peekNode.right && peekNode.right !== previousNode) {
+            currentNode = peekNode.right; 
+            yield {
+                type: STEPS.addRightToStack,
+                node: currentNode,
+                treeView: this.getNodeGroups(),
+                stack: [...stack],
+                result: [...result],
+            }
+        } else {
+            result.push(stack.pop()!)
+            previousNode = peekNode;
+            yield {
+                type: STEPS.popFromStack,
+                node: previousNode,
+                treeView: this.getNodeGroups(),
+                stack: [...stack],
+                result: [...result],
+            }
+        }
+    }
+
+    yield {
+      type: STEPS.endTraverse,
+      node: null,
+      treeView: this.getNodeGroups(),
       stack: [...stack],
       result: [...result],
     };

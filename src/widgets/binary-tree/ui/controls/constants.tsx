@@ -31,5 +31,9 @@ export const TRAVERSE_OPTIONS = [
     label: "Inorder",
     value: ActionType.inOrder,
   },
+  {
+    label: "Postorder",
+    value: ActionType.postOrder,
+  }
 ];
 

@@ -8,6 +8,7 @@ import jsRemoveModel from "./js/remove";
 import jsTraverse from "./js/traverse";
 import jsTraverseDfs from "./js/traverse-dfs";
 import jsTraverseInOrder from "./js/traverse-inorder";
+import jsTraversePostOrder from "./js/traverse-post-order";
 
 import javaInsertModel from "./java/insert";
 import javaRemoveModel from "./java/remove";
@@ -15,6 +16,7 @@ import javaFindModel from "./java/find";
 import javaTraverse from "./java/traverse";
 import javaTraverseDfs from "./java/traverse-dfs";
 import javaTraverseInOrder from "./java/traverse-inorder";
+import javaTraversePostOrder from "./java/traverse-post-order";
 
 
 export const languagesMapSettings = {
@@ -42,6 +44,10 @@ export const languagesMapSettings = {
   [ActionType.inOrder]: {
     [LANGUAGES.javascript]: jsTraverseInOrder,
     [LANGUAGES.java]: javaTraverseInOrder
+  },
+  [ActionType.postOrder]: {
+    [LANGUAGES.javascript]: jsTraversePostOrder,
+    [LANGUAGES.java]: javaTraversePostOrder
   }
 }
 
