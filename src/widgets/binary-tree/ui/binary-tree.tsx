@@ -1,6 +1,6 @@
 "use client";
 import { BinaryTreeDraw } from "../model/binary-tree";
-import { useEffect, useMemo, useState } from "react";
+import { act, useEffect, useMemo, useState } from "react";
 import { Controls } from "./controls";
 import { ActionType, Dispatch, GenValuePayload } from "../model/types";
 import {
@@ -21,6 +21,7 @@ import {
 import { CodeViewers } from "@/components/ui/code-viewers";
 import { NodeArrayGroup } from "@/features/tree-view";
 import { debounce } from "@/shared/lib/debounce";
+import { cn } from "@/shared/lib/utils";
 
 const tree = new BinaryTreeDraw();
 
@@ -165,7 +166,7 @@ export const BinaryTree = () => {
         <p className="text-center text-red-600 font-bold mt-2">{error}</p>
       )}
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
-      <div className="max-w-screen overflow-x-auto mt-4">
+      <div className={cn("max-w-screen overflow-x-auto", !activeType && "mt-8")}>
         <div className="m-auto w-fit">
           <NodeToRemoveProvider nodeToRemove={currentSnapshot.nodeToRemove}>
             <NodeArrayGroup

@@ -11,9 +11,9 @@ import { DialogInfo } from "./dialog-info";
 
 export const BinaryTreePage = () => {
   return (
-    <main className="p-2 md:p-4 mx-auto">
+    <main className="flex flex-col px-4 sm:px-24 py-10">
       <TypographyH1 className="w-max text-center m-auto">
-        Binary Search Tree
+        Binary Tree
       </TypographyH1>
       <div className="flex justify-center items-center">
         <AlgorithmComplexities

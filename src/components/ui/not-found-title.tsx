@@ -10,6 +10,9 @@ export const NotFoundTitle = ({
   show,
   title = "Not Found :(",
 }: NotFoundTitleProps) => {
+  if (!show) {
+    return null;
+  }
   return (
     <TypographyH3
       className={cn(
