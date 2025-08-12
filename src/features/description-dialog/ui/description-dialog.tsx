@@ -54,7 +54,7 @@ export function DescriptionDialog({
           timeComplexityDescription={timeComplexityDescription}
         />
         </DialogHeader>
-        <ScrollArea className="max-h-[calc(100dvh-48px)] px-4 pb-4">
+        <ScrollArea className="max-h-[calc(100dvh-100px)] px-4 ">
           {children}
         </ScrollArea>
       </DialogContent>
