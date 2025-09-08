@@ -97,10 +97,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
         sourceIndexesToMerge: [0, 0]
       };
 
-
-
-
-      while (prevArr.length > 0 || currentArr.length > 0) {
+      while (prevArr.length > 0 && currentArr.length > 0) {
         yield {
           type: STEPS.compareItems,
           firstArray: cloneArray(arrays),
@@ -112,9 +109,7 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
           subArraysIndexesToMerge: [i - 1, i],
           sourceIndexesToMerge: [0, 0]
         };
-        if (prevArr.length === 0 || currentArr[0] < prevArr[0]) {
-          
-
+        if (currentArr[0] < prevArr[0]) {
           yield {
             type: STEPS.addingRightSortedItem,
             firstArray: cloneArray(arrays),
@@ -161,11 +156,63 @@ export function* mergeSort(arr: number[]): Generator<StepSnapshot, void, unknown
             indexOfSourceSubArray: -1,
             indexOfTargetSubArray: -1,
             targetIndex: -1,
-            subArraysIndexesToMerge: [i - 1, i],
-            sourceIndexesToMerge: []
+            subArraysIndexesToMerge: [i - 1
+              , i], sourceIndexesToMerge: []
           }
         }
       }
+
+      // If there are remaining elements in either array, add them to the end
+      while (prevArr.length > 0) {
+        yield {
+          type: STEPS.addingLeftSortedItemEnd,
+          firstArray: cloneArray(arrays),
+          secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
+          indexOfSourceSubArray: i - 1,
+          indexOfTargetSubArray: result.length,
+          moveIndex: 0,
+          targetIndex: subArr.length,
+          subArraysIndexesToMerge: [i - 1, i],
+          sourceIndexesToMerge: [0, 0]
+        }
+        subArr.push(prevArr.shift() as number)
+        yield {
+          type: STEPS.addedLeftSortedItemEnd,
+          firstArray: cloneArray(arrays),
+          secondArray: cloneArray(result).concat([cloneArray(subArr)] as number[][]),
+          moveIndex: -1,
+          indexOfSourceSubArray: -1,
+          indexOfTargetSubArray: -1,
+          targetIndex: -1,
+          subArraysIndexesToMerge: [i - 1, i],
+          sourceIndexesToMerge: []
+        }
+      }
+      while (currentArr.length > 0) {
+        yield {
+          type: STEPS.addingRightSortedItemEnd,
+          firstArray: cloneArray(arrays),
+          secondArray: cloneArray(result).concat([subArr.concat(NaN)] as number[][]) as number[][],
+          indexOfSourceSubArray: i,
+          indexOfTargetSubArray: result.length,
+          moveIndex: 0, targetIndex: subArr.length,
+          subArraysIndexesToMerge: [i - 1, i],
+          sourceIndexesToMerge: [0, 0]
+        }
+        subArr.push(currentArr.shift() as number)
+        yield {
+          type: STEPS.addedRightSortedItemEnd,
+          firstArray: cloneArray(arrays),
+          secondArray: cloneArray(result).concat([cloneArray(subArr)] as number[][]),
+          moveIndex: -1,
+          indexOfSourceSubArray: -1,
+          indexOfTargetSubArray: -1,
+          targetIndex: -1,
+          subArraysIndexesToMerge: [i - 1, i],
+          sourceIndexesToMerge: []
+        }
+      }
+
 
       result.push(subArr as number[])
 

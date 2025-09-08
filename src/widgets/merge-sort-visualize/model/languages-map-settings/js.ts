@@ -30,13 +30,27 @@ const code = `function mergeSort(array) {
 
 function merge(left = [], right = []) {
     const result = [];
-        
-    while (left.length > 0 || right.length > 0) {
-        if (right.length === 0 || left[0] < right[0] ) {
-            result.push(left.shift());
+    let leftPointer = 0;
+    let rightPointer = 0;
+
+    while (leftPointer < left.length && rightPointer < right.length) {
+        if (left[leftPointer] < right[rightPointer]) {
+            result.push(left[leftPointer]);
+            leftPointer++;
         } else {
-              result.push(right.shift());
+            result.push(right[rightPointer]);
+            rightPointer++;
         }
+    }
+
+    while (leftPointer < left.length) {
+        result.push(left[leftPointer]);
+        leftPointer++;
+    }
+    
+    while (rightPointer < right.length) {
+        result.push(right[rightPointer]);
+        rightPointer++;
     }
 
     return result; 
@@ -51,12 +65,16 @@ export const highlightLines: { [key in STEPS]?: number[] } = {
     [STEPS.addingFirstItem]: [1, 25, 3, 7, 6],
     [STEPS.firstCollapsePreviousArray]: [1, 20, 9, 25],
     [STEPS.addArray]: [1, 20, 9, 10, 25],
-    [STEPS.addSubArray]: [1, 9, 10, 11, 12, 13, 25, 27, 28, 39],
-    [STEPS.compareItems]: [1, 9, 10, 11, 12, 13, 25, 27, 30, 36, 39],
-    [STEPS.addingLeftSortedItem]: [1, 9, 10, 11, 12, 13, 27, 25, 31, 32, 28, 29, 30, 36, 39],
-    [STEPS.addedLeftSortedItem]: [1, 9, 10, 11, 12, 13, 27, 25, 31, 32, 28, 29, 30, 36, 39],
-    [STEPS.addingRightSortedItem]: [1, 9, 10, 11, 12, 13, 27, 25, 33, 34, 28, 29, 30, 36, 39],
-    [STEPS.addedRightSortedItem]: [1, 9, 10, 11, 12, 13, 27, 25, 33, 34, 28, 29, 30, 36, 39],
+    [STEPS.addSubArray]: [1, 9, 10, 11, 12, 13, 25, 27, 28, 29, 30, 53],
+    [STEPS.compareItems]: [1, 9, 10, 11, 12, 13, 25, 27, 32, 40, 53],
+    [STEPS.addingLeftSortedItem]: [1, 9, 10, 11, 12, 13, 25, 27, 32, 33, 34, 40, 53],
+    [STEPS.addedLeftSortedItem]: [1, 9, 10, 11, 12, 13, 25, 27, 32, 33, 35, 40, 53],
+    [STEPS.addingRightSortedItem]: [1, 9, 10, 11, 12, 13, 25, 27, 32, 36, 37, 39, 40, 53],
+    [STEPS.addedRightSortedItem]: [1, 9, 10, 11, 12, 13, 25, 27, 32, 36, 38, 39, 40, 53],
+    [STEPS.addingLeftSortedItemEnd]: [1, 9, 10, 11, 12, 13, 25, 27, 42, 43, 45],
+    [STEPS.addedLeftSortedItemEnd]: [1, 9, 10, 11, 12, 13, 25, 27, 42, 44, 45],
+    [STEPS.addingRightSortedItemEnd]: [1, 9, 10, 11, 12, 13, 25, 27, 47, 48, 50],
+    [STEPS.addedRightSortedItemEnd]: [1, 9, 10, 11, 12, 13, 25, 27, 47, 49, 50],
     [STEPS.moveSubArray]: [1, 25, 15, 16, 17],
     [STEPS.movingSubArray]: [1, 25, 15, 16, 17],
     [STEPS.collapsePreviousArray]: [1, 25, 9, 20, 18, 19],
