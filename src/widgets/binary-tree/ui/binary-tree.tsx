@@ -1,6 +1,6 @@
 "use client";
 import { BinaryTreeDraw } from "../model/binary-tree";
-import { act, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controls } from "./controls";
 import { ActionType, Dispatch, GenValuePayload } from "../model/types";
 import {
@@ -200,7 +200,7 @@ export const BinaryTree = () => {
       </div>
 
       {hasCodeLang && (
-        <div className="m-auto max-w-2xl mt-4 hidden sm:block">
+        <div className="m-auto mt-4 hidden sm:block">
           <CodeViewers
             langMap={languagesMapSettings[activeType] as any}
             language={codeLang}

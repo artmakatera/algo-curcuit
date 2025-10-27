@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 import { CodeViewer, CodeViewerProps } from "./code-viewer";
-import { Suspense } from "react";
 
 type LangValue<T> = {
   code: string;

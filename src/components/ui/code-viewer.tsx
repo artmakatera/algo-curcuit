@@ -13,7 +13,7 @@ export const CodeViewer = ({
   highlight,
 }: CodeViewerProps) => {
   return (
-    <div className="max-w-5xl text-sm">
+    <div className="w-5xl max-w-full text-sm">
       <CodeHighlighter text={text} language={language} highlight={highlight} />
     </div>
   );

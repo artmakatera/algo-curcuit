@@ -8,4 +8,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig([{
     extends: [...nextCoreWebVitals],
+    rules: {
+        "react-hooks/refs": "off",
+    }
 }]);
