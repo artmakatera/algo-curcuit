@@ -13,9 +13,7 @@ import { useCodeLang } from "@/shared/contexts/code-lang";
 // Helpers
 import { binarySearch } from "../model/binary-search";
 import { defaultSnapshots } from "../model";
-import { getArrowClassName } from "../model/get-arrow-classname";
 import { languagesBSMapSettings } from "../model/binary-search/languages-map-settings";
-import { cn } from "@/shared/lib/utils";
 
 // Types
 import { GenValuePayload, StepSnapshot } from "../model/types";
@@ -152,19 +150,10 @@ export const BinarySearchVisualize = <S extends StepSnapshot>({
                   value={value}
                   index={index}
                   isComparing={isComparing}
+                  isPointer={isComparing}
                   isSorted={currentSnapshot?.result === index}
                   isChecking={currentSnapshot?.checkIndex === index}
-                  className={
-                    isComparing
-                      ? cn(
-                          getArrowClassName(
-                            currentSnapshot.compareIndexes,
-                            index
-                          ),
-                          "after:absolute after:left-1/2 after:-translate-x-1/2 after:z-1 after:-bottom-6 after:text-black dark:after:text-white"
-                        )
-                      : undefined
-                  }
+
                 />
               );
             })}

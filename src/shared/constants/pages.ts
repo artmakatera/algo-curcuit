@@ -1,7 +1,13 @@
-import { link } from "fs";
 
 
 export const pages = [
+  {
+    link: "/two-pointers-patterns",
+    title: "Two Pointers Patterns",
+    description: "The two pointers technique is a common algorithmic approach used to solve problems involving arrays",
+    category: "Array",
+    subcategory: "Pattern",
+  },
   {
     link: "/binary-search",
     title: "Binary Search",

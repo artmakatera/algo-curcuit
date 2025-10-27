@@ -8,13 +8,14 @@ export interface VisualArrayItemProps {
   value: number;
 
   index: number;
-  isSwapping?: boolean;
   className?: string;
   initialClassName?: string;
-
+  
+  isSwapping?: boolean;
   isComparing?: boolean;
   isSorted?: boolean;
   currentSortItem?: boolean;
+  isPointer?: boolean;
 
   isPivot?: boolean;
   isChecking?: boolean;
@@ -29,6 +30,7 @@ export const VisualArrayItem = ({
   isSorted,
   isChecking,
   isPivot,
+  isPointer,
   currentSortItem,
 }: VisualArrayItemProps) => {
   return (
@@ -41,7 +43,7 @@ export const VisualArrayItem = ({
           isSwapping && COMPARE_CLASSES.SWAPPING,
           isChecking && COMPARE_CLASSES.CHECKING,
           isSorted && COMPARE_CLASSES.SORTED,
-
+          isPointer && COMPARE_CLASSES.POINTER,
           isPivot && "bg-yellow-500 text-white",
           currentSortItem && "-translate-y-full",
           className
