@@ -6,14 +6,14 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
 
   let left = 0;
   let right = arr.length - 1;
+  yield {
+    type: STEPS.start,
+    start: left,
+    end: right,
+    result: [],
+  };
 
   while (left < right) {
-    yield {
-      type: STEPS.check,
-      start: left,
-      end: right,
-
-    };
 
     const currentSum = arr[left] + arr[right];
 
@@ -27,15 +27,29 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
       return [left, right];
     } else if (currentSum < target) {
       left++;
+      yield {
+        type: STEPS.ifStart,
+        start: left,
+        end: right,
+        result: [],
+      };
     } else {
       right--;
+      yield {
+        type: STEPS.ifEnd,
+        start: left,
+        end: right,
+        result: [],
+      };
     }
   }
 
   yield {
-    type: STEPS.notFound
+    type: STEPS.notFound,
+    start: left,
+    end: right,
+    result: [],
   };
-
   return [];
 
 }

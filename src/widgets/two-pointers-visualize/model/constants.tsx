@@ -3,7 +3,9 @@ import { ArrowLeftRight, MoveRight, Workflow } from "lucide-react";
 export const STEPS = {
   start: "start",
   movePointers: "movePointers",
-  check: "checkCondition",
+  check: "check",
+  ifStart: "ifStart",
+  ifEnd: "ifEnd",
   found: "found",
   notFound: "notFound",
 } as const;
