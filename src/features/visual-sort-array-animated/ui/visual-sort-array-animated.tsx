@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { VisualSortArrayAnimatedProps } from "./types";
 import { AnimatedArrayItem } from "./animated-array-item";
 
-const size = 48;
 
 export const VisualSortArrayAnimated = ({
   arrToSort,
@@ -48,7 +47,6 @@ export const VisualSortArrayAnimated = ({
   }
 
   return (
-    <>
       <VisualArrayWrapper>
         {arrToSort.map((value, index) => {
           const isSwapping = swapIndexes.some((i) => i === index);
@@ -69,7 +67,5 @@ export const VisualSortArrayAnimated = ({
           );
         })}
       </VisualArrayWrapper>
-      {/* <VisualArrayLegend legend={SORTED_ARRAY_LEGEND} /> */}
-    </>
   );
 };

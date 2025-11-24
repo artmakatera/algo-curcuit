@@ -142,8 +142,8 @@ export function TwoSumVisualize() {
         )}
 
         <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
-      <div>
-        <TypographyH3 className="mb-3 font-bold">Code:</TypographyH3>
+      <div className="mt-12">
+        <TypographyH3 className="m-3 font-bold">Code:</TypographyH3>
         <CodeViewers
           langMap={languagesMapSettings}
           language={codeLang}

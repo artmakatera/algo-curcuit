@@ -5,6 +5,7 @@ export type GenValuePayload = {
   start?: number;
   end?: number;
   result?: number[];
+  swapIndexes?: [number, number];
 };
 
 export type GenValue = Generator<GenValuePayload, number[], number>;
@@ -15,5 +16,6 @@ export interface StepSnapshot extends BaseSnapshot {
   type: Partial<typeof STEPS[keyof typeof STEPS]>,
   result?: number[],
   compareIndexes: number[],
+  swapIndexes?: [number, number] | null,
   
 };

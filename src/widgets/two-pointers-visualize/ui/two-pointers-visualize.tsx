@@ -3,6 +3,7 @@ import { ToggleMenu } from "@/components/ui/toggle-menu";
 import { Mode, MODES } from "../model/constants";
 import { useState } from "react";
 import { TwoSumVisualize } from "./two-sum-visualize";
+import { SlowFastVisualize } from "./slow-fast-visualize";
 
 
 
@@ -24,6 +25,9 @@ export function TwoPointersVisualize() {
         />
         {
           mode === "inward" && <TwoSumVisualize />
+        }
+        {
+          mode === "fast-slow" && <SlowFastVisualize />
         }
         </div>)
 }
