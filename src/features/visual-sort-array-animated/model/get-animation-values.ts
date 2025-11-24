@@ -7,21 +7,19 @@ const defaultAnimateValues = {
 };
 
 const getSiblingPosition = (
-  ref: React.RefObject<HTMLDivElement | null>,
+  element: HTMLDivElement | null,
+  elementToSwap: HTMLDivElement | null,
   prev: boolean
 ) => {
-  if (!ref.current) return defaultAnimateValues;
+  if (!element) return defaultAnimateValues;
 
-  let sibling = ref.current.nextSibling as HTMLDivElement | null;
-  if (prev) {
-    sibling = ref.current.previousSibling as HTMLDivElement | null;
-  }
+  let sibling = elementToSwap;
 
   if (!sibling) {
     return defaultAnimateValues;
   }
 
-  const rect = ref.current.getBoundingClientRect();
+  const rect = element.getBoundingClientRect();
   const siblingRect = sibling.getBoundingClientRect();
 
   const targetX = siblingRect.left - rect.left;
@@ -34,19 +32,25 @@ const getSiblingPosition = (
   };
 };
 
-export const getAnimateValues = (
-  ref: React.RefObject<HTMLDivElement | null>,
+export const getAnimateValues = ({
+  element,
+  elementToSwap,
+  isGoBack,
+  isGoForward,
+} :
+ { element: HTMLDivElement | null,
+  elementToSwap: HTMLDivElement | null,
   isGoBack: boolean,
-  isGoForward: boolean
+  isGoForward: boolean}
 ) => {
-  if (!ref.current) return defaultAnimateValues;
+  if (!element || !elementToSwap) return defaultAnimateValues;
   if (!isGoBack && !isGoForward) return defaultAnimateValues;
 
   if (isGoBack) {
-    return getSiblingPosition(ref, true);
+    return getSiblingPosition(element, elementToSwap, true);
   }
 
-  return getSiblingPosition(ref, false);
+  return getSiblingPosition(element, elementToSwap, false);
 };
 
 export const getTransition = (isGoBack: boolean, isGoForward: boolean) => {

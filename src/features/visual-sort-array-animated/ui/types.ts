@@ -23,4 +23,5 @@ export type AnimatedArrayItemProps = Omit<VisualSortArrayAnimatedProps,
   index: number;
   isSwapping: boolean;
   getIsSorted: (index: number, sortedIndex: number) => boolean;
+  wrapperRef: React.RefObject<HTMLDivElement | null>;
 };

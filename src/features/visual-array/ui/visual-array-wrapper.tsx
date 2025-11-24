@@ -6,16 +6,19 @@ export type VisualArrayWrapperProps = {
   className?: string;
   component?: React.ElementType;
   layout?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
 };
 
 export const VisualArrayWrapper = ({
   children,
   className,
+  ref,
   component: Component = "div",
   ...props
 }: VisualArrayWrapperProps) => {
   return (
     <Component
+      ref={ref}
       {...props}
       className={cn(
         "flex items-center mt-12 flex-wrap gap-y-12",

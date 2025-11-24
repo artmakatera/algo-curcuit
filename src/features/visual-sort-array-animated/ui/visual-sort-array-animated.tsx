@@ -6,6 +6,7 @@ import EditArrayItem from "@/features/visual-array/ui/edit-array-item";
 import { Button } from "@/components/ui/button";
 import { VisualSortArrayAnimatedProps } from "./types";
 import { AnimatedArrayItem } from "./animated-array-item";
+import { use, useRef } from "react";
 
 
 export const VisualSortArrayAnimated = ({
@@ -21,6 +22,9 @@ export const VisualSortArrayAnimated = ({
   onAddNumber,
   onUpdateNumber,
 }: VisualSortArrayAnimatedProps) => {
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   if (editMode) {
     return (
       <VisualArrayWrapper>
@@ -47,7 +51,7 @@ export const VisualSortArrayAnimated = ({
   }
 
   return (
-      <VisualArrayWrapper>
+      <VisualArrayWrapper ref={wrapperRef}>
         {arrToSort.map((value, index) => {
           const isSwapping = swapIndexes.some((i) => i === index);
 
@@ -63,6 +67,7 @@ export const VisualSortArrayAnimated = ({
               pivotIndex={pivotIndex}
               getIsSorted={getIsSorted}
               swapIndexes={swapIndexes}
+              wrapperRef={wrapperRef}
             />
           );
         })}
