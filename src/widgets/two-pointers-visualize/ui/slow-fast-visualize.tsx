@@ -4,7 +4,7 @@ import TypographyH3 from "@/components/ui/typography/typographyH3";
 import { useCodeLang } from "@/shared/contexts/code-lang";
 import { useNumberArray } from "@/shared/hooks/use-number-array";
 import { useState } from "react";
-import { languagesMapSettings } from "../model/two-sum/languages-map-settings";
+import { languagesMapSettings } from "../model/fast-slow/languages-map-settings";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { GenValuePayload, StepSnapshot } from "../model/types";
 import {
@@ -16,6 +16,7 @@ import { VisualizeControls } from "@/features/visualizer-player-controls/ui/visu
 import { EditButton } from "@/features/edit-button/ui/edit-button";
 import { STEPS } from "../model/constants";
 import { VisualSortArrayAnimated } from "@/features/visual-sort-array-animated";
+import { getGoBackSnapshot } from "../model/get-back-snapshot";
 
 const defaultArray = [0, 1, 3, 0, 5, 7, 0, 12, 0, 18, 20];
 
@@ -45,6 +46,7 @@ export function SlowFastVisualize() {
     ) => Generator<GenValuePayload, void, unknown>,
     genCallArgs: [array],
     createStepSnapshot: createStepSnapshot,
+    getGoBackSnapshot: getGoBackSnapshot
   });
 
   const handlePlay = () => {
@@ -86,6 +88,7 @@ export function SlowFastVisualize() {
         onRemoveNumber={removeNumber}
         onAddNumber={addNumber}
         onUpdateNumber={updateNumber}
+        sortedIndex={currentSnapshot.type === STEPS.found ? array.length - 1 : -1}
       />
 
       <NotFoundTitle show={currentSnapshot.type === STEPS.notFound} />
