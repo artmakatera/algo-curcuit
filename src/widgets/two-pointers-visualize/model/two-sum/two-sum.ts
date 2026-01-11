@@ -11,6 +11,7 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
     start: left,
     end: right,
     result: [],
+    swapIndexes: [],
   };
 
   while (left < right) {
@@ -23,6 +24,8 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
         start: left,
         end: right,
         result: [left, right],
+        swapIndexes: [],
+
       };
       return [left, right];
     } else if (currentSum < target) {
@@ -32,6 +35,8 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
         start: left,
         end: right,
         result: [],
+        swapIndexes: [],
+
       };
     } else {
       right--;
@@ -40,6 +45,7 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
         start: left,
         end: right,
         result: [],
+        swapIndexes: []
       };
     }
   }
@@ -49,6 +55,7 @@ export function* twoSumSorted(arr: number[], target: number): GenValue {
     start: left,
     end: right,
     result: [],
+    swapIndexes: []
   };
   return [];
 
