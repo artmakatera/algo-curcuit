@@ -12,13 +12,11 @@ export function* moveZeros(arr: number[]): GenValue {
   while (fast < n) {
     yield { type: STEPS.check, start: slow, end: fast, swapIndexes: [], result: [...arr] };
 
-    yield { type: STEPS.movePointers, start: slow, end: fast, swapIndexes: [slow, fast], result: [...arr] };
-    arr = [...arr]; // create a shallow copy to reflect changes in visualization
-    [arr[slow], arr[fast]] = [arr[fast], arr[slow]];
-    yield { type: STEPS.movedPointers, start: slow, end: fast, swapIndexes: [], result: [...arr] };
-
-
-    if (arr[slow] !== 0) {
+    if (arr[fast] !== 0) {
+      yield { type: STEPS.movePointers, start: slow, end: fast, swapIndexes: [slow, fast], result: [...arr] };
+      arr = [...arr]; // create a shallow copy to reflect changes in visualization
+      [arr[slow], arr[fast]] = [arr[fast], arr[slow]];
+      yield { type: STEPS.movedPointers, start: slow, end: fast, swapIndexes: [], result: [...arr] };
       slow++;
       yield { type: STEPS.ifStart, start: slow, end: fast, swapIndexes: [], result: [...arr] };
     }
