@@ -1,2 +1,2 @@
 export * from "./ui"
-export type { CustomAnimations } from "./types"
+export type { CustomAnimations, SwapAnimations } from "./types"

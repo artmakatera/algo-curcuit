@@ -34,7 +34,7 @@ const baseArrayData = [
 
 baseArrayData.forEach((value) => tree.insert(value));
 
-export const BinaryTree = ({ customAnimations }: { customAnimations?: CustomAnimations } = {}) => {
+export const BinaryTree = ({ customAnimations, swapNodes }: { customAnimations?: CustomAnimations; swapNodes?: { parentId: string; childId: string } | null } = {}) => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(1);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
@@ -196,6 +196,7 @@ export const BinaryTree = ({ customAnimations }: { customAnimations?: CustomAnim
               }
               stackNodes={currentSnapshot.stack}
               customAnimations={customAnimations}
+              swapNodes={swapNodes}
             />
           </NodeToRemoveProvider>
         </div>

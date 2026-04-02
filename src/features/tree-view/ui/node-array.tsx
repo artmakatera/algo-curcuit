@@ -3,9 +3,9 @@ import { cn } from "@/shared/lib/utils";
 import { Line } from "./line";
 
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
-import { motion, LayoutGroup } from "motion/react";
+import { motion, LayoutGroup, Variants } from "motion/react";
 import { NodeArrayWrapper } from "./node-array-wrapper";
-import { RefObject, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { NodeLineWrapper } from "./node-line-wrapper";
 import {
   getIsActiveNodes,
@@ -15,6 +15,7 @@ import {
   getIsQueueNode,
 } from "../model/conditional-helpers";
 import { NodeArrayProps, CustomAnimations } from "../types";
+import { useSwap } from "../context/swap-context";
 
 const getChildrenCount = (children: TreeArrayItem[] = []) =>
   children.filter(Boolean).length;
@@ -66,9 +67,24 @@ function NodeArrayItem({
     isResultReversed,
     zIndex = 999,
     customAnimations,
+    swapNodes,
   } = props;
 
+  const { swapChildElement, registerSwapChild } = useSwap();
+
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const isSwapChild = swapNodes?.childId === item?.node?.id;
+  const isSwapParent = swapNodes?.parentId === item?.node?.id;
+
+  useEffect(() => {
+    if (isSwapChild && wrapperRef.current) {
+      registerSwapChild(wrapperRef.current);
+    }
+    return () => {
+      if (isSwapChild) registerSwapChild(null);
+    };
+  }, [isSwapChild, registerSwapChild]);
 
   if (!item) {
     return <NodeArrayWrapper className="w-10" index={index} />;
@@ -140,6 +156,16 @@ function NodeArrayItem({
             "relative w-fit z-50",
             hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
           )}
+          animate={getSwapAnimateState(isSwapChild, isSwapParent)}
+          variants={getSwapVariants(
+            isSwapChild,
+            isSwapParent,
+            wrapperRef,
+            parentRef,
+            swapChildElement,
+            customAnimations?.swap?.transition,
+            customAnimations?.swap?.duration,
+          )}
         >
           <Node
             current={node}
@@ -153,6 +179,7 @@ function NodeArrayItem({
             preventAnimation={preventNodeEdgeAnimation}
             hasChildren={hasChildren}
             customNodeAnimations={customAnimations?.node}
+            isSwapNode={isSwapChild || isSwapParent}
           />
         </motion.div>
       </NodeLineWrapper>
@@ -198,4 +225,57 @@ function getSlideToParentVariant(
       },
     },
   };
+}
+
+function getSwapAnimateState(
+  isSwapChild: boolean,
+  isSwapParent: boolean
+): string | undefined {
+  if (isSwapChild) return "swapUp";
+  if (isSwapParent) return "swapDown";
+  return undefined;
+}
+
+function getSwapVariants(
+  isSwapChild: boolean,
+  isSwapParent: boolean,
+  wrapperRef: RefObject<HTMLDivElement | null>,
+  parentRef?: RefObject<HTMLDivElement | null>,
+  swapChildElement?: HTMLDivElement | null,
+  customTransition?: import("motion/react").Transition,
+  customDuration?: number,
+) {
+  if (!isSwapChild && !isSwapParent) return undefined;
+
+  const defaultTransition: import("motion/react").Transition = customTransition ?? {
+    type: "spring",
+    duration: customDuration ?? 0.4,
+    bounce: 0.15,
+  };
+
+  const variants: Variants = {};
+
+  if (isSwapChild && parentRef?.current && wrapperRef.current) {
+    const parentRect = parentRef.current.getBoundingClientRect();
+    const childRect = wrapperRef.current.getBoundingClientRect();
+    variants.swapUp = {
+      x: parentRect.x - childRect.x,
+      y: parentRect.y - childRect.y,
+      zIndex: 9999,
+      transition: defaultTransition,
+    };
+  }
+
+  if (isSwapParent && swapChildElement && wrapperRef.current) {
+    const parentRect = wrapperRef.current.getBoundingClientRect();
+    const childRect = swapChildElement.getBoundingClientRect();
+    variants.swapDown = {
+      x: childRect.x - parentRect.x,
+      y: childRect.y - parentRect.y,
+      zIndex: 9999,
+      transition: defaultTransition,
+    };
+  }
+
+  return variants;
 }

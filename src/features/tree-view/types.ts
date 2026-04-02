@@ -30,11 +30,19 @@ export type CollapseAnimations = {
   slideToParentVariant?: Variants["slideToParent"];
 };
 
+export type SwapAnimations = {
+  /** Duration (seconds) of the swap transition */
+  duration?: number;
+  /** Transition config for the swap */
+  transition?: Transition;
+};
+
 export type CustomAnimations = {
   node?: NodeAnimations;
   line?: LineAnimations;
   layout?: LayoutAnimations;
   collapse?: CollapseAnimations;
+  swap?: SwapAnimations;
 };
 
 export type NodeArrayProps = {
@@ -60,4 +68,5 @@ export type NodeArrayProps = {
   isParentMinNode?: boolean;
   isResultReversed?: boolean;
   customAnimations?: CustomAnimations;
+  swapNodes?: { parentId: string; childId: string } | null;
 };
