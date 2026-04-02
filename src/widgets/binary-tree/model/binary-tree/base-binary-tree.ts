@@ -7,11 +7,11 @@ export class TreeNode {
   right: TreeNode | null;
   id: string;
 
-  constructor(value: number) {
+  constructor(value: number, id?: string) {
     this.value = value;
     this.left = null;
     this.right = null;
-    this.id = uuid()
+    this.id = id || uuid();
   }
 
 }

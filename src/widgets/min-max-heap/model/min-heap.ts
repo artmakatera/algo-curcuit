@@ -4,11 +4,11 @@ function swap(heap: number[], i: number, j: number) {
   [heap[i], heap[j]] = [heap[j], heap[i]];
 }
 
-function leftChild(index: number) {
+export function getLeftChild(index: number) {
   return 2 * index + 1;
 }
 
-function rightChild(index: number) {
+export function getRightChild(index: number) {
   return 2 * index + 2;
 }
 
@@ -128,8 +128,8 @@ export function* pop(heap: number[]) {
   const length = heap.length;
 
   while (true) {
-    const leftIndex = leftChild(currentIndex);
-    const rightIndex = rightChild(currentIndex);
+    const leftIndex = getLeftChild(currentIndex);
+    const rightIndex = getRightChild(currentIndex);
 
     yield {
       type: STEPS.compareNodes,
@@ -219,8 +219,8 @@ export function bubbleDown(heap: number[], index: number) {
   const length = heap.length;
 
   while (true) {
-    const leftIndex = leftChild(currentIndex);
-    const rightIndex = rightChild(currentIndex);
+    const leftIndex = getLeftChild(currentIndex);
+    const rightIndex = getRightChild(currentIndex);
     let smallestIndex = currentIndex;
 
     if (leftIndex < length && heap[leftIndex] < heap[smallestIndex]) {

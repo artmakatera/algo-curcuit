@@ -6,8 +6,10 @@ import { MinMaxHeapControls } from "./MinMaxHeapControls";
 import { ActionType, GenValuePayload, StepSnapshot } from "../model/types";
 
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
+import { BinaryTreeView } from "./views/binary-tree-view";
+import { STEPS } from "../model/constants";
 
-const heap: number[] = [];
+const baseHeap: number[] = [];
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 1,
@@ -15,13 +17,13 @@ const baseArrayData = [
   // 33, 42, 65, 75, 3, 32, 34,
 ];
 
-baseArrayData.forEach((value) => insert(heap, value));
+baseArrayData.forEach((value) => insert(baseHeap, value));
 
 export const MinHeapVisualize = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number>(1);
   const activeTypeRef = useRef<ActionType | null>(null);
-  const [baseHeap, setBaseHeap] = useState<number[]>([...heap]);
+  const delayRef = useRef<string | null>("750");
 
   const genCall = useCallback(
     (
@@ -55,7 +57,12 @@ export const MinHeapVisualize = () => {
     handlePreviousStep,
     handleNextStep,
   } = useSnapshots<StepSnapshot, GenValuePayload, [number[], number]>({
-    defaultSnapshots: [],
+    defaultSnapshots: [{
+      heap: baseHeap,
+      type: STEPS.endTraverse,
+      node: null as unknown as any,
+      treeView: [],
+    }],
     defaultDelay: "750",
     genCall: genCall,
     genCallArgs: [baseHeap, targetValue],
@@ -66,7 +73,6 @@ export const MinHeapVisualize = () => {
     (type: ActionType) => {
       activeTypeRef.current = type;
       const stepsSnapshot = goToLastStep();
-      setBaseHeap(stepsSnapshot[stepsSnapshot.length - 1]?.heap || []);
       rebuildSnapshots();
     },
     [goToLastStep, rebuildSnapshots],
@@ -86,6 +92,7 @@ export const MinHeapVisualize = () => {
         onPop={() => handleAction(ActionType.pop)}
         onPush={() => handleAction(ActionType.push)}
       />
+      <BinaryTreeView activeType={activeTypeRef} currentSnapshot={currentSnapshot} delayRef={delayRef} />
     </div>
   );
 };
