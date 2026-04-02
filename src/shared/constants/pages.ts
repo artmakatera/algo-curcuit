@@ -65,4 +65,12 @@ export const pages = [
     subcategory: "Stack",
   },
 
+  {
+    link: "/min-max-heap",
+    title: "Min-Max Heap",
+    description: "A Min-Max Heap is a specialized data structure that combines the properties of both a min-heap and a max-heap. It allows for efficient retrieval of both the minimum and maximum elements in constant time.",
+    category: "Tree",
+    subcategory: "Heap",
+  }
+
 ]

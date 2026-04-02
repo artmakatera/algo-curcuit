@@ -115,6 +115,8 @@ export const useSnapshots = <S extends BaseSnapshot, G extends unknown, P extend
   const goToLastStep = useCallback(() => {
     setIsGoBack(false);
     setSnapshotIndex(stepsSnapshot[stepsSnapshot.length - 1] ? stepsSnapshot.length - 1 : 0);
+
+    return stepsSnapshot
   }, [stepsSnapshot]);
 
   const visualize = useCallback(async () => {
