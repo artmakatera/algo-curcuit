@@ -5,7 +5,7 @@ import { Line } from "./line";
 import { TreeArrayItem } from "@/widgets/binary-tree/model/types";
 import { motion, LayoutGroup } from "motion/react";
 import { NodeArrayWrapper } from "./node-array-wrapper";
-import { useRef } from "react";
+import { RefObject, useRef } from "react";
 import { NodeLineWrapper } from "./node-line-wrapper";
 import {
   getIsActiveNodes,
@@ -14,10 +14,10 @@ import {
   getIsNodeInserted,
   getIsQueueNode,
 } from "../model/conditional-helpers";
-import { NodeArrayProps } from "../types";
+import { NodeArrayProps, CustomAnimations } from "../types";
 
-const getLen = (childrenArr: TreeArrayItem[]) =>
-  childrenArr?.filter(Boolean)?.length || 0;
+const getChildrenCount = (children: TreeArrayItem[] = []) =>
+  children.filter(Boolean).length;
 
 export const NodeArray = (props: NodeArrayProps) => {
   const { groups, parentKey } = props;
@@ -27,7 +27,7 @@ export const NodeArray = (props: NodeArrayProps) => {
       {groups?.[parentKey]?.map((item, index) => {
         return (
           <NodeArrayItem
-            key={item?.node?.id || `index-{index}`}
+            key={item?.node?.id || `index-${index}`}
             {...props}
             item={item}
             index={index}
@@ -65,18 +65,17 @@ function NodeArrayItem({
     isParentMinNode,
     isResultReversed,
     zIndex = 999,
+    customAnimations,
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   if (!item) {
-    return (
-      <NodeArrayWrapper key={`index-{index}`} className="w-10" index={index} />
-    );
+    return <NodeArrayWrapper className="w-10" index={index} />;
   }
   const { node, isLeft } = item;
 
-  const hasChildren = getLen(groups[node.id]) > 0;
+  const hasChildren = getChildrenCount(groups[node.id]) > 0;
   const isNodeToRemove = nodeToRemove?.id === node.id;
   const isMinNode = minValueNode?.id === node.id;
   const isSingleRemove = isNodeToRemove && isRemoveSingleChild;
@@ -85,6 +84,10 @@ function NodeArrayItem({
     isSingleChildToRemove || (isRightChildToRemove && !isLeft);
 
   const isCompleted = getIsNodeInserted(node, insertedNode);
+  const isQueueNode = getIsQueueNode(node, queueNodes, stackNodes);
+  const isResultNode = getIsCompletedNode(node, resultNodes || []);
+  const shouldRenderParentLine =
+    parentKey !== null && !isMinNode && !isChildAndRemove && !isParentMinNode;
 
   const getAnimationType = () => {
     if (isChildAndRemove) {
@@ -102,7 +105,7 @@ function NodeArrayItem({
     <NodeArrayWrapper
       index={index}
       hasChildren={hasChildren}
-      variants={getSlideToParentVariant(parentRef, wrapperRef, durationMs)}
+      variants={getSlideToParentVariant(parentRef, wrapperRef, durationMs, customAnimations?.collapse)}
       animate={getAnimationType()}
     >
       <NodeLineWrapper
@@ -111,26 +114,25 @@ function NodeArrayItem({
         isMinNode={isMinNode}
         zIndex={zIndex}
         id={node.id}
+        customLayoutTransition={customAnimations?.layout?.layoutTransition}
       >
-        {parentKey !== null &&
-          !isMinNode &&
-          !isChildAndRemove &&
-          !isParentMinNode && (
-            <Line
-              className={cn(
-                "-z-20",
-                isLeft ? "bottom-1/2 " : " bottom-1/2",
-                hasChildren ? "w-full" : "w-1/2 left-1/2",
-                !isLeft && !hasChildren && "w-1/2 left-0",
-                "right-0"
-              )}
-              preventAnimation={preventNodeEdgeAnimation}
-              isLeft={isLeft}
-              found={getIsCompletedNode(node, resultNodes || [])}
-              isQueueLine={getIsQueueNode(node, queueNodes, stackNodes)}
-              isResultReversed={isResultReversed}
-            />
-          )}
+        {shouldRenderParentLine && (
+          <Line
+            className={cn(
+              "-z-20",
+              "bottom-1/2",
+              hasChildren ? "w-full" : "w-1/2 left-1/2",
+              !isLeft && !hasChildren && "w-1/2 left-0",
+              "right-0"
+            )}
+            preventAnimation={preventNodeEdgeAnimation}
+            isLeft={isLeft}
+            found={isResultNode}
+            isQueueLine={isQueueNode}
+            isResultReversed={isResultReversed}
+            customLineAnimations={customAnimations?.line}
+          />
+        )}
         <motion.div
           ref={wrapperRef}
           key="node-wrapper"
@@ -142,14 +144,15 @@ function NodeArrayItem({
           <Node
             current={node}
             active={getIsActiveNodes(node, activeNode)}
-            isQueueNode={getIsQueueNode(node, queueNodes, stackNodes)}
+            isQueueNode={isQueueNode}
             inserted={isCompleted}
             found={getIsFoundNode(node, foundNode)}
-            isCompleted={getIsCompletedNode(node, resultNodes || [])}
+            isCompleted={isResultNode}
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}
             preventAnimation={preventNodeEdgeAnimation}
             hasChildren={hasChildren}
+            customNodeAnimations={customAnimations?.node}
           />
         </motion.div>
       </NodeLineWrapper>
@@ -167,9 +170,10 @@ function NodeArrayItem({
 }
 
 function getSlideToParentVariant(
-  parentRef?: React.RefObject<HTMLDivElement | null>,
-  ref?: React.RefObject<HTMLDivElement | null>,
-  durationMs: number = 750
+  parentRef?: RefObject<HTMLDivElement | null>,
+  ref?: RefObject<HTMLDivElement | null>,
+  durationMs: number = 750,
+  collapseAnimations?: CustomAnimations["collapse"]
 ) {
   if (!parentRef || !ref) return undefined;
   const parentRect = parentRef.current?.getBoundingClientRect();
@@ -180,11 +184,11 @@ function getSlideToParentVariant(
   const y = parentRect.y - rect.y;
 
   return {
-    collapse: {
+    collapse: collapseAnimations?.collapseVariant ?? {
       delay: 0.1,
       scale: 0,
     },
-    slideToParent: {
+    slideToParent: collapseAnimations?.slideToParentVariant ?? {
       x,
       y,
       zIndex: 9999,

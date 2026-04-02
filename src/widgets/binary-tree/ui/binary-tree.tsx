@@ -22,6 +22,7 @@ import { CodeViewers } from "@/components/ui/code-viewers";
 import { NodeArrayGroup } from "@/features/tree-view";
 import { debounce } from "@/shared/lib/debounce";
 import { cn } from "@/shared/lib/utils";
+import type { CustomAnimations } from "@/features/tree-view/types";
 
 const tree = new BinaryTreeDraw();
 
@@ -33,7 +34,7 @@ const baseArrayData = [
 
 baseArrayData.forEach((value) => tree.insert(value));
 
-export const BinaryTree = () => {
+export const BinaryTree = ({ customAnimations }: { customAnimations?: CustomAnimations } = {}) => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number | null>(1);
   const [activeType, setActiveType] = useState<ActionType | null>(null);
@@ -194,6 +195,7 @@ export const BinaryTree = () => {
                   : null
               }
               stackNodes={currentSnapshot.stack}
+              customAnimations={customAnimations}
             />
           </NodeToRemoveProvider>
         </div>

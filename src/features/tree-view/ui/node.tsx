@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { cn } from "@/shared/lib/utils";
 import { NODE_SIZE } from "../constants";
 import { useNodeToRemove } from "../context/node-to-remove-context";
+import type { NodeAnimations } from "../types";
 
 type NodeItemProps = {
   current: TreeNode;
@@ -17,6 +18,7 @@ type NodeItemProps = {
   isQueueNode?: boolean;
   isCompleted?: boolean;
   isStackNode?: boolean;
+  customNodeAnimations?: NodeAnimations;
 };
 
 const getAnimationCoords = (
@@ -51,6 +53,7 @@ export const Node = ({
   isMinValueNode,
   preventAnimation,
   isCompleted,
+  customNodeAnimations,
 }: NodeItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { nodeToRemove, setNodeToRemove } = useNodeToRemove();
@@ -68,7 +71,7 @@ export const Node = ({
     <motion.div
       animate={isMinValueNode ? "minVal" : "normal"}
       exit={"exit"}
-      variants={{
+      variants={customNodeAnimations?.outerVariants ?? {
         minVal: {
           x,
           y,
@@ -100,10 +103,10 @@ export const Node = ({
         ref={ref}
         initial={{ scale: preventAnimation ? 1 : 0 }}
         animate={{ scale: 1 }}
-        transition={{
+        transition={customNodeAnimations?.appearTransition ?? {
           type: "spring",
           duration: inserted ? 0.8 : 0.3,
-          delay: inserted ? 0.5 : 0,
+          delay: inserted ? (customNodeAnimations?.insertedDelay ?? 0.5) : 0,
         }}
       >
         {current?.value}

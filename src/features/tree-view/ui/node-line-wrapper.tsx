@@ -1,5 +1,5 @@
 import { cn } from "@/shared/lib/utils";
-import { motion, MotionProps } from "motion/react";
+import { motion, MotionProps, Transition } from "motion/react";
 
 interface NodeLineWrapperProps extends MotionProps {
   id: string;
@@ -8,6 +8,7 @@ interface NodeLineWrapperProps extends MotionProps {
   zIndex?: number;
   isMinNode?: boolean;
   activeType?: string | null;
+  customLayoutTransition?: Transition;
 }
 
 export function NodeLineWrapper({
@@ -17,6 +18,7 @@ export function NodeLineWrapper({
   isMinNode,
   id,
   zIndex,
+  customLayoutTransition,
   ...props
 }: NodeLineWrapperProps) {
   return (
@@ -27,7 +29,7 @@ export function NodeLineWrapper({
         gridColumn: isLeft ? "2 / -1" : undefined,
         zIndex: isMinNode ? 9999 : zIndex,
       }}
-      transition={{
+      transition={customLayoutTransition ?? {
         layout: {
           duration: activeType === "delete" ? 0.15 : 0.2,
           type: "spring",

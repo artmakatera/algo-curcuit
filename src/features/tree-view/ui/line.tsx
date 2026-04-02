@@ -3,6 +3,7 @@ import { cn } from "@/shared/lib/utils";
 
 import { motion } from "motion/react";
 import { LINE_SIZE } from "../constants";
+import type { LineAnimations } from "../types";
 
 type LineProps = {
   isLeft?: boolean;
@@ -12,6 +13,7 @@ type LineProps = {
   found?: boolean;
   isQueueLine?: boolean;
   isResultReversed?: boolean;
+  customLineAnimations?: LineAnimations;
 };
 
 const getAnimationProps = (
@@ -95,13 +97,17 @@ export const Line = ({
   isQueueLine,
   isResultReversed,
   found,
+  customLineAnimations,
 }: LineProps) => {
+  const drawDuration = customLineAnimations?.drawDuration ?? 0.8;
+  const highlightDuration = customLineAnimations?.highlightDuration ?? 0.5;
+
   return (
     <div className={cn(`absolute h-${LINE_SIZE} -z-10`, className)}>
       <svg className="w-full h-full">
         <motion.line
           {...getAnimationProps(isLeft, preventAnimation)}
-          transition={{ duration: preventAnimation ? 0 : 0.8 }}
+          transition={{ duration: preventAnimation ? 0 : drawDuration }}
           x1={0}
           x2={"100%"}
           y1={isLeft ? "100%" : 0}
@@ -112,7 +118,7 @@ export const Line = ({
         {(isQueueLine || found) && (
           <motion.line
             {...getAnimationProps(isLeft, preventAnimation)}
-            transition={{ duration: preventAnimation ? 0 : 0.5 }}
+            transition={{ duration: preventAnimation ? 0 : highlightDuration }}
             x1={0}
             x2={"100%"}
             y1={isLeft ? "100%" : 0}
