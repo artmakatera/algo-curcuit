@@ -79,8 +79,8 @@ export function* push(heap: number[], value: number) {
       type: STEPS.swapped,
       value,
       index: currentIndex,
-      compareIndexes: [currentIndex, parentIndex],
-      swapIndexes: [currentIndex, parentIndex],
+      compareIndexes: [],
+      swapIndexes: [],
       removeIndex: -1,
       heap: [...heap],
     };
@@ -181,7 +181,7 @@ export function* pop(heap: number[]) {
       value: minValue,
       index: currentIndex,
       compareIndexes: [currentIndex],
-      swapIndexes: [smallestIndex, currentIndex],
+      swapIndexes: [],
       removeIndex: -1,
       heap: [...heap],
     };

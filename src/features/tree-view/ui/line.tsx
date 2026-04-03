@@ -2,7 +2,7 @@
 import { cn } from "@/shared/lib/utils";
 
 import { motion } from "motion/react";
-import { LINE_SIZE } from "../constants";
+import { LINE_SIZE,  NODE_SIZE } from "../constants";
 import type { LineAnimations } from "../types";
 
 type LineProps = {
@@ -95,7 +95,6 @@ export const Line = ({
   className,
   preventAnimation,
   isQueueLine,
-  isResultReversed,
   found,
   customLineAnimations,
 }: LineProps) => {

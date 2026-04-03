@@ -7,6 +7,7 @@ interface NodeLineWrapperProps extends MotionProps {
   isLeft?: boolean;
   zIndex?: number;
   isMinNode?: boolean;
+  isSwapNode?: boolean;
   activeType?: string | null;
   customLayoutTransition?: Transition;
 }
@@ -16,6 +17,7 @@ export function NodeLineWrapper({
   children,
   isLeft,
   isMinNode,
+  isSwapNode,
   id,
   zIndex,
   customLayoutTransition,

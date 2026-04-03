@@ -24,7 +24,7 @@ export const NodeArray = (props: NodeArrayProps) => {
   const { groups, parentKey } = props;
 
   return (
-    <LayoutGroup>
+    <LayoutGroup >
       {groups?.[parentKey]?.map((item, index) => {
         return (
           <NodeArrayItem
@@ -156,8 +156,10 @@ function NodeArrayItem({
             "relative w-fit z-50",
             hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
           )}
-          animate={getSwapAnimateState(isSwapChild, isSwapParent)}
-          variants={getSwapVariants(
+          animate={preventNodeEdgeAnimation
+            ? { x: 0, y: 0, zIndex: 0, transition: { duration: 0 } }
+            : getSwapAnimateState(isSwapChild, isSwapParent)}
+          variants={preventNodeEdgeAnimation ? undefined : getSwapVariants(
             isSwapChild,
             isSwapParent,
             wrapperRef,
@@ -253,7 +255,18 @@ function getSwapVariants(
     bounce: 0.15,
   };
 
-  const variants: Variants = {};
+  const variants: Variants = {
+      swapUp: {
+        transition: {
+          duration: "0s",
+        }
+      },
+      swapDown: {
+        transition: {
+          duration: "0s",
+        }
+      },
+  };
 
   if (isSwapChild && parentRef?.current && wrapperRef.current) {
     const parentRect = parentRef.current.getBoundingClientRect();
