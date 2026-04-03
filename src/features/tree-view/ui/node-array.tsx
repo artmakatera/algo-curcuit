@@ -128,8 +128,8 @@ function NodeArrayItem({
         activeType={activeType}
         isLeft={isLeft}
         isMinNode={isMinNode}
-        zIndex={zIndex}
         id={node.id}
+        zIndex={zIndex}
         customLayoutTransition={customAnimations?.layout?.layoutTransition}
       >
         {shouldRenderParentLine && (
@@ -157,7 +157,7 @@ function NodeArrayItem({
             hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
           )}
           animate={preventNodeEdgeAnimation
-            ? { x: 0, y: 0, zIndex: 0, transition: { duration: 0 } }
+            ? { x: 0, y: 0, transition: { duration: 0 } }
             : getSwapAnimateState(isSwapChild, isSwapParent)}
           variants={preventNodeEdgeAnimation ? undefined : getSwapVariants(
             isSwapChild,

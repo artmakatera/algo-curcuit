@@ -77,6 +77,7 @@ export const Node = ({
         minVal: {
           x,
           y,
+          zIndex: 9999,
           transition: {
             duration: preventAnimation ? 0 : 0.2,
           },
