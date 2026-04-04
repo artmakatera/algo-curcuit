@@ -20,6 +20,7 @@ type NodeItemProps = {
   isStackNode?: boolean;
   customNodeAnimations?: NodeAnimations;
   isSwapNode?: boolean;
+  isSwapPlaceholder?: boolean;
 };
 
 const getAnimationCoords = (
@@ -56,6 +57,7 @@ export const Node = ({
   isCompleted,
   customNodeAnimations,
   isSwapNode,
+  isSwapPlaceholder,
 }: NodeItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { nodeToRemove, setNodeToRemove } = useNodeToRemove();
@@ -102,7 +104,8 @@ export const Node = ({
           isCompleted && "bg-yellow-500 delay-500 transition",
           inserted && "bg-orange-600",
           isNodeToRemove && "bg-red-600 border-red-600",
-          isSwapNode && "bg-violet-600 border-violet-400",
+          isSwapNode && !isSwapPlaceholder && "bg-violet-600 border-violet-400",
+          isSwapPlaceholder && "bg-background transition-none",
         )}
         ref={ref}
         initial={{ scale: preventAnimation ? 1 : 0 }}
