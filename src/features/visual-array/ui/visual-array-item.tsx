@@ -5,6 +5,7 @@ import { cn } from "@/shared/lib/utils";
 import { COMPARE_CLASSES } from "../constants";
 
 export interface VisualArrayItemProps {
+  ref?: React.Ref<HTMLDivElement>;
   value: number;
 
   index: number;
@@ -22,6 +23,7 @@ export interface VisualArrayItemProps {
 }
 
 export const VisualArrayItem = ({
+  ref,
   initialClassName,
   className,
   value,
@@ -36,6 +38,7 @@ export const VisualArrayItem = ({
   return (
     <>
       <div
+        ref={ref}
         className={cn(
           initialClassName,
           "min-w-12 h-12 relative flex items-center justify-center rounded-md border-2 border-gray-300 transition-transform duration-100 ",

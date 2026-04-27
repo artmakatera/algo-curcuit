@@ -109,7 +109,7 @@ export function* pop(heap: number[]) {
 
   const minValue = heap[0];
   yield {
-    type: STEPS.peekValue,
+    type: STEPS.startTraverse,
     value: minValue,
     index: 0,
     heap: [...heap],
@@ -137,7 +137,7 @@ export function* pop(heap: number[]) {
     value: minValue,
     index: 0,
     removeIndex: heap.length - 1,
-    swapIndexes: [],
+    swapIndexes: [0, heap.length - 1],
     compareIndexes: [],
     heap: [...heap],
     node: null,

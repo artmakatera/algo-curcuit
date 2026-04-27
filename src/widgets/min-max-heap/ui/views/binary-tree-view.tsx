@@ -1,6 +1,5 @@
 import { NodeArrayGroup } from "@/features/tree-view";
-import { NodeToRemoveProvider } from "@/features/tree-view/context/node-to-remove-context";
-import { ActionType, StepSnapshot } from "../../model/types";
+import { ActionType } from "../../model/types";
 import { cn } from "@/shared/lib/utils";
 import React, { useMemo } from "react";
 import { STEPS } from "../../model/constants";
@@ -11,16 +10,12 @@ import {
   TreeArrayGroups,
   TreeArrayItem,
 } from "@/widgets/binary-tree/model/types";
+import type { MinMaxHeapViewProps } from "./type";
 
-interface BinaryTreeViewProps {
-  activeType: React.RefObject<ActionType | null>;
-  currentSnapshot: StepSnapshot;
-  delayRef: React.RefObject<string | null>;
-}
-
-export function BinaryTreeView(props: BinaryTreeViewProps) {
-  const { activeType, currentSnapshot, delayRef } = props;
-
+export function BinaryTreeView({
+  activeType,
+  currentSnapshot,
+}: MinMaxHeapViewProps) {
   const treeArray = useMemo(() => {
     const treeRoot = heapToTree(currentSnapshot.heap || []);
     return getTreeArray(false, treeRoot);
@@ -34,8 +29,7 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
 
   const hasSwapIndexes = currentSnapshot.swapIndexes?.length >= 2;
 
-  const isSwapStep = hasSwapIndexes && 
-    currentSnapshot.type === STEPS.swap 
+  const isSwapStep = hasSwapIndexes && currentSnapshot.type === STEPS.swap;
 
   const swapNodes = useMemo(() => {
     if (!isSwapStep) return undefined;
@@ -64,13 +58,29 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
       }
       if (type === STEPS.pushValue) {
         const target = `node-${heap.length - 1}`;
-        return [{ value, key: `push-${value}`, animateToNodeId: target, hiddenNodeId: target, label: "push" }];
+        return [
+          {
+            value,
+            key: `push-${value}`,
+            animateToNodeId: target,
+            hiddenNodeId: target,
+            label: "push",
+          },
+        ];
       }
     }
 
     if (activeT === ActionType.pop) {
       if (type === STEPS.popValue) {
-        return [{ value, key: `pop-${value}`, initFromNodeId: "node-0", placeholderNodeId: "node-0", label: "popped" }];
+        return [
+          {
+            value,
+            key: `pop-${value}`,
+            initFromNodeId: "node-0",
+            placeholderNodeId: "node-0",
+            label: "popped",
+          },
+        ];
       }
       if (type === STEPS.moveLastToTop) {
         const lastIdx = heap.length - 1;
@@ -104,19 +114,20 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
   }, [currentSnapshot, activeType]);
 
   return (
-    <div className={cn("max-w-screen overflow-x-auto mt-20",)}>
+    <div className={cn("max-w-screen overflow-x-auto mt-20")}>
       <div className="m-auto w-fit">
         <NodeArrayGroup
           activeType={activeType.current}
           parentKey={null}
           groups={groups}
           activeNode={treeArray[currentSnapshot.index]?.node || null}
-          insertedNode={
-           treeArray[currentSnapshot.index]?.node || null
-          }
+          insertedNode={treeArray[currentSnapshot.index]?.node || null}
           swapNodes={swapNodes}
           preventNodeEdgeAnimation={isSwappedStep}
-          foundNodes={getCompareTreeNodes(treeArray, currentSnapshot.compareIndexes)}
+          foundNodes={getCompareTreeNodes(
+            treeArray,
+            currentSnapshot.compareIndexes,
+          )}
           floatingNodes={floatingNodes}
           isResultReversed
         />
@@ -189,7 +200,6 @@ function heapToTree(heap: number[]) {
   return root;
 }
 
-
 function getId(index: number) {
   return `node-${index}`;
 }
@@ -198,9 +208,14 @@ function getIndexFromId(id: string) {
   return parseInt(id.split("-")[1], 10);
 }
 
-function getCompareTreeNodes(treeArray: TreeArrayItem[], compareIndexes: number[]) {
+function getCompareTreeNodes(
+  treeArray: TreeArrayItem[],
+  compareIndexes: number[],
+) {
   if (compareIndexes.length === 0) return null;
 
-  const nodes = compareIndexes.map((idx) => treeArray[idx]?.node).filter((n): n is TreeNode => n !== undefined);
+  const nodes = compareIndexes
+    .map((idx) => treeArray[idx]?.node)
+    .filter((n): n is TreeNode => n !== undefined);
   return nodes.length > 0 ? nodes : null;
 }

@@ -7,8 +7,10 @@ import { ActionType, GenValuePayload, StepSnapshot } from "../model/types";
 
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { BinaryTreeView } from "./views/binary-tree-view";
-import { STEPS } from "../model/constants";
+import { MODES, STEPS } from "../model/constants";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
+import { ToggleMenu } from "@/components/ui/toggle-menu";
+import { ArrayView } from "./views/array-view";
 
 const baseHeap: number[] = [];
 
@@ -36,6 +38,7 @@ const defaultHeapSnapshot: StepSnapshot[] = [
 export const MinHeapVisualize = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number>(1);
+  const [viewMode, setViewMode] = useState<"array" | "tree">("tree");
   const activeTypeRef = useRef<ActionType | null>(null);
 
   const genCall = useCallback(
@@ -95,16 +98,16 @@ export const MinHeapVisualize = () => {
   }, [stepsSnapshot, visualize]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div >
       <div className="flex mt-8 items-center">
-      <MinMaxHeapControls
-        value={targetValue}
-        onValueChange={setTargetValue}
-        onPeek={() => handleAction(ActionType.peek)}
-        onPop={() => handleAction(ActionType.pop)}
-        onPush={() => handleAction(ActionType.push)}
-        disabled={isPlaying}
-      />
+        <MinMaxHeapControls
+          value={targetValue}
+          onValueChange={setTargetValue}
+          onPeek={() => handleAction(ActionType.peek)}
+          onPop={() => handleAction(ActionType.pop)}
+          onPush={() => handleAction(ActionType.push)}
+          disabled={isPlaying}
+        />
         <VisualizeControls
           onPreviousStep={handlePreviousStep}
           onNextStep={handleNextStep}
@@ -116,11 +119,30 @@ export const MinHeapVisualize = () => {
           onChangeSpeed={onChangeSpeed}
         />
       </div>
-      <BinaryTreeView
-        activeType={activeTypeRef}
-        currentSnapshot={currentSnapshot}
-        delayRef={delayRef}
-      />
+      <div className="mt-8">
+        <ToggleMenu
+          menuItems={MODES}
+          value={viewMode}
+          onValueChange={(value) => {
+            setViewMode(value as "array" | "tree");
+          }}
+        />
+      </div>
+
+      {viewMode === "tree" && (
+        <BinaryTreeView
+          activeType={activeTypeRef}
+          currentSnapshot={currentSnapshot}
+          delayRef={delayRef}
+        />
+      )}
+      {viewMode === "array" && (
+        <ArrayView
+          activeType={activeTypeRef}
+          currentSnapshot={currentSnapshot}
+          delayRef={delayRef}
+        />
+      )}
     </div>
   );
 };
