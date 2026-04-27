@@ -62,23 +62,23 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
 
     if (activeT === ActionType.push) {
       if (type === STEPS.startTraverse) {
-        return [{ value, key: `push-${value}` }];
+        return [{ value, key: `push-${value}`, label: "push" }];
       }
       if (type === STEPS.pushValue) {
         const target = `node-${heap.length - 1}`;
-        return [{ value, key: `push-${value}`, animateToNodeId: target, hiddenNodeId: target }];
+        return [{ value, key: `push-${value}`, animateToNodeId: target, hiddenNodeId: target, label: "push" }];
       }
     }
 
     if (activeT === ActionType.pop) {
       if (type === STEPS.popValue) {
-        return [{ value, key: `pop-${value}`, initFromNodeId: "node-0", placeholderNodeId: "node-0" }];
+        return [{ value, key: `pop-${value}`, initFromNodeId: "node-0", placeholderNodeId: "node-0", label: "popped" }];
       }
       if (type === STEPS.moveLastToTop) {
         const lastIdx = heap.length - 1;
         const lastValue = heap[lastIdx];
         return [
-          { value, key: `pop-${value}` },
+          { value, key: `pop-${value}`, label: "popped" },
           {
             value: lastValue,
             key: `pop-move-last-${lastValue}`,
@@ -98,17 +98,15 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
         STEPS.endTraverse,
       ];
       if (popOngoingSteps.includes(type)) {
-        return [{ value, key: `pop-${value}` }];
+        return [{ value, key: `pop-${value}`, label: "popped" }];
       }
     }
 
     return null;
-  // activeType is a ref — intentionally not in deps, value read on each recompute
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSnapshot]);
+  }, [currentSnapshot, activeType]);
 
   return (
-    <div className={cn("max-w-screen overflow-x-auto", !activeType && "mt-8")}>
+    <div className={cn("max-w-screen overflow-x-auto mt-20",)}>
       <div className="m-auto w-fit">
         <NodeArrayGroup
           activeType={activeType.current}

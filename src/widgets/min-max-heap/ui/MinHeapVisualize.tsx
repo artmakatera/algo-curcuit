@@ -20,6 +20,17 @@ const baseArrayData = [
 
 baseArrayData.forEach((value) => insert(baseHeap, value));
 
+const defaultHeapSnapshot: StepSnapshot[] = [{
+  heap: baseHeap,
+  type: STEPS.endTraverse,
+  node: null,
+  value: 0,
+  index: 0,
+  compareIndexes: [],
+  swapIndexes: [],
+  removeIndex: -1,
+}];
+
 export const MinHeapVisualize = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number>(1);
@@ -62,12 +73,7 @@ export const MinHeapVisualize = () => {
     delayRef
 
   } = useSnapshots<StepSnapshot, GenValuePayload, [number[], number]>({
-    defaultSnapshots: [{
-      heap: baseHeap,
-      type: STEPS.endTraverse,
-      node: null as unknown as any,
-      treeView: [],
-    }],
+    defaultSnapshots: defaultHeapSnapshot,
     defaultDelay: "750",
     genCall: genCall,
     genCallArgs: [baseHeap, targetValue],

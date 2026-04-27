@@ -25,6 +25,7 @@ export function* push(heap: number[], value: number) {
     swapIndexes: [],
     removeIndex: -1,
     heap: [...heap],
+    node: null,
   };
 
   heap.push(value);
@@ -37,6 +38,7 @@ export function* push(heap: number[], value: number) {
     swapIndexes: [],
     removeIndex: -1,
     heap: [...heap],
+    node: null,
   };
 
   let currentIndex = heap.length - 1;
@@ -50,6 +52,7 @@ export function* push(heap: number[], value: number) {
     swapIndexes: [],
     removeIndex: -1,
     heap: [...heap],
+    node: null,
   };
 
   while (currentIndex > 0 && heap[currentIndex] < heap[parentIndex]) {
@@ -61,6 +64,7 @@ export function* push(heap: number[], value: number) {
       swapIndexes: [],
       removeIndex: -1,
       heap: [...heap],
+      node: null,
     };
     yield {
       type: STEPS.swap,
@@ -70,6 +74,7 @@ export function* push(heap: number[], value: number) {
       swapIndexes: [currentIndex, parentIndex],
       removeIndex: -1,
       heap: [...heap],
+      node: null,
     };
     swap(heap, currentIndex, parentIndex);
     currentIndex = parentIndex;
@@ -83,6 +88,7 @@ export function* push(heap: number[], value: number) {
       swapIndexes: [],
       removeIndex: -1,
       heap: [...heap],
+      node: null,
     };
   }
 
@@ -94,6 +100,7 @@ export function* push(heap: number[], value: number) {
     swapIndexes: [],
     removeIndex: -1,
     heap: [...heap],
+    node: null,
   };
 }
 
@@ -109,6 +116,7 @@ export function* pop(heap: number[]) {
     swapIndexes: [],
     compareIndexes: [],
     removeIndex: -1,
+    node: null,
   };
 
   if (heap.length === 1) return heap.pop();
@@ -121,6 +129,7 @@ export function* pop(heap: number[]) {
     swapIndexes: [],
     compareIndexes: [],
     heap: [...heap],
+    node: null,
   };
 
   yield {
@@ -131,6 +140,7 @@ export function* pop(heap: number[]) {
     swapIndexes: [],
     compareIndexes: [],
     heap: [...heap],
+    node: null,
   };
   heap[0] = heap.pop()!;
 
@@ -149,6 +159,7 @@ export function* pop(heap: number[]) {
       swapIndexes: [],
       removeIndex: -1,
       heap: [...heap],
+      node: null,
     };
 
     let smallestIndex = currentIndex;
@@ -162,6 +173,7 @@ export function* pop(heap: number[]) {
         swapIndexes: [leftIndex, currentIndex],
         removeIndex: -1,
         heap: [...heap],
+        node: null,
       };
 
       smallestIndex = leftIndex;
@@ -176,6 +188,7 @@ export function* pop(heap: number[]) {
         swapIndexes: [rightIndex, currentIndex],
         removeIndex: -1,
         heap: [...heap],
+        node: null,
       };
 
       smallestIndex = rightIndex;
@@ -194,6 +207,7 @@ export function* pop(heap: number[]) {
       swapIndexes: [],
       removeIndex: -1,
       heap: [...heap],
+      node: null,
     };
   }
 
@@ -205,6 +219,7 @@ export function* pop(heap: number[]) {
     swapIndexes: [],
     removeIndex: -1,
     heap: [...heap],
+    node: null,
   };
 
   return minValue;
@@ -274,6 +289,7 @@ export function* peekDraw(heap: number[]) {
     swapIndexes: [],
     removeIndex: -1,
     heap: [...heap],
+    node: null,
   };
 }
 

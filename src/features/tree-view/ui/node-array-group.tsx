@@ -3,7 +3,7 @@ import { NodeArray } from "./node-array";
 import { NodeArrayProps } from "../types";
 import { SwapProvider } from "../context/swap-context";
 import { SwapPortal } from "./swap-portal";
-import { FloatingNodePortal } from "./floating-node-portal";
+import { FloatingNodeArrayPortal } from "./floating-node-portal";
 import { useRef } from "react";
 
 export const NodeArrayGroup = (props: NodeArrayProps) => {
@@ -22,13 +22,10 @@ export const NodeArrayGroup = (props: NodeArrayProps) => {
         </AnimatePresence>
       </div>
       <SwapPortal swapAnimations={props.customAnimations?.swap} />
-      {props.floatingNodes?.map((floatingNode) => (
-        <FloatingNodePortal
-          key={floatingNode.key}
-          floatingNode={floatingNode}
-          anchorRef={anchorRef}
-        />
-      ))}
+      <FloatingNodeArrayPortal
+        floatingNodes={props.floatingNodes}
+        anchorRef={anchorRef}
+      />
     </SwapProvider>
   );
 };

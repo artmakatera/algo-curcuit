@@ -56,6 +56,8 @@ export type FloatingNodeState = {
   hiddenNodeId?: string;
   /** If set, the matching tree node is rendered as bg-background without content (pop source) */
   placeholderNodeId?: string;
+  /** If set, a static, non-animating duplicate is rendered at the anchor with this text label */
+  label?: string;
 };
 
 export type NodeArrayProps = {
