@@ -122,6 +122,16 @@ export function* pop(heap: number[]) {
     compareIndexes: [],
     heap: [...heap],
   };
+
+  yield {
+    type: STEPS.moveLastToTop,
+    value: minValue,
+    index: 0,
+    removeIndex: heap.length - 1,
+    swapIndexes: [],
+    compareIndexes: [],
+    heap: [...heap],
+  };
   heap[0] = heap.pop()!;
 
   let currentIndex = 0;

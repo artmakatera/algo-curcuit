@@ -4,6 +4,7 @@ import { ActionType, StepSnapshot } from "../../model/types";
 import { cn } from "@/shared/lib/utils";
 import React, { useMemo } from "react";
 import { STEPS } from "../../model/constants";
+import type { FloatingNodeState } from "@/features/tree-view/types";
 import { getLeftChild, getRightChild } from "../../model/min-heap";
 import { TreeNode } from "@/widgets/binary-tree/model/binary-tree";
 import {
@@ -55,6 +56,57 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
 
   const isSwappedStep = currentSnapshot.type === STEPS.swapped;
 
+  const floatingNodes = useMemo((): FloatingNodeState[] | null => {
+    const { type, value, heap } = currentSnapshot;
+    const activeT = activeType.current;
+
+    if (activeT === ActionType.push) {
+      if (type === STEPS.startTraverse) {
+        return [{ value, key: `push-${value}` }];
+      }
+      if (type === STEPS.pushValue) {
+        const target = `node-${heap.length - 1}`;
+        return [{ value, key: `push-${value}`, animateToNodeId: target, hiddenNodeId: target }];
+      }
+    }
+
+    if (activeT === ActionType.pop) {
+      if (type === STEPS.popValue) {
+        return [{ value, key: `pop-${value}`, initFromNodeId: "node-0", placeholderNodeId: "node-0" }];
+      }
+      if (type === STEPS.moveLastToTop) {
+        const lastIdx = heap.length - 1;
+        const lastValue = heap[lastIdx];
+        return [
+          { value, key: `pop-${value}` },
+          {
+            value: lastValue,
+            key: `pop-move-last-${lastValue}`,
+            initFromNodeId: `node-${lastIdx}`,
+            animateToNodeId: "node-0",
+            hiddenNodeId: `node-${lastIdx}`,
+            placeholderNodeId: "node-0",
+          },
+        ];
+      }
+      const popOngoingSteps: string[] = [
+        STEPS.compareNodes,
+        STEPS.swapLeft,
+        STEPS.swapRight,
+        STEPS.swap,
+        STEPS.swapped,
+        STEPS.endTraverse,
+      ];
+      if (popOngoingSteps.includes(type)) {
+        return [{ value, key: `pop-${value}` }];
+      }
+    }
+
+    return null;
+  // activeType is a ref — intentionally not in deps, value read on each recompute
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSnapshot]);
+
   return (
     <div className={cn("max-w-screen overflow-x-auto", !activeType && "mt-8")}>
       <div className="m-auto w-fit">
@@ -73,7 +125,7 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
               ? treeArray[currentSnapshot.compareIndexes[0]]?.node || null
               : null
           }
-      
+          floatingNodes={floatingNodes}
         />
       </div>
     </div>

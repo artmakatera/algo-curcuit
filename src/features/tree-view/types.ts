@@ -45,6 +45,19 @@ export type CustomAnimations = {
   swap?: SwapAnimations;
 };
 
+export type FloatingNodeState = {
+  value: number;
+  key: string;
+  /** If set, portal node starts FROM this tree node id on mount; else starts at anchor */
+  initFromNodeId?: string;
+  /** If set, portal node animates TO this tree node id; else stays at anchor */
+  animateToNodeId?: string;
+  /** If set, the matching tree node is rendered with visibility:hidden (push destination) */
+  hiddenNodeId?: string;
+  /** If set, the matching tree node is rendered as bg-background without content (pop source) */
+  placeholderNodeId?: string;
+};
+
 export type NodeArrayProps = {
   activeType: string | null;
   parentKey: any;
@@ -69,4 +82,5 @@ export type NodeArrayProps = {
   isResultReversed?: boolean;
   customAnimations?: CustomAnimations;
   swapNodes?: { parentId: string; childId: string } | null;
+  floatingNodes?: FloatingNodeState[] | null;
 };

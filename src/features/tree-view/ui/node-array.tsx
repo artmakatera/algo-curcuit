@@ -68,6 +68,7 @@ function NodeArrayItem({
     zIndex = 999,
     customAnimations,
     swapNodes,
+    floatingNodes,
   } = props;
 
   const { registerSwapParent, registerSwapChild } = useSwap();
@@ -161,6 +162,7 @@ function NodeArrayItem({
         <motion.div
           ref={wrapperRef}
           key="node-wrapper"
+          data-node-id={node.id}
           className={cn(
             "relative w-fit z-50",
             hasChildren && `${isLeft ? "-" : ""}translate-x-1/2`
@@ -180,6 +182,8 @@ function NodeArrayItem({
             customNodeAnimations={customAnimations?.node}
             isSwapNode={isSwapChild || isSwapParent}
             isSwapPlaceholder={isSwapChild || isSwapParent}
+            isHidden={floatingNodes?.some((fn) => fn.hiddenNodeId === node.id) ?? false}
+            isPlaceholder={floatingNodes?.some((fn) => fn.placeholderNodeId === node.id) ?? false}
           />
         </motion.div>
       </NodeLineWrapper>

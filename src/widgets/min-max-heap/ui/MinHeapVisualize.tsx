@@ -8,6 +8,7 @@ import { ActionType, GenValuePayload, StepSnapshot } from "../model/types";
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { BinaryTreeView } from "./views/binary-tree-view";
 import { STEPS } from "../model/constants";
+import { VisualizeControls } from "@/features/visualizer-player-controls";
 
 const baseHeap: number[] = [];
 
@@ -23,7 +24,6 @@ export const MinHeapVisualize = () => {
   const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number>(1);
   const activeTypeRef = useRef<ActionType | null>(null);
-  const delayRef = useRef<string | null>("750");
 
   const genCall = useCallback(
     (
@@ -56,6 +56,11 @@ export const MinHeapVisualize = () => {
     goToLastStep,
     handlePreviousStep,
     handleNextStep,
+    isPlaying,
+    onChangeSpeed,
+    clearSnapshots,
+    delayRef
+
   } = useSnapshots<StepSnapshot, GenValuePayload, [number[], number]>({
     defaultSnapshots: [{
       heap: baseHeap,
@@ -92,6 +97,16 @@ export const MinHeapVisualize = () => {
         onPop={() => handleAction(ActionType.pop)}
         onPush={() => handleAction(ActionType.push)}
       />
+      <VisualizeControls
+            onPreviousStep={handlePreviousStep}
+          onNextStep={handleNextStep}
+            isPlaying={isPlaying}
+            isResetDisabled={stepsSnapshot.length === 0}
+            isPreviousStepDisabled={!hasPrevSnapshot}
+            isNextStepDisabled={!hasNextSnapshot}
+            speed={delayRef.current || "750"}
+            onChangeSpeed={onChangeSpeed}
+          />
       <BinaryTreeView activeType={activeTypeRef} currentSnapshot={currentSnapshot} delayRef={delayRef} />
     </div>
   );

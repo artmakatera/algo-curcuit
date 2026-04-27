@@ -4,6 +4,7 @@
 export const STEPS = {
   pushValue: "pushValue",
   popValue: "popValue",
+  moveLastToTop: "moveLastToTop",
   compareNodes: "compareNodes",
   swap: "swap",
   swapLeft: "swapLeft",

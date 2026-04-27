@@ -21,6 +21,8 @@ type NodeItemProps = {
   customNodeAnimations?: NodeAnimations;
   isSwapNode?: boolean;
   isSwapPlaceholder?: boolean;
+  isHidden?: boolean;
+  isPlaceholder?: boolean;
 };
 
 const getAnimationCoords = (
@@ -58,6 +60,8 @@ export const Node = ({
   customNodeAnimations,
   isSwapNode,
   isSwapPlaceholder,
+  isHidden,
+  isPlaceholder,
 }: NodeItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { nodeToRemove, setNodeToRemove } = useNodeToRemove();
@@ -106,6 +110,8 @@ export const Node = ({
           isNodeToRemove && "bg-red-600 border-red-600",
           isSwapNode && !isSwapPlaceholder && "bg-violet-600 border-violet-400",
           isSwapPlaceholder && "bg-background transition-none",
+          isHidden && "invisible",
+          isPlaceholder && "bg-background border-border transition-none",
         )}
         ref={ref}
         initial={{ scale: preventAnimation ? 1 : 0 }}
@@ -116,7 +122,7 @@ export const Node = ({
           delay: inserted ? (customNodeAnimations?.insertedDelay ?? 0.5) : 0,
         }}
       >
-        {current?.value}
+        {isPlaceholder ? null : current?.value}
       </motion.div>
     </motion.div>
   );
