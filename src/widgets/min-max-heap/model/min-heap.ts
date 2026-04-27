@@ -77,20 +77,20 @@ export function* push(heap: number[], value: number) {
       node: null,
     };
     swap(heap, currentIndex, parentIndex);
-    currentIndex = parentIndex;
-    parentIndex = parent(currentIndex);
-
     yield {
       type: STEPS.swapped,
       value,
       index: currentIndex,
       compareIndexes: [],
-      swapIndexes: [],
+      swapIndexes: [parentIndex, currentIndex],
       removeIndex: -1,
       heap: [...heap],
       node: null,
     };
+    currentIndex = parentIndex;
+    parentIndex = parent(currentIndex);
   }
+
 
   yield {
     type: STEPS.endTraverse,
@@ -132,11 +132,22 @@ export function* pop(heap: number[]) {
     node: null,
   };
 
+
   yield {
     type: STEPS.moveLastToTop,
     value: minValue,
     index: 0,
     removeIndex: heap.length - 1,
+    swapIndexes: [0, heap.length - 1],
+    compareIndexes: [],
+    heap: [...heap],
+    node: null,
+  };
+  yield {
+    type: STEPS.movedLastToTop,
+    value: minValue,
+    index: 0,
+    removeIndex: 0,
     swapIndexes: [0, heap.length - 1],
     compareIndexes: [],
     heap: [...heap],
@@ -209,17 +220,18 @@ export function* pop(heap: number[]) {
 
     swap(heap, currentIndex, smallestIndex);
 
-    currentIndex = smallestIndex;
     yield {
       type: STEPS.swapped,
       value: minValue,
       index: currentIndex,
       compareIndexes: [currentIndex],
-      swapIndexes: [],
+      swapIndexes: [currentIndex, smallestIndex],
       removeIndex: -1,
       heap: [...heap],
       node: null,
     };
+    currentIndex = smallestIndex;
+
   }
 
   yield {

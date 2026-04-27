@@ -75,6 +75,7 @@ export const MinHeapVisualize = () => {
     isPlaying,
     onChangeSpeed,
     clearSnapshots,
+    isGoBack,
     delayRef,
   } = useSnapshots<StepSnapshot, GenValuePayload, [number[], number]>({
     defaultSnapshots: defaultHeapSnapshot,
@@ -141,6 +142,7 @@ export const MinHeapVisualize = () => {
           activeType={activeTypeRef}
           currentSnapshot={currentSnapshot}
           delayRef={delayRef}
+          isGoBack={isGoBack}
         />
       )}
     </div>

@@ -4,4 +4,5 @@ export interface MinMaxHeapViewProps {
     activeType: React.RefObject<ActionType | null>;
     currentSnapshot: StepSnapshot;
     delayRef: React.RefObject<string | null>;
+    isGoBack?: boolean;
 }

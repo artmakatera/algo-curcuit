@@ -7,21 +7,29 @@ import { VisualArrayItem } from "@/features/visual-array/ui/visual-array-item";
 import { ActionType, StepSnapshot } from "../../model/types";
 import { cn } from "@/shared/lib/utils";
 import { STEPS } from "../../model/constants";
-import { a } from "vitest/dist/chunks/suite.d.FvehnV49.js";
 
 export function ArrayView({
   activeType,
   currentSnapshot,
+  isGoBack,
 }: MinMaxHeapViewProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const lastItemRef = useRef<HTMLDivElement>(null);
   const firstItemRef = useRef<HTMLDivElement>(null);
   const floatNodeRef = useRef<HTMLDivElement>(null);
   const heap = currentSnapshot.heap;
+  const type = currentSnapshot.type;
 
-  const isPushStep = currentSnapshot.type === STEPS.pushValue;
-  const isPopValueStep = currentSnapshot.type === STEPS.popValue || currentSnapshot.type === STEPS.moveLastToTop;
-  const isSwapStep = currentSnapshot.type === STEPS.swap || currentSnapshot.type === STEPS.moveLastToTop;
+  const isPushStep = type === STEPS.pushValue;
+  const isPopValueStep =
+    type === STEPS.popValue ||
+    type === STEPS.moveLastToTop ||
+    type === STEPS.movedLastToTop;
+
+  const isAnimateSwapStep =
+    type === STEPS.swap || type === STEPS.moveLastToTop;
+  const isHoldSwapStep = type === STEPS.movedLastToTop;
+
   const swapIndexes = currentSnapshot.swapIndexes ?? [];
 
   return (
@@ -38,20 +46,23 @@ export function ArrayView({
             return null;
           }
 
-          const isSwapping = swapIndexes.some((i) => i === index)
+          const isSwapping = swapIndexes.some((i) => i === index);
           const isComparing =
             currentSnapshot.compareIndexes?.some((i) => i === index) || false;
 
           const swapAnim = getSwapItemAnimation({
             index,
-            isSwapStep,
+            isAnimateStep: isAnimateSwapStep,
+            isHoldStep: isHoldSwapStep,
             swapIndexes,
             wrapperRef,
+            isGoBack,
           });
 
           return (
             <motion.div
               key={index}
+              initial={{ x: 0, y: 0 }}
               animate={swapAnim.animate}
               transition={swapAnim.transition}
             >
@@ -97,6 +108,7 @@ export function ArrayView({
               lastItemRef={lastItemRef}
               floatNodeRef={floatNodeRef}
               activeType={activeType}
+              isGoBack={isGoBack}
             />
           </div>
         </VisualArrayWrapper>
@@ -111,20 +123,28 @@ function FloatingNode({
   lastItemRef,
   floatNodeRef,
   activeType,
+  isGoBack
 }: {
   currentSnapshot: StepSnapshot;
   firstItemRef: React.RefObject<HTMLDivElement | null>;
   lastItemRef: React.RefObject<HTMLDivElement | null>;
   floatNodeRef: React.RefObject<HTMLDivElement | null>;
   activeType: React.RefObject<ActionType | null>;
+  isGoBack?: boolean;
 }) {
+
+    const isPopValueStep =
+    currentSnapshot.type === STEPS.popValue || currentSnapshot.type === STEPS.startTraverse || activeType.current === ActionType.pop;
   const { animKey, initial, animate } = getFloatNodeAnimation(
     currentSnapshot,
     lastItemRef,
     firstItemRef,
     floatNodeRef,
     activeType,
+    isGoBack
   );
+
+  if (!isPopValueStep) return null;
 
   return (
     <motion.div
@@ -144,6 +164,7 @@ function getFloatNodeAnimation(
   firstItemRef: React.RefObject<HTMLDivElement | null>,
   floatNodeRef: React.RefObject<HTMLDivElement | null>,
   activeType: React.RefObject<ActionType | null>,
+  isGoBack?: boolean
 ) {
   const { type } = currentSnapshot;
   const floatNode = floatNodeRef.current;
@@ -151,6 +172,17 @@ function getFloatNodeAnimation(
   if (type === STEPS.pushValue && lastItemRef.current && floatNode) {
     const target = lastItemRef.current.getBoundingClientRect();
     const float = floatNode.getBoundingClientRect();
+
+    if (isGoBack) {
+      return {
+        animKey: "push-go-back",
+        initial: {
+          x: target.left - float.left,
+          y: target.top - float.top,
+        },
+        animate: { x: 0, y: 0 },
+      };
+    }
     return {
       animKey: "push",
       initial: { x: 0, y: 0 },
@@ -172,6 +204,17 @@ function getFloatNodeAnimation(
   ) {
     const source = firstItemRef.current.getBoundingClientRect();
     const float = floatNode.getBoundingClientRect();
+
+    if (isGoBack) {
+      return {
+        animKey: "pop-go-back",
+        initial: { x: 0, y: 0 },
+        animate: {
+          x: source.left - float.left,
+          y: source.top - float.top,
+        },
+      };
+    }
     return {
       animKey: "pop",
       initial: {
@@ -193,20 +236,24 @@ const ITEM_SIZE = 48;
 
 function getSwapItemAnimation({
   index,
-  isSwapStep,
+  isAnimateStep,
+  isHoldStep,
   swapIndexes,
   wrapperRef,
+  isGoBack,
 }: {
   index: number;
-  isSwapStep: boolean;
+  isAnimateStep: boolean;
+  isHoldStep: boolean;
   swapIndexes: number[];
   wrapperRef: React.RefObject<HTMLDivElement | null>;
+  isGoBack?: boolean;
 }) {
   const stillTransition: Transition = { duration: 0 };
   const rest = { animate: { x: 0, y: 0 }, transition: stillTransition };
 
   if (
-    !isSwapStep ||
+    (!isAnimateStep && !isHoldStep) ||
     swapIndexes.length < 2 ||
     !wrapperRef.current ||
     !swapIndexes.includes(index)
@@ -215,7 +262,6 @@ function getSwapItemAnimation({
   }
 
   const isGoForward = swapIndexes[0] === index;
-  const isGoBack = swapIndexes[1] === index;
   const otherIdx = isGoForward ? swapIndexes[1] : swapIndexes[0];
 
   const children = wrapperRef.current.children;
@@ -223,21 +269,38 @@ function getSwapItemAnimation({
   const other = children.item(otherIdx) as HTMLElement | null;
   if (!self || !other) return rest;
 
-  const selfRect = self.getBoundingClientRect();
-  const otherRect = other.getBoundingClientRect();
-  const targetX = otherRect.left - selfRect.left;
-  const targetY = otherRect.top - selfRect.top;
-  const deltaY = isGoBack ? -ITEM_SIZE : ITEM_SIZE;
+  const targetX = other.offsetLeft - self.offsetLeft;
+  const targetY = other.offsetTop - self.offsetTop;
+  const deltaY = isGoForward ? ITEM_SIZE : -ITEM_SIZE;
+
+  if (isHoldStep) {
+    return {
+      animate: { x: targetX, y: targetY },
+      transition: stillTransition,
+    };
+  }
+
+  const arcTransition: Transition = {
+    duration: 0.7,
+    type: "tween",
+    ease: "easeInOut",
+  };
+
+  if (isGoBack) {
+    return {
+      animate: {
+        x: [targetX, targetX, 0, 0],
+        y: [targetY, targetY + deltaY, deltaY, 0],
+      },
+      transition: arcTransition,
+    };
+  }
 
   return {
     animate: {
-      x: [0, targetX, targetX],
-      y: [deltaY, targetY + deltaY, targetY],
+      x: [0, 0, targetX, targetX],
+      y: [0, deltaY, targetY + deltaY, targetY],
     },
-    transition: {
-      duration: 0.7,
-      type: "tween",
-      ease: "easeInOut",
-    } as Transition,
+    transition: arcTransition,
   };
 }
