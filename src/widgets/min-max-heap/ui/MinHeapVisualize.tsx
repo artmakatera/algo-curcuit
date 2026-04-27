@@ -20,16 +20,18 @@ const baseArrayData = [
 
 baseArrayData.forEach((value) => insert(baseHeap, value));
 
-const defaultHeapSnapshot: StepSnapshot[] = [{
-  heap: baseHeap,
-  type: STEPS.endTraverse,
-  node: null,
-  value: 0,
-  index: 0,
-  compareIndexes: [],
-  swapIndexes: [],
-  removeIndex: -1,
-}];
+const defaultHeapSnapshot: StepSnapshot[] = [
+  {
+    heap: baseHeap,
+    type: STEPS.endTraverse,
+    node: null,
+    value: 0,
+    index: 0,
+    compareIndexes: [],
+    swapIndexes: [],
+    removeIndex: -1,
+  },
+];
 
 export const MinHeapVisualize = () => {
   const [error, setError] = useState<string | null>(null);
@@ -70,8 +72,7 @@ export const MinHeapVisualize = () => {
     isPlaying,
     onChangeSpeed,
     clearSnapshots,
-    delayRef
-
+    delayRef,
   } = useSnapshots<StepSnapshot, GenValuePayload, [number[], number]>({
     defaultSnapshots: defaultHeapSnapshot,
     defaultDelay: "750",
@@ -93,27 +94,33 @@ export const MinHeapVisualize = () => {
     visualize();
   }, [stepsSnapshot, visualize]);
 
-
   return (
-    <div>
+    <div className="flex flex-col items-center">
+      <div className="flex mt-8 items-center">
       <MinMaxHeapControls
         value={targetValue}
         onValueChange={setTargetValue}
         onPeek={() => handleAction(ActionType.peek)}
         onPop={() => handleAction(ActionType.pop)}
         onPush={() => handleAction(ActionType.push)}
+        disabled={isPlaying}
       />
-      <VisualizeControls
-            onPreviousStep={handlePreviousStep}
+        <VisualizeControls
+          onPreviousStep={handlePreviousStep}
           onNextStep={handleNextStep}
-            isPlaying={isPlaying}
-            isResetDisabled={stepsSnapshot.length === 0}
-            isPreviousStepDisabled={!hasPrevSnapshot}
-            isNextStepDisabled={!hasNextSnapshot}
-            speed={delayRef.current || "750"}
-            onChangeSpeed={onChangeSpeed}
-          />
-      <BinaryTreeView activeType={activeTypeRef} currentSnapshot={currentSnapshot} delayRef={delayRef} />
+          isPlaying={isPlaying}
+          isResetDisabled={stepsSnapshot.length === 0}
+          isPreviousStepDisabled={!hasPrevSnapshot}
+          isNextStepDisabled={!hasNextSnapshot}
+          speed={delayRef.current || "750"}
+          onChangeSpeed={onChangeSpeed}
+        />
+      </div>
+      <BinaryTreeView
+        activeType={activeTypeRef}
+        currentSnapshot={currentSnapshot}
+        delayRef={delayRef}
+      />
     </div>
   );
 };
