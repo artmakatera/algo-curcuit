@@ -4,8 +4,8 @@ export function getIsCompletedNode(node: TreeNode, resultNodes: TreeNode[]) {
   return resultNodes.some((n) => n.id === node.id);
 }
 
-export function getIsFoundNode(node: TreeNode, foundNode?: TreeNode | null) {
-  return foundNode?.id === node.id;
+export function getIsFoundNode(node: TreeNode, foundNodes?: TreeNode[] | null) {
+  return foundNodes?.some((n) => n.id === node.id) || false;
 }
 
 export function getIsNodeInserted(node: TreeNode, insertedNode?: TreeNode | null) {

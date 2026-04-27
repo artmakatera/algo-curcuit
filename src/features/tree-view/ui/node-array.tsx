@@ -50,7 +50,7 @@ function NodeArrayItem({
     groups,
     parentKey,
     insertedNode,
-    foundNode,
+    foundNodes,
     nodeToRemove,
     minValueNode,
     isRemoveSingleChild,
@@ -173,7 +173,7 @@ function NodeArrayItem({
             active={getIsActiveNodes(node, activeNode)}
             isQueueNode={isQueueNode}
             inserted={isCompleted}
-            found={getIsFoundNode(node, foundNode)}
+            found={getIsFoundNode(node, foundNodes)}
             isCompleted={isResultNode}
             isNodeToRemove={isNodeToRemove}
             isMinValueNode={isMinNode}

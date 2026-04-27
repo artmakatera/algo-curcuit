@@ -66,7 +66,7 @@ export type NodeArrayProps = {
   groups: { [key: string]: TreeArrayItem[] };
   activeNode: TreeNode | null;
   insertedNode?: TreeNode | null;
-  foundNode?: TreeNode | null;
+  foundNodes?: TreeNode[] | null;
   nodeToRemove?: TreeNode | null;
   minValueNode?: TreeNode | null;
   isRemoveSingleChild?: boolean;

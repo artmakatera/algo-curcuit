@@ -189,9 +189,9 @@ export const BinaryTree = ({ customAnimations, swapNodes }: { customAnimations?:
               preventNodeEdgeAnimation={getPreventNodeEdgeAnimation(
                 currentSnapshot.type
               )}
-              foundNode={
-                currentSnapshot.type === STEPS.foundNode
-                  ? currentSnapshot.node
+              foundNodes={
+                currentSnapshot.type === STEPS.foundNode && currentSnapshot.node
+                  ? [currentSnapshot.node]
                   : null
               }
               stackNodes={currentSnapshot.stack}

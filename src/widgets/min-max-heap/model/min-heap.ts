@@ -166,7 +166,7 @@ export function* pop(heap: number[]) {
 
     if (leftIndex < length && heap[leftIndex] < heap[smallestIndex]) {
       yield {
-        type: STEPS.swapLeft,
+        type: STEPS.compareLeft,
         value: minValue,
         index: currentIndex,
         compareIndexes: [leftIndex, rightIndex, currentIndex],
@@ -181,7 +181,7 @@ export function* pop(heap: number[]) {
 
     if (rightIndex < length && heap[rightIndex] < heap[smallestIndex]) {
       yield {
-        type: STEPS.swapRight,
+        type: STEPS.compareRight,
         value: minValue,
         index: currentIndex,
         compareIndexes: [leftIndex, rightIndex, currentIndex],
@@ -195,6 +195,17 @@ export function* pop(heap: number[]) {
     }
 
     if (smallestIndex === currentIndex) break;
+
+    yield {
+      type: STEPS.swap,
+      value: minValue,
+      index: currentIndex,
+      compareIndexes: [leftIndex, rightIndex, currentIndex],
+      swapIndexes: [smallestIndex, currentIndex],
+      removeIndex: -1,
+      heap: [...heap],
+      node: null,
+    }
 
     swap(heap, currentIndex, smallestIndex);
 

@@ -34,10 +34,8 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
 
   const hasSwapIndexes = currentSnapshot.swapIndexes?.length >= 2;
 
-  const isSwapStep = hasSwapIndexes && (
-    currentSnapshot.type === STEPS.swap ||
-    currentSnapshot.type === STEPS.swapLeft ||
-    currentSnapshot.type === STEPS.swapRight);
+  const isSwapStep = hasSwapIndexes && 
+    currentSnapshot.type === STEPS.swap 
 
   const swapNodes = useMemo(() => {
     if (!isSwapStep) return undefined;
@@ -91,8 +89,8 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
       }
       const popOngoingSteps: string[] = [
         STEPS.compareNodes,
-        STEPS.swapLeft,
-        STEPS.swapRight,
+        STEPS.compareLeft,
+        STEPS.compareRight,
         STEPS.swap,
         STEPS.swapped,
         STEPS.endTraverse,
@@ -118,12 +116,9 @@ export function BinaryTreeView(props: BinaryTreeViewProps) {
           }
           swapNodes={swapNodes}
           preventNodeEdgeAnimation={isSwappedStep}
-          foundNode={
-            currentSnapshot.compareIndexes?.length > 0
-              ? treeArray[currentSnapshot.compareIndexes[0]]?.node || null
-              : null
-          }
+          foundNodes={getCompareTreeNodes(treeArray, currentSnapshot.compareIndexes)}
           floatingNodes={floatingNodes}
+          isResultReversed
         />
       </div>
     </div>
@@ -201,4 +196,11 @@ function getId(index: number) {
 
 function getIndexFromId(id: string) {
   return parseInt(id.split("-")[1], 10);
+}
+
+function getCompareTreeNodes(treeArray: TreeArrayItem[], compareIndexes: number[]) {
+  if (compareIndexes.length === 0) return null;
+
+  const nodes = compareIndexes.map((idx) => treeArray[idx]?.node).filter((n): n is TreeNode => n !== undefined);
+  return nodes.length > 0 ? nodes : null;
 }
