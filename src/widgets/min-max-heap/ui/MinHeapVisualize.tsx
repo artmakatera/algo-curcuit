@@ -11,6 +11,10 @@ import { MODES, STEPS, HEAP_TYPES, HeapType } from "../model/constants";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { ToggleMenu } from "@/components/ui/toggle-menu";
 import { ArrayView } from "./views/array-view";
+import { CodeViewers } from "@/components/ui/code-viewers";
+import { useCodeLang } from "@/shared/contexts/code-lang";
+import { LANGUAGES } from "@/shared/constants/languages";
+import { languagesMapSettings } from "../model/languages-map-settings";
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 10, 30, 35, 60,
@@ -51,6 +55,8 @@ export const MinHeapVisualize = () => {
   const [heapType, setHeapType] = useState<HeapType>("min");
   const heapTypeRef = useRef<HeapType>("min");
   const activeTypeRef = useRef<ActionType | null>(null);
+  const [activeType, setActiveType] = useState<ActionType | null>(null);
+  const [codeLang, setCodeLang] = useCodeLang();
 
   const genCall = useCallback(
     (
@@ -100,6 +106,7 @@ export const MinHeapVisualize = () => {
   const handleAction = useCallback(
     (type: ActionType) => {
       activeTypeRef.current = type;
+      setActiveType(type);
       goToLastStep();
       rebuildSnapshots();
     },
@@ -111,12 +118,12 @@ export const MinHeapVisualize = () => {
       if (next === heapTypeRef.current) return;
       heapTypeRef.current = next;
       activeTypeRef.current = ActionType.peek;
+      setActiveType(null);
       reseedHeap(baseHeap, next);
       clearSnapshots();
       setHeapType(next);
-    
+
       rebuildSnapshots();
-      
     },
     [clearSnapshots, rebuildSnapshots],
   );
@@ -178,6 +185,17 @@ export const MinHeapVisualize = () => {
           delayRef={delayRef}
           isGoBack={isGoBack}
         />
+      )}
+
+      {activeType && (
+        <div className="m-auto mt-4 hidden sm:block">
+          <CodeViewers
+            langMap={languagesMapSettings[heapType][activeType]}
+            language={codeLang}
+            onLanguageChange={(lang: string) => setCodeLang(lang as LANGUAGES)}
+            step={currentSnapshot.type}
+          />
+        </div>
       )}
     </div>
   );
