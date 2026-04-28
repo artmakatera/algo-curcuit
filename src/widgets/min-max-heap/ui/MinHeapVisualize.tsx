@@ -1,18 +1,16 @@
 "use client";
-import { useCodeLang } from "@/shared/contexts/code-lang";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { insert, push, pop, peekDraw } from "../model/min-heap";
+import * as MinHeap from "../model/min-heap";
+import * as MaxHeap from "../model/max-heap";
 import { MinMaxHeapControls } from "./MinMaxHeapControls";
 import { ActionType, GenValuePayload, StepSnapshot } from "../model/types";
 
 import { useSnapshots } from "@/shared/hooks/use-snapshots";
 import { BinaryTreeView } from "./views/binary-tree-view";
-import { MODES, STEPS } from "../model/constants";
+import { MODES, STEPS, HEAP_TYPES, HeapType } from "../model/constants";
 import { VisualizeControls } from "@/features/visualizer-player-controls";
 import { ToggleMenu } from "@/components/ui/toggle-menu";
 import { ArrayView } from "./views/array-view";
-
-const baseHeap: number[] = [];
 
 const baseArrayData = [
   20, 6, 40, 8, 27, 55, 10, 30, 35, 60,
@@ -20,7 +18,8 @@ const baseArrayData = [
   // 33, 42, 65, 75, 3, 32, 34,
 ];
 
-baseArrayData.forEach((value) => insert(baseHeap, value));
+const baseHeap: number[] = [];
+baseArrayData.forEach((value) => MinHeap.insert(baseHeap, value));
 
 const defaultHeapSnapshot: StepSnapshot[] = [
   {
@@ -35,26 +34,39 @@ const defaultHeapSnapshot: StepSnapshot[] = [
   },
 ];
 
+function getOps(heapType: HeapType) {
+  return heapType === "max" ? MaxHeap : MinHeap;
+}
+
+function reseedHeap(heap: number[], heapType: HeapType) {
+  heap.length = 0;
+  const ops = getOps(heapType);
+  baseArrayData.forEach((v) => ops.insert(heap, v));
+  
+}
+
 export const MinHeapVisualize = () => {
-  const [error, setError] = useState<string | null>(null);
   const [targetValue, setTargetValue] = useState<number>(1);
   const [viewMode, setViewMode] = useState<"array" | "tree">("tree");
+  const [heapType, setHeapType] = useState<HeapType>("min");
+  const heapTypeRef = useRef<HeapType>("min");
   const activeTypeRef = useRef<ActionType | null>(null);
 
   const genCall = useCallback(
     (
-      baseHeap: number[],
+      heap: number[],
       v: number,
     ): Generator<GenValuePayload, void, unknown> => {
+      const ops = getOps(heapTypeRef.current);
       const activeType = activeTypeRef.current;
       if (activeType === ActionType.push) {
-        return push(baseHeap, v);
+        return ops.push(heap, v);
       }
       if (activeType === ActionType.pop) {
-        return pop(baseHeap) as Generator<GenValuePayload, void, unknown>;
+        return ops.pop(heap) as Generator<GenValuePayload, void, unknown>;
       }
       if (activeType === ActionType.peek) {
-        return peekDraw(baseHeap);
+        return ops.peekDraw(heap);
       }
 
       return (function* () {})();
@@ -88,10 +100,25 @@ export const MinHeapVisualize = () => {
   const handleAction = useCallback(
     (type: ActionType) => {
       activeTypeRef.current = type;
-      const stepsSnapshot = goToLastStep();
+      goToLastStep();
       rebuildSnapshots();
     },
     [goToLastStep, rebuildSnapshots],
+  );
+
+  const handleHeapTypeChange = useCallback(
+    (next: HeapType) => {
+      if (next === heapTypeRef.current) return;
+      heapTypeRef.current = next;
+      activeTypeRef.current = ActionType.peek;
+      reseedHeap(baseHeap, next);
+      clearSnapshots();
+      setHeapType(next);
+    
+      rebuildSnapshots();
+      
+    },
+    [clearSnapshots, rebuildSnapshots],
   );
 
   useEffect(() => {
@@ -99,7 +126,14 @@ export const MinHeapVisualize = () => {
   }, [stepsSnapshot, visualize]);
 
   return (
-    <div >
+    <div>
+      <div className="mt-8">
+        <ToggleMenu
+          menuItems={HEAP_TYPES}
+          value={heapType}
+          onValueChange={(value) => handleHeapTypeChange(value as HeapType)}
+        />
+      </div>
       <div className="flex mt-8 items-center">
         <MinMaxHeapControls
           value={targetValue}
