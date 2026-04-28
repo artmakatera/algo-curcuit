@@ -133,8 +133,11 @@ function FloatingNode({
   isGoBack?: boolean;
 }) {
 
-    const isPopValueStep =
-    currentSnapshot.type === STEPS.popValue || currentSnapshot.type === STEPS.startTraverse || activeType.current === ActionType.pop;
+  const shouldShow =
+    activeType.current === ActionType.pop ||
+    activeType.current === ActionType.peek ||
+    activeType.current === ActionType.push;
+
   const { animKey, initial, animate } = getFloatNodeAnimation(
     currentSnapshot,
     lastItemRef,
@@ -144,7 +147,7 @@ function FloatingNode({
     isGoBack
   );
 
-  if (!isPopValueStep) return null;
+  if (!shouldShow) return null;
 
   return (
     <motion.div
@@ -170,6 +173,7 @@ function getFloatNodeAnimation(
   const floatNode = floatNodeRef.current;
 
   if (type === STEPS.pushValue && lastItemRef.current && floatNode) {
+
     const target = lastItemRef.current.getBoundingClientRect();
     const float = floatNode.getBoundingClientRect();
 
