@@ -86,34 +86,143 @@ export function ArrayView({
         />
       </VisualArrayWrapper>
       {activeType.current ? (
-        <VisualArrayWrapper className="mt-4 flex items-center gap-4">
-          <div className="text-md text-muted-foreground uppercase whitespace-nowrap">
-            {activeType.current === ActionType.pop && "Popped:"}
-            {activeType.current === ActionType.peek && "Peeked:"}
-            {activeType.current === ActionType.push && "Push:"}
-          </div>
-          <div className="w-12 h-12 relative" ref={floatNodeRef}>
-            <VisualArrayItem
-              className={cn(
-                "opacity-50 absolute inset-0",
-                "text-orange-600 dark:text-orange-400",
-                "border-orange-600 dark:border-orange-400",
-              )}
-              value={currentSnapshot.value}
-              index={-1}
-            />
-            <FloatingNode
-              currentSnapshot={currentSnapshot}
-              firstItemRef={firstItemRef}
-              lastItemRef={lastItemRef}
-              floatNodeRef={floatNodeRef}
-              activeType={activeType}
-              isGoBack={isGoBack}
-            />
-          </div>
-        </VisualArrayWrapper>
+        <>
+          <VisualArrayWrapper className="mt-4 flex items-center gap-4">
+            <div className="text-md text-muted-foreground uppercase whitespace-nowrap">
+              {activeType.current === ActionType.pop && "Popped:"}
+              {activeType.current === ActionType.peek && "Peeked:"}
+              {activeType.current === ActionType.push && "Push:"}
+            </div>
+            <div className="w-12 h-12 relative" ref={floatNodeRef}>
+              <VisualArrayItem
+                className={cn(
+                  "opacity-50 absolute inset-0",
+                  "text-orange-600 dark:text-orange-400",
+                  "border-orange-600 dark:border-orange-400",
+                )}
+                value={currentSnapshot.value}
+                index={-1}
+              />
+              <FloatingNode
+                currentSnapshot={currentSnapshot}
+                firstItemRef={firstItemRef}
+                lastItemRef={lastItemRef}
+                floatNodeRef={floatNodeRef}
+                activeType={activeType}
+                isGoBack={isGoBack}
+              />
+            </div>
+          </VisualArrayWrapper>
+          <HeapifyFormula
+            currentSnapshot={currentSnapshot}
+            activeType={activeType}
+          />
+        </>
       ) : null}
     </div>
+  );
+}
+
+function HeapifyFormula({
+  currentSnapshot,
+  activeType,
+}: {
+  currentSnapshot: StepSnapshot;
+  activeType: React.RefObject<ActionType | null>;
+}) {
+  const { type, index: currentIndex, heap } = currentSnapshot;
+
+  const isPushHeapifyStep =
+    activeType.current === ActionType.push &&
+    currentIndex > 0 &&
+    (type === STEPS.compareNodes ||
+      type === STEPS.swap ||
+      type === STEPS.swapped);
+
+  const isPopHeapifyStep =
+    activeType.current === ActionType.pop &&
+    (type === STEPS.compareNodes ||
+      type === STEPS.compareLeft ||
+      type === STEPS.compareRight ||
+      type === STEPS.swap ||
+      type === STEPS.swapped);
+
+  if (!isPushHeapifyStep && !isPopHeapifyStep) return null;
+
+  return (
+    <div className="mt-4 inline-block rounded-md border bg-muted/40 px-4 py-3 font-mono text-sm">
+      {isPushHeapifyStep ? (
+        <PushFormula currentIndex={currentIndex} heap={heap} />
+      ) : (
+        <PopFormula currentIndex={currentIndex} heap={heap} />
+      )}
+    </div>
+  );
+}
+
+function PushFormula({
+  currentIndex,
+  heap,
+}: {
+  currentIndex: number;
+  heap: number[];
+}) {
+  const parentIdx = Math.floor((currentIndex - 1) / 2);
+  return (
+    <div className="space-y-1">
+      <div className="text-muted-foreground">
+        parent(i) = ⌊(i−1)/2⌋
+      </div>
+      <div>
+        parent(<IxVal i={currentIndex} v={heap[currentIndex]} />) ={" "}
+        ⌊(<span className="font-semibold">{currentIndex}</span>−1)/2⌋ ={" "}
+        <IxVal i={parentIdx} v={heap[parentIdx]} />
+      </div>
+    </div>
+  );
+}
+
+function PopFormula({
+  currentIndex,
+  heap,
+}: {
+  currentIndex: number;
+  heap: number[];
+}) {
+  const leftIdx = 2 * currentIndex + 1;
+  const rightIdx = 2 * currentIndex + 2;
+  const hasLeft = leftIdx < heap.length;
+  const hasRight = rightIdx < heap.length;
+  return (
+    <div className="space-y-1">
+      <div className="text-muted-foreground">
+        left(i) = 2i+1, right(i) = 2i+2
+      </div>
+      <div className="flex flex-wrap gap-x-4">
+        <span>
+          i = <IxVal i={currentIndex} v={heap[currentIndex]} />
+        </span>
+        {hasLeft && (
+          <span>
+            left = <IxVal i={leftIdx} v={heap[leftIdx]} />
+          </span>
+        )}
+        {hasRight && (
+          <span>
+            right = <IxVal i={rightIdx} v={heap[rightIdx]} />
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function IxVal({ i, v }: { i: number; v: number }) {
+  return (
+    <span>
+      <span className="font-semibold">{i}</span>
+      <span className="text-muted-foreground">[{v}]</span>
+    </span>
   );
 }
 
