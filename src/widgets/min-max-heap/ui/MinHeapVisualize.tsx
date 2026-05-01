@@ -51,7 +51,7 @@ function reseedHeap(heap: number[], heapType: HeapType) {
 
 export const MinHeapVisualize = () => {
   const [targetValue, setTargetValue] = useState<number>(1);
-  const [viewMode, setViewMode] = useState<"array" | "tree">("tree");
+  const [viewMode, setViewMode] = useState<"array" | "tree">("array");
   const [heapType, setHeapType] = useState<HeapType>("min");
   const heapTypeRef = useRef<HeapType>("min");
   const activeTypeRef = useRef<ActionType | null>(null);
