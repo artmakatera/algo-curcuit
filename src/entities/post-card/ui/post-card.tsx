@@ -29,7 +29,7 @@ export function PostCard({
   return (
     <Card
       key={link}
-      className="hover:shadow-lg transition-all duration-200 cursor-pointer group h-full"
+      className=" min-h-64 hover:shadow-lg transition-all duration-200 cursor-pointer group h-full"
       onClick={() => {
         if (linkRef.current) {
           linkRef.current.click();

@@ -12,6 +12,7 @@ export const createStepSnapshot = (payload: GenValuePayload): StepSnapshot => {
     swapIndexes,
     removeIndex,
     heap,
+    node: null,
   };
 };
 
@@ -23,6 +24,7 @@ export const defaultSnapshot: StepSnapshot = {
   swapIndexes: [],
   removeIndex: -1,
   heap: [],
+  node: null,
 };
 
 export const defaultSnapshots = [defaultSnapshot];
