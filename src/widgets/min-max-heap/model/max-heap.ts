@@ -105,7 +105,20 @@ export function* push(heap: number[], value: number) {
 }
 
 export function* pop(heap: number[]) {
-  if (heap.length === 0) return null;
+  if (heap.length === 0) {
+    yield {
+      type: STEPS.earlyReturn,
+      value: 0,
+      index: 0,
+      heap: [...heap],
+      swapIndexes: [],
+      compareIndexes: [],
+      removeIndex: -1,
+      node: null,
+    };
+
+    return null;
+  }
 
   const maxValue = heap[0];
   yield {
@@ -119,7 +132,20 @@ export function* pop(heap: number[]) {
     node: null,
   };
 
-  if (heap.length === 1) return heap.pop();
+  if (heap.length === 1) {
+    yield {
+      type: STEPS.earlyPop,
+      value: 0,
+      index: 0,
+      heap: [...heap],
+      swapIndexes: [],
+      compareIndexes: [],
+      removeIndex: -1,
+      node: null,
+    };
+
+    return heap.pop();
+  }
 
   yield {
     type: STEPS.popValue,
@@ -205,7 +231,19 @@ export function* pop(heap: number[]) {
       largestIndex = rightIndex;
     }
 
-    if (largestIndex === currentIndex) break;
+    if (largestIndex === currentIndex) {
+      yield {
+        type: STEPS.endSwapping,
+        value: maxValue,
+        index: currentIndex,
+        compareIndexes: [leftIndex, rightIndex, currentIndex],
+        swapIndexes: [rightIndex, currentIndex],
+        removeIndex: -1,
+        heap: [...heap],
+        node: null,
+      }
+      break;
+    }
 
     yield {
       type: STEPS.swap,

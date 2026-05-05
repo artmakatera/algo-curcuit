@@ -8,8 +8,8 @@ export const code = `class MaxHeap {
 
   pop() {
     if (this.heap.length === 0) return null;
-    const max = this.heap[0];
     if (this.heap.length === 1) return this.heap.pop();
+    const max = this.heap[0];
     this.heap[0] = this.heap.pop();
 
     let i = 0;
@@ -30,17 +30,19 @@ export const code = `class MaxHeap {
 `;
 
 export const highlightLines: { [key: string]: number[] } = {
-  [STEPS.startTraverse]: [9, 10, 11],
-  [STEPS.peekValue]: [11],
-  [STEPS.popValue]: [11, 27],
-  [STEPS.moveLastToTop]: [12, 13],
-  [STEPS.movedLastToTop]: [13],
-  [STEPS.compareNodes]: [17, 18, 19, 20],
-  [STEPS.compareLeft]: [21],
-  [STEPS.compareRight]: [22],
-  [STEPS.swap]: [23, 24],
-  [STEPS.swapped]: [25],
-  [STEPS.endTraverse]: [23, 27],
+  [STEPS.startTraverse]: [6, 25],
+  [STEPS.earlyReturn]: [6, 25, 7],
+  [STEPS.earlyPop]: [6, 25, 8],
+  [STEPS.popValue]: [6, 25, 9, 10],
+  [STEPS.moveLastToTop]: [6, 25, 9, 10],
+  [STEPS.movedLastToTop]: [6, 25, 12, 13],
+  [STEPS.compareNodes]: [6, 25, 14, 23, 15, 16, 17],
+  [STEPS.compareLeft]: [6, 25, 14, 23, 18],
+  [STEPS.compareRight]: [6, 25, 14, 23, 19],
+  [STEPS.endSwapping]: [6, 25, 14, 23, 20],
+  [STEPS.swap]: [6, 25, 14, 23, 21],
+  [STEPS.swapped]: [6, 25, 14, 23, 22],
+  [STEPS.endTraverse]: [6, 25, 24],
 };
 
 const model = {

@@ -3,6 +3,8 @@ import { Brackets, Network, ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucid
 
 export const STEPS = {
   pushValue: "pushValue",
+  earlyReturn: "earlyReturn",
+  earlyPop: "earlyPop",
   popValue: "popValue",
   moveLastToTop: "moveLastToTop",
   movedLastToTop: "movedLastToTop",
@@ -11,6 +13,7 @@ export const STEPS = {
   compareLeft: "compareLeft",
   compareRight: "compareRight",
   swapped: "swapped",
+  endSwapping: "endSwapping",
   startTraverse: "startTraverse",
   endTraverse: "endTraverse",
   peekValue: "peekValue",

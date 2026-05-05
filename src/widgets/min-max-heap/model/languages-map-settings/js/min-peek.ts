@@ -13,7 +13,7 @@ export const code = `class MinHeap {
 `;
 
 export const highlightLines: { [key: string]: number[] } = {
-  [STEPS.peekValue]: [9, 10],
+  [STEPS.peekValue]: [6, 7, 8],
 };
 
 const model = {

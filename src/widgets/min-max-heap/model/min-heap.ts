@@ -105,7 +105,20 @@ export function* push(heap: number[], value: number) {
 }
 
 export function* pop(heap: number[]) {
-  if (heap.length === 0) return null;
+if (heap.length === 0) {
+    yield {
+      type: STEPS.earlyReturn,
+      value: 0,
+      index: 0,
+      heap: [...heap],
+      swapIndexes: [],
+      compareIndexes: [],
+      removeIndex: -1,
+      node: null,
+    };
+
+    return null;
+  }
 
   const minValue = heap[0];
   yield {
@@ -205,7 +218,18 @@ export function* pop(heap: number[]) {
       smallestIndex = rightIndex;
     }
 
-    if (smallestIndex === currentIndex) break;
+    if (smallestIndex === currentIndex) {
+       yield {
+        type: STEPS.endSwapping,
+        value: minValue,
+        index: currentIndex,
+        compareIndexes: [leftIndex, rightIndex, currentIndex],
+        swapIndexes: [rightIndex, currentIndex],
+        removeIndex: -1,
+        heap: [...heap],
+        node: null,
+      };
+      break;}
 
     yield {
       type: STEPS.swap,

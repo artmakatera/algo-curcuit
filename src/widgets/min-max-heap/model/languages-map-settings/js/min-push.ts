@@ -9,27 +9,22 @@ export const code = `class MinHeap {
   push(value) {
     this.heap.push(value);
     let i = this.heap.length - 1;
-
-    while (i > 0) {
-      const parent = Math.floor((i - 1) / 2);
-      if (this.heap[i] < this.heap[parent]) {
-        [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
-        i = parent;
-      } else {
-        break;
-      }
+    let parent = Math.floor((i - 1) / 2);
+    while (i > 0 && this.heap[i] < this.heap[parent]) {
+      [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
+      i = parent;
     }
   }
 }
 `;
 
 export const highlightLines: { [key: string]: number[] } = {
-  [STEPS.startTraverse]: [6, 9],
-  [STEPS.pushValue]: [9, 10],
-  [STEPS.compareNodes]: [12, 13, 14],
-  [STEPS.swap]: [14, 15],
-  [STEPS.swapped]: [16],
-  [STEPS.endTraverse]: [17, 18, 19, 20],
+  [STEPS.startTraverse]: [6, 14],
+  [STEPS.pushValue]: [6, 14, 7, 8, 9],
+  [STEPS.compareNodes]: [6, 14, 10, 13],
+  [STEPS.swap]: [6, 14, 11],
+  [STEPS.swapped]: [6, 14, 12],
+  [STEPS.endTraverse]: [6, 14],
 };
 
 const model = {
