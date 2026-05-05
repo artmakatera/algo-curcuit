@@ -43,14 +43,15 @@ function getOps(heapType: HeapType) {
 }
 
 function reseedHeap(heap: number[], heapType: HeapType) {
+  const arr = [...heap];
   heap.length = 0;
   const ops = getOps(heapType);
-  baseArrayData.forEach((v) => ops.insert(heap, v));
+  arr.forEach((v) => ops.insert(heap, v));
   
 }
 
 export const MinHeapVisualize = () => {
-  const [targetValue, setTargetValue] = useState<number>(1);
+  const [targetValue, setTargetValue] = useState<number | string>(1);
   const [viewMode, setViewMode] = useState<"array" | "tree">("array");
   const [heapType, setHeapType] = useState<HeapType>("min");
   const heapTypeRef = useRef<HeapType>("min");
@@ -99,7 +100,7 @@ export const MinHeapVisualize = () => {
     defaultSnapshots: defaultHeapSnapshot,
     defaultDelay: "750",
     genCall: genCall,
-    genCallArgs: [baseHeap, targetValue],
+    genCallArgs: [baseHeap, targetValue as number],
     createStepSnapshot: (payload: GenValuePayload) => payload,
   });
 
@@ -141,7 +142,7 @@ export const MinHeapVisualize = () => {
           onValueChange={(value) => handleHeapTypeChange(value as HeapType)}
         />
       </div>
-      <div className="flex mt-8 items-center">
+      <div className="flex mt-8 items-center justify-center flex-wrap gap-4">
         <MinMaxHeapControls
           value={targetValue}
           onValueChange={setTargetValue}

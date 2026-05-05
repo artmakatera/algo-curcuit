@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { CounterInput } from "@/components/ui/counter-input";
 
 interface MinMaxHeapControlsProps {
-  value: number;
+  value: number | string;
   disabled?: boolean;
-  onValueChange: (s: SetStateAction<number>) => void;
+  onValueChange: (s: SetStateAction<number | string>) => void;
   onPush: () => void;
   onPop: () => void;
   onPeek: () => void;
@@ -15,13 +15,14 @@ export function MinMaxHeapControls(props: MinMaxHeapControlsProps) {
   const { value, onValueChange, onPush, onPop, onPeek, disabled } = props;
 
   return (
-    <div className=" flex place-content-center items-center divide-x-2 mx-auto [&>div]:px-4">
+    <div className=" flex flex-wrap items-center gap-2">
       <div className="flex gap-4">
         <CounterInput
           min={0}
-          max={100}
+          max={999}
           value={value}
           onChange={onValueChange}
+          allowEmpty
         />
         <Button
           variant="destructive"
