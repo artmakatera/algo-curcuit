@@ -16,6 +16,7 @@ export function ArrayView({
   activeType,
   currentSnapshot,
   isGoBack,
+  delayRef
 }: MinMaxHeapViewProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const lastItemRef = useRef<HTMLDivElement>(null);
@@ -30,10 +31,12 @@ export function ArrayView({
     type === STEPS.moveLastToTop ||
     type === STEPS.movedLastToTop;
 
+
   const isAnimateSwapStep = type === STEPS.swap || type === STEPS.moveLastToTop;
   const isHoldSwapStep = type === STEPS.movedLastToTop;
 
   const swapIndexes = currentSnapshot.swapIndexes ?? [];
+  const animDuration = (Number(delayRef.current ?? 750) * 0.8 /1000);
 
   return (
     <div className="mt-4">
@@ -50,14 +53,18 @@ export function ArrayView({
           const isComparing =
             currentSnapshot.compareIndexes?.some((i) => i === index) || false;
 
-          const swapAnim = getSwapItemAnimation({
-            index,
-            isAnimateStep: isAnimateSwapStep,
-            isHoldStep: isHoldSwapStep,
-            swapIndexes,
-            wrapperRef,
-            isGoBack,
-          });
+          const isInvisible = isPopValueStep && isFirst;
+          const swapAnim = isInvisible
+            ? { animate: { x: 0, y: 0 }, transition: { duration: 0 } as Transition }
+            : getSwapItemAnimation({
+                index,
+                isAnimateStep: isAnimateSwapStep,
+                isHoldStep: isHoldSwapStep,
+                swapIndexes,
+                wrapperRef,
+                isGoBack,
+                animDuration,
+              });
 
           return (
             <motion.div
@@ -110,6 +117,7 @@ export function ArrayView({
                 floatNodeRef={floatNodeRef}
                 activeType={activeType}
                 isGoBack={isGoBack}
+                animDuration={animDuration}
               />
             </div>
           </VisualArrayWrapper>
@@ -130,6 +138,7 @@ function getSwapItemAnimation({
   swapIndexes,
   wrapperRef,
   isGoBack,
+  animDuration,
 }: {
   index: number;
   isAnimateStep: boolean;
@@ -137,6 +146,7 @@ function getSwapItemAnimation({
   swapIndexes: number[];
   wrapperRef: React.RefObject<HTMLDivElement | null>;
   isGoBack?: boolean;
+  animDuration: number;
 }) {
   const stillTransition: Transition = { duration: 0 };
   const rest = { animate: { x: 0, y: 0 }, transition: stillTransition };
@@ -162,12 +172,8 @@ function getSwapItemAnimation({
   const targetY = other.offsetTop - self.offsetTop;
   const deltaY = isGoForward ? ITEM_SIZE : -ITEM_SIZE;
 
-  if (isHoldStep) {
-    return { animate: { x: targetX, y: targetY }, transition: stillTransition };
-  }
-
   const arcTransition: Transition = {
-    duration: 0.7,
+    duration: isHoldStep ? 0 : animDuration,
     type: "tween",
     ease: "easeInOut",
   };
