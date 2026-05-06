@@ -97,6 +97,21 @@ export function BinaryTreeView({
           },
         ];
       }
+      if (type === STEPS.movedLastToTop) {
+        const lastIdx = heap.length - 1;
+        const lastValue = heap[lastIdx];
+        return [
+          { value, key: `pop-${value}`, label: "popped" },
+          {
+            value: lastValue,
+            key: `pop-moved-last-${lastValue}`,
+            initFromNodeId: "node-0",
+            animateToNodeId: "node-0",
+            hiddenNodeId: `node-${lastIdx}`,
+            placeholderNodeId: "node-0",
+          },
+        ];
+      }
       const popOngoingSteps: string[] = [
         STEPS.compareNodes,
         STEPS.compareLeft,
